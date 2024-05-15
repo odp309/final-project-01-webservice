@@ -1,7 +1,8 @@
 package com.bni.finalproject01webservice.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 import java.util.UUID;

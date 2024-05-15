@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +26,14 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
-        LoginResponseDTO result = userService.login(request);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        authentication.getPrincipal();
-        return ResponseEntity.ok(result);
+        try {
+            LoginResponseDTO result = userService.login(request);
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            authentication.getPrincipal();
+            return ResponseEntity.ok(result);
+        } catch (Exception ex) {
+            throw new BadCredentialsException("Bad Credentials");
+        }
     }
 
     @PostMapping("/register")
@@ -39,13 +44,13 @@ public class UserController {
 
     @GetMapping({"/forAdmin"})
     @PreAuthorize("hasRole('Admin')")
-    public String forAdmin(){
+    public String forAdmin() {
         return "This URL is only accessible to the admin";
     }
 
     @GetMapping({"/forUser"})
     @PreAuthorize("hasRole('User')")
-    public String forUser(){
+    public String forUser() {
         return "This URL is only accessible to the user";
     }
 }

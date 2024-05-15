@@ -9,10 +9,12 @@ import com.bni.finalproject01webservice.model.User;
 import com.bni.finalproject01webservice.repository.RoleRepository;
 import com.bni.finalproject01webservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -25,6 +27,7 @@ public class UserService implements UserInterface {
     private final RoleRepository roleRepository;
     private final JWTInterface jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public InitResponseDTO initRoleAndUser() {
@@ -79,9 +82,11 @@ public class UserService implements UserInterface {
     public LoginResponseDTO login(LoginRequestDTO request) {
         User data = userRepository.findByEmail(request.getEmail());
 
-        if (data == null || !passwordEncoder.matches(request.getPassword(), data.getPassword())) {
-            throw new InvalidUserException("Invalid user!");
-        }
+//        if (data == null || !passwordEncoder.matches(request.getPassword(), data.getPassword())) {
+//            throw new InvalidUserException("Invalid user!");
+//        }
+
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
         String token = jwtService.generateToken(data);
 
