@@ -1,5 +1,6 @@
 FROM openjdk:17
 WORKDIR /app
-EXPOSE 8080
+RUN mvn clean package -DskipTests
 COPY target/final-project-01-webservice-0.0.1-SNAPSHOT.jar finpro-webservice.jar
+EXPOSE 8080
 ENTRYPOINT ["java","-jar","/finpro-webservice.jar"]
