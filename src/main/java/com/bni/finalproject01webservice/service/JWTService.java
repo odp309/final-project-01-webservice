@@ -58,6 +58,6 @@ public class JWTService implements JWTInterface {
 
     @Override
     public boolean isTokenValid(String token) {
-        return extractExpiration(token).before(new Date());
+        return extractExpiration(token).after(new Date());
     }
 }
