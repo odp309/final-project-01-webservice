@@ -1,5 +1,6 @@
 package com.bni.finalproject01webservice.controller;
 
+import com.bni.finalproject01webservice.dto.RekeningResponseDTO;
 import com.bni.finalproject01webservice.model.Rekening;
 import com.bni.finalproject01webservice.interfaces.RekeningInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ public class RekeningController {
     private RekeningInterface rekeningService;
 
     @GetMapping("/saldo/{noRekening}")
-    public Rekening getSaldo(@PathVariable String noRekening) {
+    public RekeningResponseDTO getSaldo(@PathVariable String noRekening) {
         return rekeningService.getSaldo(noRekening);
     }
 }
