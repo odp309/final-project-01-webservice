@@ -14,16 +14,16 @@ public class RekeningService implements RekeningInterface {
     private RekeningRepository rekeningRepository;
 
     @Override
-    public Rekening getSaldo(String noRekening) {
-        try {
-            Rekening rekening = rekeningRepository.findByNoRekening(noRekening);
-            if (rekening == null) {
-                throw new RuntimeException("Rekening not found");
-            }
-            return rekening;
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Error : " + e.getMessage());
+    public RekeningResponseDTO getSaldo(String noRekening) {
+        Rekening rekening = rekeningRepository.findByNoRekening(noRekening);
+        if (rekening == null) {
+            throw new RuntimeException("Rekening not found");
         }
+        RekeningResponseDTO response = new RekeningResponseDTO();
+        response.setNoRekening(rekening.getNoRekening());
+        response.setIdNasabah(rekening.getIdNasabah());
+        response.setSaldo(rekening.getSaldo());
+        return response;
     }
 
 }
