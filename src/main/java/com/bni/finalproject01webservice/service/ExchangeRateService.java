@@ -25,18 +25,21 @@ public class ExchangeRateService implements ExchangeRateInterface {
     public ExchangeRateDTO getCurrency() {
         String[] currencies = {"USD", "EUR", "JPY", "GBP", "AUD", "SGD", "THB", "NZD", "MYR", "CNY"};
         Map<String, Double> rates = new HashMap<>();
+        Map<String, Double> sellRates   = new HashMap<>();
 
         for (String currency : currencies) {
             String url = String.format("%s/latest?from=%s&to=IDR", apiUrl, currency);
             ExchangeRateDTO response = restTemplate.getForObject(url, ExchangeRateDTO.class);
             if (response != null && response.getRates() != null && response.getRates().containsKey("IDR")) {
                 rates.put(currency, response.getRates().get("IDR"));
+                sellRates.put(currency, (response.getRates().get("IDR")*1.02));
             }
         }
 
         ExchangeRateDTO rateDTO = new ExchangeRateDTO();
         rateDTO.setBase("IDR");
         rateDTO.setRates(rates);
+        rateDTO.setSellRates(sellRates);
         return rateDTO;
     }
 
