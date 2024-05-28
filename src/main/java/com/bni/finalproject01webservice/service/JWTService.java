@@ -1,12 +1,14 @@
 package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.interfaces.JWTInterface;
+import com.bni.finalproject01webservice.model.Employee;
 import com.bni.finalproject01webservice.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -20,9 +22,10 @@ public class JWTService implements JWTInterface {
     private String secretKey;
 
     @Override
-    public String generateToken(User user) {
+    public String generateTokenUser(User user) {
         Instant now = Instant.now();
-        Instant expirationTime = now.plusSeconds(24 * 60 * 60);
+//        Instant expirationTime = now.plusSeconds(24 * 60 * 60); // 1 Day
+        Instant expirationTime = now.plusSeconds(600); // 10 Min
 
         return Jwts
                 .builder()
@@ -31,6 +34,24 @@ public class JWTService implements JWTInterface {
                 .claim("firstName", user.getFirstName())
                 .claim("lastName", user.getLastName())
                 .claim("role", user.getRole())
+                .expiration(Date.from(expirationTime))
+                .signWith(getJWTKey())
+                .compact();
+    }
+
+    @Override
+    public String generateTokenEmployee(Employee employee) {
+        Instant now = Instant.now();
+//        Instant expirationTime = now.plusSeconds(24 * 60 * 60); // 1 Day
+        Instant expirationTime = now.plusSeconds(600); // 10 Min
+
+        return Jwts
+                .builder()
+                .subject(employee.getEmail())
+                .claim("id", employee.getId())
+                .claim("firstName", employee.getFirstName())
+                .claim("lastName", employee.getLastName())
+                .claim("role", employee.getRole())
                 .expiration(Date.from(expirationTime))
                 .signWith(getJWTKey())
                 .compact();
@@ -56,8 +77,12 @@ public class JWTService implements JWTInterface {
         return extractAllClaims(token).getExpiration();
     }
 
-    @Override
-    public boolean isTokenValid(String token) {
-        return extractExpiration(token).after(new Date());
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        final String email = extractAllClaims(token).getSubject();
+        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    private Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
     }
 }

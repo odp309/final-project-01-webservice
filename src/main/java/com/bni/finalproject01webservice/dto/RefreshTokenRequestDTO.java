@@ -1,11 +1,9 @@
 package com.bni.finalproject01webservice.dto;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
-public class LoginResponseDTO {
+public class RefreshTokenRequestDTO {
 
-    private String accessToken;
     private String refreshToken;
 }

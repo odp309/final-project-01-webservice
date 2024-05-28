@@ -1,9 +1,8 @@
-package com.bni.finalproject01webservice.controller;
+package com.bni.finalproject01webservice.controller.public_api;
 
 import com.bni.finalproject01webservice.dto.ExchangeRateDTO;
 import com.bni.finalproject01webservice.interfaces.ExchangeRateInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

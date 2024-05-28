@@ -5,25 +5,24 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "exchange_rate")
-public class ExchangeRate {
+@Table(name = "transaction_valas")
+public class TransactionValas {
 
     @Id
     @GeneratedValue
     private UUID id;
 
-    @Column(name = "buy_rate", nullable = false)
-    private BigDecimal buyRate;
+    @Column(nullable = false)
+    private BigDecimal amount;
 
-    @Column(name = "sell_rate", nullable = false)
-    private BigDecimal sellRate;
+    @Column(name = "in_progress", nullable = false)
+    private boolean inProgress;
 
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
@@ -34,9 +33,14 @@ public class ExchangeRate {
     //////////////////////// FOREIGN KEY RELATION BLOCK ///////////////////////
 
     @ManyToOne
-    @JoinColumn(name = "id_currency", nullable = false)
-    private Currency currency;
+    @JoinColumn(name = "id_user", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "id_wallet", nullable = false)
+    private Wallet wallet;
+
+    @ManyToOne
+    @JoinColumn(name = "id_transaction_type", nullable = false)
+    private TransactionType transactionType;
 }
-
-
-

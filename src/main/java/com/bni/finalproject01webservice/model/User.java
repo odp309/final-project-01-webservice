@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -29,22 +30,51 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(
-            fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.PERSIST,
-                    CascadeType.REFRESH
-            })
-    @JoinTable(
-            name = "user_role",
-            joinColumns = {
-                    @JoinColumn(name = "user_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "role_id")
-            }
-    )
-    private Set<Role> role;
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updatedAt;
+
+    //////////////////////// FOREIGN KEY RELATION BLOCK ///////////////////////
+
+    @ManyToOne
+    @JoinColumn(name = "id_role", nullable = false)
+    private Role role;
+
+    /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private RefreshToken refreshToken;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BankAccount> bankAccounts;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Wallet> wallets;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderValas> orders;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TransactionValas> transactions;
+
+//    @ManyToMany(
+//            fetch = FetchType.EAGER,
+//            cascade = {
+//                    CascadeType.DETACH,
+//                    CascadeType.MERGE,
+//                    CascadeType.PERSIST,
+//                    CascadeType.REFRESH
+//            })
+//    @JoinTable(
+//            name = "user_role",
+//            joinColumns = {
+//                    @JoinColumn(name = "user_id")
+//            },
+//            inverseJoinColumns = {
+//                    @JoinColumn(name = "role_id")
+//            }
+//    )
+//    private Set<Role> role;
 }

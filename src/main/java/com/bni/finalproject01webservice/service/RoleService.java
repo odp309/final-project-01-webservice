@@ -16,8 +16,8 @@ public class RoleService implements RoleInterface {
     @Override
     public Role createNewRole(RoleRequestDTO roleRequestDTO) {
         Role role = new Role();
-        role.setRoleName(roleRequestDTO.getRoleName());
-        role.setRoleDescription(roleRequestDTO.getRoleDescription());
+        role.setName(roleRequestDTO.getRoleName());
+        role.setDescription(roleRequestDTO.getRoleDescription());
 
         return roleRepository.save(role);
     }

@@ -57,10 +57,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/public/user/forAdmin").hasRole("Admin")
-                        .requestMatchers("/api/v1/public/user/forUser").hasRole("User")
-                        .requestMatchers("/api/v1/public/**", "/api/v1/public/user/login", "/api/v1/public/user/register").permitAll()
-                        .requestMatchers("/api/v1/user/**").authenticated()
+                        .requestMatchers("/api/v1/private/employee/for-admin-mgr", "/api/v1/private/employee/for-admin-mgr/**").hasRole("ADMIN_MGR")
+                        .requestMatchers("/api/v1/private/employee/for-admin", "/api/v1/private/employee/for-admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/private/employee/for-teller", "/api/v1/private/employee/for-teller/**").hasRole("TELLER")
+                        .requestMatchers("/api/v1/private/user/**").hasRole("USER")
+                        .requestMatchers("/api/v1/private/**").authenticated()
+                        .requestMatchers("/api/v1/public/**").permitAll()
                         .requestMatchers(openSwaggerResources()).permitAll()
                         .anyRequest().denyAll()
                 )

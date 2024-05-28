@@ -5,12 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "transaction_type")
+public class TransactionType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,4 +28,9 @@ public class Role {
 
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////
+
+    @OneToMany(mappedBy = "transactionType")
+    private List<TransactionValas> transactions;
 }

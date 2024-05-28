@@ -1,5 +1,8 @@
 package com.bni.finalproject01webservice.advice;
 
+import com.bni.finalproject01webservice.configuration.exceptions.InvalidUserException;
+import com.bni.finalproject01webservice.configuration.exceptions.RefreshTokenException;
+import com.bni.finalproject01webservice.configuration.exceptions.RefreshTokenExpiredException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
@@ -28,6 +31,18 @@ public class CustomExceptionHandler {
             status = HttpStatus.FORBIDDEN;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "Not Authorized");
+        } else if (ex instanceof RefreshTokenExpiredException) {
+            status = HttpStatus.UNAUTHORIZED;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Refresh Token Expired");
+        } else if (ex instanceof RefreshTokenException) {
+            status = HttpStatus.FORBIDDEN;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Refresh Token Invalid");
+        } else if (ex instanceof InvalidUserException) {
+            status = HttpStatus.CONFLICT;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Email Already Registered");
         } else if (ex instanceof MethodArgumentTypeMismatchException) {
             status = HttpStatus.BAD_REQUEST;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), "Invalid method argument: " + ex.getMessage());
