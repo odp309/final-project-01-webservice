@@ -5,11 +5,19 @@ import java.util.Map;
 public class ExchangeRateDTO {
     private String base;
     private Map<String, Double> rates;
+    private Map<String, Double> buyRates;
     private Map<String, Double> sellRates;
 
-    // Getters and Setters
     public String getBase() {
         return base;
+    }
+
+    public Map<String, Double> getBuyRates() {
+        return buyRates;
+    }
+
+    public void setBuyRates(Map<String, Double> buyRates) {
+        this.buyRates = buyRates;
     }
 
     public void setBase(String base) {
