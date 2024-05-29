@@ -40,5 +40,4 @@ public class WalletService implements WalletInterface {
 
         return response;
     }
-
 }

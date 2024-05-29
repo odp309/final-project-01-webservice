@@ -34,7 +34,7 @@ public class ExchangeRate {
     //////////////////////// FOREIGN KEY RELATION BLOCK ///////////////////////
 
     @ManyToOne
-    @JoinColumn(name = "id_currency", nullable = false)
+    @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
 }
 

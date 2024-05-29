@@ -33,10 +33,10 @@ public class BranchReserve {
     //////////////////////// FOREIGN KEY RELATION BLOCK ///////////////////////
 
     @ManyToOne
-    @JoinColumn(name = "id_branch", nullable = false)
+    @JoinColumn(name = "branch_id", nullable = false)
     private Branch branch;
 
     @ManyToOne
-    @JoinColumn(name = "id_currency", nullable = false)
+    @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
 }

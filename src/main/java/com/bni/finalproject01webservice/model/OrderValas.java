@@ -39,14 +39,14 @@ public class OrderValas {
     //////////////////////// FOREIGN KEY RELATION BLOCK ///////////////////////
 
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "id_wallet", nullable = false)
+    @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 
     @ManyToOne
-    @JoinColumn(name = "id_branch", nullable = false)
+    @JoinColumn(name = "branch_id", nullable = false)
     private Branch branch;
 }

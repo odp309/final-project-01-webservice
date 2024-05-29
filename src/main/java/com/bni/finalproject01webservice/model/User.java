@@ -39,7 +39,7 @@ public class User {
     //////////////////////// FOREIGN KEY RELATION BLOCK ///////////////////////
 
     @ManyToOne
-    @JoinColumn(name = "id_role", nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////

@@ -35,11 +35,11 @@ public class Wallet {
     private BankAccount bankAccount;
 
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "id_currency", nullable = false)
+    @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
 
     /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////

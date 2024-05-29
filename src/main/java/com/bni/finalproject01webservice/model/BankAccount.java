@@ -29,7 +29,7 @@ public class BankAccount {
     //////////////////////// FOREIGN KEY RELATION BLOCK ///////////////////////
 
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////

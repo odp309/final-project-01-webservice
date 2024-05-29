@@ -14,11 +14,11 @@ import java.util.List;
 public class Currency {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(name = "code", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String code;
+
+    @Column(unique = true, nullable = false)
+    private String name;
 
     @Column(name = "created_at", nullable = false)
     private Date createdAt;

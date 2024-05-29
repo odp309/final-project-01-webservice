@@ -25,10 +25,10 @@ public class RefreshToken {
     //////////////////////// FOREIGN KEY RELATION BLOCK ///////////////////////
 
     @OneToOne
-    @JoinColumn(name = "id_user", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "id_employee", referencedColumnName = "id")
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 }

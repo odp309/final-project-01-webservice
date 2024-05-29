@@ -33,14 +33,14 @@ public class TransactionValas {
     //////////////////////// FOREIGN KEY RELATION BLOCK ///////////////////////
 
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "id_wallet", nullable = false)
+    @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 
     @ManyToOne
-    @JoinColumn(name = "id_transaction_type", nullable = false)
+    @JoinColumn(name = "transaction_type_id", nullable = false)
     private TransactionType transactionType;
 }

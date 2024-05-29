@@ -41,11 +41,11 @@ public class Employee {
     //////////////////////// FOREIGN KEY RELATION BLOCK ///////////////////////
 
     @ManyToOne
-    @JoinColumn(name = "id_role", nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     @ManyToOne
-    @JoinColumn(name = "id_branch")
+    @JoinColumn(name = "branch_id")
     private Branch branch;
 
     /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////
