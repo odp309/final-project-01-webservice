@@ -1,6 +1,6 @@
 package com.bni.finalproject01webservice.service;
 
-import com.bni.finalproject01webservice.dto.RoleRequestDTO;
+import com.bni.finalproject01webservice.dto.request.RoleRequestDTO;
 import com.bni.finalproject01webservice.interfaces.RoleInterface;
 import com.bni.finalproject01webservice.model.Role;
 import com.bni.finalproject01webservice.repository.RoleRepository;

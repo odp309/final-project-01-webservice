@@ -1,5 +1,6 @@
-package com.bni.finalproject01webservice.dto;
+package com.bni.finalproject01webservice.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +14,7 @@ public class ExchangeRateResponseDTO {
     private String currencyCode;
     private BigDecimal buyRate;
     private BigDecimal sellRate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Asia/Jakarta")
     private Date createdAt;
 }

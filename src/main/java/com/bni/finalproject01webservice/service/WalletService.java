@@ -1,6 +1,6 @@
 package com.bni.finalproject01webservice.service;
 
-import com.bni.finalproject01webservice.dto.WalletResponseDTO;
+import com.bni.finalproject01webservice.dto.response.WalletResponseDTO;
 import com.bni.finalproject01webservice.interfaces.WalletInterface;
 import com.bni.finalproject01webservice.model.Wallet;
 import com.bni.finalproject01webservice.repository.WalletRepository;

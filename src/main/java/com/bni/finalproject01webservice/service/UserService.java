@@ -1,7 +1,10 @@
 package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.configuration.exceptions.InvalidUserException;
-import com.bni.finalproject01webservice.dto.*;
+import com.bni.finalproject01webservice.dto.request.LoginRequestDTO;
+import com.bni.finalproject01webservice.dto.request.RegisterUserRequestDTO;
+import com.bni.finalproject01webservice.dto.response.LoginResponseDTO;
+import com.bni.finalproject01webservice.dto.response.RegisterResponseDTO;
 import com.bni.finalproject01webservice.interfaces.JWTInterface;
 import com.bni.finalproject01webservice.interfaces.RefreshTokenInterface;
 import com.bni.finalproject01webservice.interfaces.UserInterface;

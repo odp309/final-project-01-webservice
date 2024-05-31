@@ -1,8 +1,10 @@
 package com.bni.finalproject01webservice.controller.private_api;
 
-import com.bni.finalproject01webservice.dto.RoleRequestDTO;
+import com.bni.finalproject01webservice.dto.request.RoleRequestDTO;
 import com.bni.finalproject01webservice.interfaces.RoleInterface;
 import com.bni.finalproject01webservice.model.Role;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/private/role")
+@SecurityRequirement(name = "access-token")
+@Tag(name = "Private API", description = "Private API secured with JWT token")
 public class RoleController {
 
     @Autowired

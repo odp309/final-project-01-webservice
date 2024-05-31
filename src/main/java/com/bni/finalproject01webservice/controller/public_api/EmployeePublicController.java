@@ -1,10 +1,13 @@
 package com.bni.finalproject01webservice.controller.public_api;
 
 import com.bni.finalproject01webservice.configuration.exceptions.RefreshTokenException;
-import com.bni.finalproject01webservice.dto.*;
+import com.bni.finalproject01webservice.dto.request.LoginRequestDTO;
+import com.bni.finalproject01webservice.dto.request.RefreshTokenRequestDTO;
+import com.bni.finalproject01webservice.dto.response.LoginResponseDTO;
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import com.bni.finalproject01webservice.interfaces.JWTInterface;
 import com.bni.finalproject01webservice.interfaces.RefreshTokenInterface;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/public/employee")
+@Tag(name = "Public API", description = "Public API open to the public")
 public class EmployeePublicController {
 
     private final EmployeeInterface employeeService;

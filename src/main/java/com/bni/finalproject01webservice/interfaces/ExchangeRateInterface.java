@@ -1,13 +1,16 @@
 package com.bni.finalproject01webservice.interfaces;
 
-import com.bni.finalproject01webservice.dto.ExchangeRateDTO;
-import com.bni.finalproject01webservice.dto.ExchangeRateResponseDTO;
+import com.bni.finalproject01webservice.dto.request.ExchangeRateRequestDTO;
+import com.bni.finalproject01webservice.dto.response.ExchangeRateResponseDTO;
+import com.bni.finalproject01webservice.dto.response.FrankfurterResponseDTO;
 
 import java.util.List;
 
 public interface ExchangeRateInterface {
 
-    ExchangeRateDTO getCurrency();
-    ExchangeRateDTO getCurrencySpecific(String baseCurrency);
-    List<ExchangeRateResponseDTO> getAllExchangeRates();
+    FrankfurterResponseDTO addExchangeRateFrankfurter();
+
+    ExchangeRateResponseDTO getSingleExchangeRate(ExchangeRateRequestDTO request);
+
+    List<ExchangeRateResponseDTO> getAllExchangeRate();
 }

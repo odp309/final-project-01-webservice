@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.dto;
+package com.bni.finalproject01webservice.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +8,8 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class ExchangeRateDTO {
+public class FrankfurterRequestDTO {
 
     private String base;
     private Map<String, BigDecimal> rates;
-    private Map<String, BigDecimal> buyRates;
-    private Map<String, BigDecimal> sellRates;
 }

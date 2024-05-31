@@ -1,7 +1,9 @@
 package com.bni.finalproject01webservice.service;
 
-import com.bni.finalproject01webservice.dto.ExchangeRateDTO;
-import com.bni.finalproject01webservice.dto.ExchangeRateResponseDTO;
+import com.bni.finalproject01webservice.dto.request.ExchangeRateRequestDTO;
+import com.bni.finalproject01webservice.dto.request.FrankfurterRequestDTO;
+import com.bni.finalproject01webservice.dto.response.ExchangeRateResponseDTO;
+import com.bni.finalproject01webservice.dto.response.FrankfurterResponseDTO;
 import com.bni.finalproject01webservice.interfaces.ExchangeRateInterface;
 import com.bni.finalproject01webservice.model.Currency;
 import com.bni.finalproject01webservice.model.ExchangeRate;
@@ -33,18 +35,18 @@ public class ExchangeRateService implements ExchangeRateInterface {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ExchangeRateDTO getCurrency() {
-        String[] currencies = {"USD", "EUR", "JPY", "GBP", "AUD", "SGD", "THB", "NZD", "MYR", "CNY"};
+    public FrankfurterResponseDTO addExchangeRateFrankfurter() {
+        List<String> currencies = currencyRepository.findAllCurrencyCode();
         Map<String, BigDecimal> buyRate = new HashMap<>();
         Map<String, BigDecimal> sellRate = new HashMap<>();
 
         for (String currency : currencies) {
             String url = String.format("%s/latest?from=%s&to=IDR", apiUrl, currency);
-            ExchangeRateDTO response = restTemplate.getForObject(url, ExchangeRateDTO.class);
+            FrankfurterRequestDTO request = restTemplate.getForObject(url, FrankfurterRequestDTO.class);
 
-            if (response != null && response.getRates() != null && response.getRates().containsKey("IDR")) {
-                buyRate.put(currency, response.getRates().get("IDR").multiply(BigDecimal.valueOf(1.05)));
-                sellRate.put(currency, (response.getRates().get("IDR")));
+            if (request != null && request.getRates() != null && request.getRates().containsKey("IDR")) {
+                buyRate.put(currency, request.getRates().get("IDR").multiply(BigDecimal.valueOf(1.05)));
+                sellRate.put(currency, (request.getRates().get("IDR")));
 
                 Currency dbCurrency = currencyRepository.findByCode(currency);
 
@@ -52,28 +54,35 @@ public class ExchangeRateService implements ExchangeRateInterface {
                 ExchangeRate exchangeRate = new ExchangeRate();
                 exchangeRate.setCurrency(dbCurrency);
                 exchangeRate.setCreatedAt(new Date());
-                exchangeRate.setBuyRate(response.getRates().get("IDR").multiply(BigDecimal.valueOf(1.05)));
-                exchangeRate.setSellRate(response.getRates().get("IDR"));
+                exchangeRate.setBuyRate(request.getRates().get("IDR").multiply(BigDecimal.valueOf(1.05)));
+                exchangeRate.setSellRate(request.getRates().get("IDR"));
 
                 exchangeRateRepository.save(exchangeRate);
             }
         }
 
-        ExchangeRateDTO rateDTO = new ExchangeRateDTO();
-        rateDTO.setBase("IDR");
-        rateDTO.setBuyRates(buyRate);
-        rateDTO.setSellRates(sellRate);
-        return rateDTO;
+        FrankfurterResponseDTO response = new FrankfurterResponseDTO();
+        response.setBase("IDR");
+        response.setBuyRates(buyRate);
+        response.setSellRates(sellRate);
+        return response;
     }
 
     @Override
-    public ExchangeRateDTO getCurrencySpecific(String baseCurrency) {
-        String url = String.format("%s/latest?from=%s&to=IDR", apiUrl, baseCurrency);
-        return restTemplate.getForObject(url, ExchangeRateDTO.class);
+    public ExchangeRateResponseDTO getSingleExchangeRate(ExchangeRateRequestDTO request) {
+        ExchangeRate exchangeRate = exchangeRateRepository.findSingleExchangeRate(request.getCode());
+
+        ExchangeRateResponseDTO response = new ExchangeRateResponseDTO();
+        response.setCurrencyCode(exchangeRate.getCurrency().getCode());
+        response.setCreatedAt(exchangeRate.getCreatedAt());
+        response.setBuyRate(exchangeRate.getBuyRate());
+        response.setSellRate(exchangeRate.getSellRate());
+
+        return response;
     }
 
     @Override
-    public List<ExchangeRateResponseDTO> getAllExchangeRates() {
+    public List<ExchangeRateResponseDTO> getAllExchangeRate() {
         List<ExchangeRate> exchangeRates = exchangeRateRepository.findAll();
 
         return exchangeRates.stream()
