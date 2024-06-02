@@ -1,6 +1,6 @@
 package com.bni.finalproject01webservice.service;
 
-import com.bni.finalproject01webservice.configuration.exceptions.InvalidUserException;
+import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.dto.request.LoginRequestDTO;
 import com.bni.finalproject01webservice.dto.request.RegisterEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.response.InitResponseDTO;
@@ -121,7 +121,7 @@ public class EmployeeService implements EmployeeInterface {
             response.setAccessToken(accessToken);
             response.setRefreshToken(refreshToken);
         } else {
-            throw new InvalidUserException("Employee is not active!");
+            throw new UserException("Employee is not active!");
         }
 
         return response;
@@ -132,7 +132,7 @@ public class EmployeeService implements EmployeeInterface {
         Employee currData = employeeRepository.findByEmail(request.getEmail());
 
         if (currData != null) {
-            throw new InvalidUserException("Email already exist!");
+            throw new UserException("Email already exist!");
         }
 
         Role role = roleRepository.findByName("ADMIN");
@@ -161,7 +161,7 @@ public class EmployeeService implements EmployeeInterface {
         Employee currData = employeeRepository.findByEmail(request.getEmail());
 
         if (currData != null) {
-            throw new InvalidUserException("Email already exist!");
+            throw new UserException("Email already exist!");
         }
 
         Role role = roleRepository.findByName("TELLER");

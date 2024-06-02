@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.dto.response;
+package com.bni.finalproject01webservice.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +8,10 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class WalletResponseDTO {
+public class AddWalletRequestDTO {
 
+    private UUID userId;
     private String accountNumber;
     private String currencyCode;
-    private UUID userId;
     private BigDecimal balance;
 }

@@ -1,6 +1,6 @@
 package com.bni.finalproject01webservice.service;
 
-import com.bni.finalproject01webservice.configuration.exceptions.InvalidUserException;
+import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.dto.request.LoginRequestDTO;
 import com.bni.finalproject01webservice.dto.request.RegisterUserRequestDTO;
 import com.bni.finalproject01webservice.dto.response.LoginResponseDTO;
@@ -36,7 +36,7 @@ public class UserService implements UserInterface {
         User data = userRepository.findByEmail(request.getEmail());
 
 //        if (data == null || !passwordEncoder.matches(request.getPassword(), data.getPassword())) {
-//            throw new InvalidUserException("Invalid user!");
+//            throw new UserException("Invalid user!");
 //        }
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
@@ -56,7 +56,7 @@ public class UserService implements UserInterface {
         User currData = userRepository.findByEmail(request.getEmail());
 
         if (currData != null) {
-            throw new InvalidUserException("Email already exist!");
+            throw new UserException("Email already exist!");
         }
 
         Role role = roleRepository.findByName("USER");
