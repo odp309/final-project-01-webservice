@@ -69,8 +69,8 @@ public class ExchangeRateService implements ExchangeRateInterface {
     }
 
     @Override
-    public ExchangeRateResponseDTO getSingleExchangeRate(ExchangeRateRequestDTO request) {
-        ExchangeRate exchangeRate = exchangeRateRepository.findSingleExchangeRate(request.getCode());
+    public ExchangeRateResponseDTO getExchangeRate(ExchangeRateRequestDTO request) {
+        ExchangeRate exchangeRate = exchangeRateRepository.findExchangeRate(request.getCode());
 
         ExchangeRateResponseDTO response = new ExchangeRateResponseDTO();
         response.setCurrencyCode(exchangeRate.getCurrency().getCode());

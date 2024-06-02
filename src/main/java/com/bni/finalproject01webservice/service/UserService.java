@@ -64,6 +64,7 @@ public class UserService implements UserInterface {
         User newUser = new User();
         newUser.setEmail(request.getEmail());
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        newUser.setPin(passwordEncoder.encode(request.getPin()));
         newUser.setFirstName(request.getFirstName());
         newUser.setLastName(request.getLastName());
         newUser.setRole(role);

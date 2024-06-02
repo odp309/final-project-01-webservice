@@ -27,6 +27,12 @@ public class Branch {
     @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false)
+    private String city;
+
+    @Column(nullable = false)
+    private String province;
+
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 

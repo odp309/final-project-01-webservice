@@ -34,15 +34,19 @@ public class CustomExceptionHandler {
         } else if (ex instanceof RefreshTokenExpiredException) {
             status = HttpStatus.UNAUTHORIZED;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
-            errorDetail.setProperty("access_denied_reason", "Refresh Token Expired");
+            errorDetail.setProperty("access_denied_reason", "Refresh token expired");
         } else if (ex instanceof RefreshTokenException) {
             status = HttpStatus.FORBIDDEN;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
-            errorDetail.setProperty("access_denied_reason", "Refresh Token Invalid");
-        } else if (ex instanceof InvalidUserException) {
+            errorDetail.setProperty("access_denied_reason", "Refresh token invalid");
+        } else if (ex instanceof InvalidUserException && ex.getMessage().equals("Email already exist!")) {
             status = HttpStatus.CONFLICT;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
-            errorDetail.setProperty("access_denied_reason", "Email Already Registered");
+            errorDetail.setProperty("access_denied_reason", "Email already registered");
+        } else if (ex instanceof InvalidUserException && ex.getMessage().equals("Employee is not active!")) {
+            status = HttpStatus.FORBIDDEN;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "This account is not active");
         } else if (ex instanceof MethodArgumentTypeMismatchException) {
             status = HttpStatus.BAD_REQUEST;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), "Invalid method argument: " + ex.getMessage());

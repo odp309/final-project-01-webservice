@@ -12,5 +12,6 @@ public class AddBankAccountRequestDTO {
 
     private UUID userId;
     private String accountNumber;
+    private String type;
     private BigDecimal balance;
 }

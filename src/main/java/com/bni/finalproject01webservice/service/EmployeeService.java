@@ -89,6 +89,7 @@ public class EmployeeService implements EmployeeInterface {
             employee.setFirstName("admin");
             employee.setLastName("manager");
             employee.setNip("A000000");
+            employee.setIsActive(true);
             employee.setRole(Objects.requireNonNullElse(currAdminMgrRole, adminMgrRole));
             employee.setCreatedAt(new Date());
             employeeRepository.save(employee);
@@ -108,16 +109,20 @@ public class EmployeeService implements EmployeeInterface {
 
     @Override
     public LoginResponseDTO login(LoginRequestDTO request) {
+        LoginResponseDTO response = new LoginResponseDTO();
         Employee data = employeeRepository.findByEmail(request.getEmail());
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        if (data.getIsActive()) {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-        String accessToken = jwtService.generateTokenEmployee(data);
-        String refreshToken = refreshTokenService.createRefreshTokenEmployee(data).getToken();
+            String accessToken = jwtService.generateTokenEmployee(data);
+            String refreshToken = refreshTokenService.createRefreshTokenEmployee(data).getToken();
 
-        LoginResponseDTO response = new LoginResponseDTO();
-        response.setAccessToken(accessToken);
-        response.setRefreshToken(refreshToken);
+            response.setAccessToken(accessToken);
+            response.setRefreshToken(refreshToken);
+        } else {
+            throw new InvalidUserException("Employee is not active!");
+        }
 
         return response;
     }
@@ -137,6 +142,7 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setPassword(passwordEncoder.encode(request.getPassword()));
         newEmployee.setFirstName(request.getFirstName());
         newEmployee.setLastName(request.getLastName());
+        newEmployee.setIsActive(true);
         newEmployee.setNip(request.getNip());
         newEmployee.setRole(role);
         newEmployee.setCreatedAt(new Date());
@@ -165,6 +171,7 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setPassword(passwordEncoder.encode(request.getPassword()));
         newEmployee.setFirstName(request.getFirstName());
         newEmployee.setLastName(request.getLastName());
+        newEmployee.setIsActive(true);
         newEmployee.setNip(request.getNip());
         newEmployee.setRole(role);
         newEmployee.setCreatedAt(new Date());

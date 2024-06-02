@@ -10,7 +10,7 @@ public interface ExchangeRateInterface {
 
     FrankfurterResponseDTO addExchangeRateFrankfurter();
 
-    ExchangeRateResponseDTO getSingleExchangeRate(ExchangeRateRequestDTO request);
+    ExchangeRateResponseDTO getExchangeRate(ExchangeRateRequestDTO request);
 
     List<ExchangeRateResponseDTO> getAllExchangeRate();
 }

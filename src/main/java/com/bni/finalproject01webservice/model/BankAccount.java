@@ -20,6 +20,9 @@ public class BankAccount {
 
     private BigDecimal balance;
 
+    @Column(name = "type", nullable = false)
+    private String type;
+
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 

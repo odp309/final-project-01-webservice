@@ -11,6 +11,6 @@ import java.util.UUID;
 public class BankAccountResponseDTO {
 
     private String accountNumber;
-    private UUID id_user;
+    private String type;
     private BigDecimal balance;
 }

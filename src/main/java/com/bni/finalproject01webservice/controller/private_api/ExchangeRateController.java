@@ -23,9 +23,9 @@ public class ExchangeRateController {
         return exchangeRateService.addExchangeRateFrankfurter();
     }
 
-    @PostMapping("/get-single")
-    public ExchangeRateResponseDTO getSingleExchangeRateFrankfurter(@RequestBody ExchangeRateRequestDTO request) {
-        return exchangeRateService.getSingleExchangeRate(request);
+    @PostMapping("/get")
+    public ExchangeRateResponseDTO getExchangeRate(@RequestBody ExchangeRateRequestDTO request) {
+        return exchangeRateService.getExchangeRate(request);
     }
 }
 

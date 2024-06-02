@@ -21,8 +21,11 @@ public class OrderValas {
     @Column(nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "order_number", nullable = false)
-    private String orderNumber;
+    @Column(name = "reservation_number", unique = true, nullable = false)
+    private String reservationNumber;
+
+    @Column(name = "reservation_date", nullable = false)
+    private Date reservationDate;
 
     @Column(nullable = false)
     private String status;
