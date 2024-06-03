@@ -1,6 +1,8 @@
 package com.bni.finalproject01webservice.controller.private_api;
 
+import com.bni.finalproject01webservice.dto.request.BuyValasRequestDTO;
 import com.bni.finalproject01webservice.dto.request.DetailBuyValasRequestDTO;
+import com.bni.finalproject01webservice.dto.response.BuyValasResponseDTO;
 import com.bni.finalproject01webservice.dto.response.DetailBuyValasResponseDTO;
 import com.bni.finalproject01webservice.service.BuyValasService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -18,8 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class BuyValasController {
     @Autowired
     private BuyValasService BuyValasService;
-    @PostMapping("/post")
+    @PostMapping("/detail")
     public DetailBuyValasResponseDTO detailBuyValas(@RequestBody DetailBuyValasRequestDTO request) {
         return BuyValasService.detailBuyValas(request);
+    }
+
+    @PostMapping("/buy")
+    public BuyValasResponseDTO buyValas(@RequestBody BuyValasRequestDTO request) {
+        return BuyValasService.buyValas(request);
     }
 }
