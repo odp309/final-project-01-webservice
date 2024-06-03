@@ -12,6 +12,7 @@ import java.util.Date;
 public class ExchangeRateResponseDTO {
 
     private String currencyCode;
+    private String currencyName;
     private BigDecimal buyRate;
     private BigDecimal sellRate;
 

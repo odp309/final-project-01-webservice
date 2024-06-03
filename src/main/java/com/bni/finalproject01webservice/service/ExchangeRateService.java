@@ -74,6 +74,7 @@ public class ExchangeRateService implements ExchangeRateInterface {
 
         ExchangeRateResponseDTO response = new ExchangeRateResponseDTO();
         response.setCurrencyCode(exchangeRate.getCurrency().getCode());
+        response.setCurrencyName(exchangeRate.getCurrency().getName());
         response.setCreatedAt(exchangeRate.getCreatedAt());
         response.setBuyRate(exchangeRate.getBuyRate());
         response.setSellRate(exchangeRate.getSellRate());
@@ -83,16 +84,17 @@ public class ExchangeRateService implements ExchangeRateInterface {
 
     @Override
     public List<ExchangeRateResponseDTO> getAllExchangeRate() {
-        List<ExchangeRate> exchangeRates = exchangeRateRepository.findAll();
+        List<ExchangeRate> exchangeRates = exchangeRateRepository.findLatestExchangeRate();
 
         return exchangeRates.stream()
                 .map(exchangeRate -> {
-                    ExchangeRateResponseDTO rateResponseDTO = new ExchangeRateResponseDTO();
-                    rateResponseDTO.setCurrencyCode(exchangeRate.getCurrency().getCode());
-                    rateResponseDTO.setBuyRate(exchangeRate.getBuyRate());
-                    rateResponseDTO.setSellRate(exchangeRate.getSellRate());
-                    rateResponseDTO.setCreatedAt(exchangeRate.getCreatedAt());
-                    return rateResponseDTO;
+                    ExchangeRateResponseDTO response = new ExchangeRateResponseDTO();
+                    response.setCurrencyCode(exchangeRate.getCurrency().getCode());
+                    response.setCurrencyName(exchangeRate.getCurrency().getName());
+                    response.setBuyRate(exchangeRate.getBuyRate());
+                    response.setSellRate(exchangeRate.getSellRate());
+                    response.setCreatedAt(exchangeRate.getCreatedAt());
+                    return response;
                 })
                 .collect(Collectors.toList());
     }
