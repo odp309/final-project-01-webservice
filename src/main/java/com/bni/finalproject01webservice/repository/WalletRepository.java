@@ -10,4 +10,5 @@ public interface WalletRepository extends JpaRepository<Wallet, UUID> {
 
    List<Wallet> findByBankAccountAccountNumber(String accountNumber);
    Wallet findByBankAccountAccountNumberAndCurrencyCode(String accountNumber, String code);
+
 }
