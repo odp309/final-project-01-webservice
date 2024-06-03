@@ -1,11 +1,17 @@
 package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.dto.request.RoleRequestDTO;
+import com.bni.finalproject01webservice.dto.response.CurrencyResponseDTO;
+import com.bni.finalproject01webservice.dto.response.RoleResponseDTO;
 import com.bni.finalproject01webservice.interfaces.RoleInterface;
+import com.bni.finalproject01webservice.model.Currency;
 import com.bni.finalproject01webservice.model.Role;
 import com.bni.finalproject01webservice.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,5 +26,19 @@ public class RoleService implements RoleInterface {
         role.setDescription(roleRequestDTO.getRoleDescription());
 
         return roleRepository.save(role);
+    }
+
+    @Override
+    public List<RoleResponseDTO> getAllRole() {
+        List<Role> roles = roleRepository.findAll();
+
+        return roles.stream()
+                .map(role -> {
+                    RoleResponseDTO response = new RoleResponseDTO();
+                    response.setId(role.getId());
+                    response.setName(role.getName());
+                    return response;
+                })
+                .collect(Collectors.toList());
     }
 }

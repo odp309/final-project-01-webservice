@@ -63,8 +63,8 @@ public class ExchangeRateService implements ExchangeRateInterface {
 
         FrankfurterResponseDTO response = new FrankfurterResponseDTO();
         response.setBase("IDR");
-        response.setBuyRates(buyRate);
-        response.setSellRates(sellRate);
+        response.setBuyRate(buyRate);
+        response.setSellRate(sellRate);
         return response;
     }
 

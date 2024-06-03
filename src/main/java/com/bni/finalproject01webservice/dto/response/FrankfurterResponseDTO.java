@@ -11,6 +11,6 @@ import java.util.Map;
 public class FrankfurterResponseDTO {
 
     private String base;
-    private Map<String, BigDecimal> buyRates;
-    private Map<String, BigDecimal> sellRates;
+    private Map<String, BigDecimal> buyRate;
+    private Map<String, BigDecimal> sellRate;
 }
