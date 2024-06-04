@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
@@ -37,8 +38,6 @@ public class BuyValasService implements BuyValasInterface {
     public DetailBuyValasResponseDTO detailBuyValas(DetailBuyValasRequestDTO request) {
 
 
-//        ExchangeRate exchangeRate = BuyValasRepository.findExchangeRate(request.currencyCode);
-// ini pake repository buyvalasREpo atau mau pake exchangeRate Repo yag single yg udah ada
         ExchangeRate exchangeRate = exchangeRateRepository.findExchangeRate(request.currencyCode);
 
         DetailBuyValasResponseDTO response = new DetailBuyValasResponseDTO();
@@ -53,12 +52,16 @@ public class BuyValasService implements BuyValasInterface {
 
         ExchangeRate exchangeRate = exchangeRateRepository.findExchangeRate(request.currencyCode);
         BankAccount bankAccount = bankAccountRepository.findByAccountNumber(request.getAccountNumber());
-        Optional<Wallet> wallet = walletRepository.findById(request.getWalletId());
+
+        UUID idWallet = request.getWalletId();
+        Wallet wallet = walletRepository.findById(idWallet)
+                .orElseThrow(() -> new RuntimeException("Wallet not found for ID: " + request.getWalletId()));
 
         UUID id = bankAccount.getUser().getId();
-        Optional<User> users = userRepository.findById(id);
+        User users = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found for ID: " + id));
 
-        String encodedPin = users.get().getPin();
+        String encodedPin = users.getPin();
         String rawPin = request.getPin();
 
         boolean checkPin = passwordEncoder.matches(rawPin, encodedPin);
@@ -68,15 +71,17 @@ public class BuyValasService implements BuyValasInterface {
         }
         else
         {
-            Wallet newWallet = new Wallet();
-            newWallet.setBalance(newWallet.getBalance().add(request.getAmountToBuy()));
-            newWallet.setUpdatedAt(new Date());
-            walletRepository.save(newWallet);
+//            Wallet newWallet = new Wallet();
+            wallet.setBalance(wallet.getBalance().add(request.getAmountToBuy()));
+            wallet.setUpdatedAt(new Date());
+            walletRepository.save(wallet);
 
-            BankAccount balance = new BankAccount();
-            balance.setBalance(wallet.get().getBalance().subtract(request.getAmountToBuy().multiply(exchangeRate.getBuyRate())));
-            balance.setUpdatedAt(new Date());
-            bankAccountRepository.save(balance);
+
+            BigDecimal currBalance = bankAccount.getBalance();
+            BigDecimal paidPrice = request.getAmountToBuy().multiply(exchangeRate.getBuyRate());
+            bankAccount.setBalance(currBalance.subtract(paidPrice));
+            bankAccount.setUpdatedAt(new Date());
+            bankAccountRepository.save(bankAccount);
 
             response.setAmountToBuy(request.getAmountToBuy());
             response.setAmountToPay(request.getAmountToBuy().multiply(exchangeRate.getBuyRate()));
