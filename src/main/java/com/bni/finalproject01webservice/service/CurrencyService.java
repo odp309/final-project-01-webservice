@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +54,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currUSD == null) {
             USD.setCode("USD");
             USD.setName("United States dollar");
+            USD.setMinimumDeposit(BigDecimal.valueOf(10));
             USD.setCreatedAt(new Date());
             currencyRepository.save(USD);
         }
@@ -60,6 +62,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currSGD == null) {
             SGD.setCode("SGD");
             SGD.setName("Singapore dollar");
+            SGD.setMinimumDeposit(BigDecimal.valueOf(10));
             SGD.setCreatedAt(new Date());
             currencyRepository.save(SGD);
         }
@@ -67,6 +70,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currJPY == null) {
             JPY.setCode("JPY");
             JPY.setName("Japanese yen");
+            JPY.setMinimumDeposit(BigDecimal.valueOf(1000));
             JPY.setCreatedAt(new Date());
             currencyRepository.save(JPY);
         }
@@ -74,6 +78,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currEUR == null) {
             EUR.setCode("EUR");
             EUR.setName("Euro");
+            EUR.setMinimumDeposit(BigDecimal.valueOf(10));
             EUR.setCreatedAt(new Date());
             currencyRepository.save(EUR);
         }
@@ -81,6 +86,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currGBP == null) {
             GBP.setCode("GBP");
             GBP.setName("Pound sterling");
+            GBP.setMinimumDeposit(BigDecimal.valueOf(10));
             GBP.setCreatedAt(new Date());
             currencyRepository.save(GBP);
         }
@@ -88,6 +94,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currAUD == null) {
             AUD.setCode("AUD");
             AUD.setName("Australian dollar");
+            AUD.setMinimumDeposit(BigDecimal.valueOf(10));
             AUD.setCreatedAt(new Date());
             currencyRepository.save(AUD);
         }
@@ -95,6 +102,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currMYR == null) {
             MYR.setCode("MYR");
             MYR.setName("Malaysian ringgit");
+            MYR.setMinimumDeposit(BigDecimal.valueOf(10));
             MYR.setCreatedAt(new Date());
             currencyRepository.save(MYR);
         }
@@ -102,6 +110,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currNZD == null) {
             NZD.setCode("NZD");
             NZD.setName("New Zealand dollar");
+            NZD.setMinimumDeposit(BigDecimal.valueOf(100));
             NZD.setCreatedAt(new Date());
             currencyRepository.save(NZD);
         }
@@ -109,6 +118,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currTHB == null) {
             THB.setCode("THB");
             THB.setName("Thai baht");
+            THB.setMinimumDeposit(BigDecimal.valueOf(100));
             THB.setCreatedAt(new Date());
             currencyRepository.save(THB);
         }
@@ -116,6 +126,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currCNY == null) {
             CNY.setCode("CNY");
             CNY.setName("Chinese yuan");
+            CNY.setMinimumDeposit(BigDecimal.valueOf(100));
             CNY.setCreatedAt(new Date());
             currencyRepository.save(CNY);
         }
@@ -123,6 +134,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currCAD == null) {
             CAD.setCode("CAD");
             CAD.setName("Canadian dollar");
+            CAD.setMinimumDeposit(BigDecimal.valueOf(10));
             CAD.setCreatedAt(new Date());
             currencyRepository.save(CAD);
         }
@@ -130,6 +142,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currCHF == null) {
             CHF.setCode("CHF");
             CHF.setName("Swiss Franc");
+            CHF.setMinimumDeposit(BigDecimal.valueOf(10));
             CHF.setCreatedAt(new Date());
             currencyRepository.save(CHF);
         }
@@ -137,6 +150,7 @@ public class CurrencyService implements CurrencyInterface {
         if (currHKD == null) {
             HKD.setCode("HKD");
             HKD.setName("Hong Kong dollar");
+            HKD.setMinimumDeposit(BigDecimal.valueOf(100));
             HKD.setCreatedAt(new Date());
             currencyRepository.save(HKD);
         }

@@ -57,6 +57,10 @@ public class BuyValasService implements BuyValasInterface {
         User user = userRepository.findById(bankAccount.getUser().getId()).orElseThrow(() -> new UserException("User not found!"));
         ExchangeRate exchangeRate = exchangeRateRepository.findExchangeRate(wallet.getCurrency().getCode());
 
+        if (wallet.getCurrency().getMinimumDeposit().compareTo(BigDecimal.ONE) < 0) {
+            throw new TransactionException("Amount is less than the minimum deposit!");
+        }
+
         boolean checkPin = passwordEncoder.matches(request.getPin(), user.getPin());
 
         if (!checkPin) {

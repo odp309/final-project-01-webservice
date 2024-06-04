@@ -65,6 +65,10 @@ public class CustomExceptionHandler {
             status = HttpStatus.UNPROCESSABLE_ENTITY;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "Insufficient funds");
+        } else if (ex instanceof TransactionException && ex.getMessage().equals("Amount is less than the minimum deposit!")) {
+            status = HttpStatus.UNPROCESSABLE_ENTITY;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Buy amount is less than the minimum deposit");
         } else if (ex instanceof MethodArgumentTypeMismatchException) {
             status = HttpStatus.BAD_REQUEST;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), "Invalid method argument: " + ex.getMessage());

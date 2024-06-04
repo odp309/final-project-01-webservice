@@ -21,9 +21,6 @@ public class TransactionValas {
     @Column(nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "in_progress", nullable = false)
-    private boolean inProgress;
-
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
@@ -39,8 +36,4 @@ public class TransactionValas {
     @ManyToOne
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
-
-    @ManyToOne
-    @JoinColumn(name = "transaction_type_id", nullable = false)
-    private TransactionType transactionType;
 }

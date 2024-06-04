@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class Currency {
 
     @Column(unique = true, nullable = false)
     private String name;
+
+    @Column(name = "minimum_deposit", nullable = false)
+    private BigDecimal minimumDeposit;
 
     @Column(name = "created_at", nullable = false)
     private Date createdAt;

@@ -30,9 +30,6 @@ public class OrderValas {
     @Column(nullable = false)
     private String status;
 
-    @Column(name = "in_progress", nullable = false)
-    private boolean inProgress;
-
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
