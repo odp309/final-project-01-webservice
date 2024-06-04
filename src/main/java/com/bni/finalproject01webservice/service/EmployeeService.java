@@ -55,7 +55,7 @@ public class EmployeeService implements EmployeeInterface {
             adminMgrRole.setDescription("Admin manager role, handle admin CRUD operations.");
             adminMgrRole.setCreatedAt(new Date());
             roleRepository.save(adminMgrRole);
-            status += "Admin manager role has been initialized!\n";
+            status += "Admin manager role has been initialized!";
         }
 
         if (currAdminRole == null) {
@@ -63,7 +63,7 @@ public class EmployeeService implements EmployeeInterface {
             adminRole.setDescription("Admin role, has control over a branch.");
             adminRole.setCreatedAt(new Date());
             roleRepository.save(adminRole);
-            status += "Admin role has been initialized!\n";
+            status += "Admin role has been initialized!";
         }
 
         if (currTellerRole == null) {
@@ -71,7 +71,7 @@ public class EmployeeService implements EmployeeInterface {
             tellerRole.setDescription("Teller role, handle front-liner matters.");
             tellerRole.setCreatedAt(new Date());
             roleRepository.save(tellerRole);
-            status += "Teller role has been initialized!\n";
+            status += "Teller role has been initialized!";
         }
 
         if (currUserRole == null) {
@@ -79,7 +79,7 @@ public class EmployeeService implements EmployeeInterface {
             userRole.setDescription("User role, ya user bos.");
             userRole.setCreatedAt(new Date());
             roleRepository.save(userRole);
-            status += "User role has been initialized!\n";
+            status += "User role has been initialized!";
         }
 
         if (currEmployee == null) {
@@ -93,7 +93,7 @@ public class EmployeeService implements EmployeeInterface {
             employee.setRole(Objects.requireNonNullElse(currAdminMgrRole, adminMgrRole));
             employee.setCreatedAt(new Date());
             employeeRepository.save(employee);
-            status += "Admin manager account has been initialized!\n";
+            status += "Admin manager account has been initialized!";
         }
 
         InitResponseDTO response = new InitResponseDTO();

@@ -3,6 +3,7 @@ package com.bni.finalproject01webservice.controller.public_api;
 import com.bni.finalproject01webservice.dto.response.InitResponseDTO;
 import com.bni.finalproject01webservice.interfaces.CurrencyInterface;
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
+import com.bni.finalproject01webservice.interfaces.TransactionTypeInterface;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class InitPublicController {
 
     private final EmployeeInterface employeeService;
     private final CurrencyInterface currencyService;
+    private final TransactionTypeInterface transactionTypeService;
 
     @PostMapping("/role-and-employee")
     public ResponseEntity<InitResponseDTO> initRoleAndEmployee() {
@@ -28,6 +30,12 @@ public class InitPublicController {
     @PostMapping("/currency")
     public ResponseEntity<InitResponseDTO> initCurrency() {
         InitResponseDTO result = currencyService.initCurrency();
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/transaction-type")
+    public ResponseEntity<InitResponseDTO> initTransactionType() {
+        InitResponseDTO result = transactionTypeService.initTransactionType();
         return ResponseEntity.ok(result);
     }
 }
