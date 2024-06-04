@@ -10,10 +10,7 @@ import java.util.UUID;
 @Setter
 public class BuyValasRequestDTO {
 
-    public UUID walletId;
-    public BigDecimal amountToBuy;
-    public String currencyCode;
-    private String accountNumber;
-   // public BigDecimal amountToPay;
+    private UUID walletId;
+    private BigDecimal amountToBuy;
     private String pin;
 }

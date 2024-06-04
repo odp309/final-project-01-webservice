@@ -1,9 +1,6 @@
 package com.bni.finalproject01webservice.advice;
 
-import com.bni.finalproject01webservice.configuration.exceptions.UserException;
-import com.bni.finalproject01webservice.configuration.exceptions.RefreshTokenException;
-import com.bni.finalproject01webservice.configuration.exceptions.RefreshTokenExpiredException;
-import com.bni.finalproject01webservice.configuration.exceptions.WalletException;
+import com.bni.finalproject01webservice.configuration.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
@@ -52,6 +49,10 @@ public class CustomExceptionHandler {
             status = HttpStatus.NOT_FOUND;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "User not found");
+        } else if (ex instanceof UserException && ex.getMessage().equals("Invalid pin!")) {
+            status = HttpStatus.UNAUTHORIZED;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Pin is invalid");
         } else if (ex instanceof WalletException && ex.getMessage().equals("Wallet already exist!")) {
             status = HttpStatus.CONFLICT;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
@@ -60,6 +61,10 @@ public class CustomExceptionHandler {
             status = HttpStatus.NOT_FOUND;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "Wallet not found");
+        } else if (ex instanceof TransactionException && ex.getMessage().equals("Balance insufficient!")) {
+            status = HttpStatus.UNPROCESSABLE_ENTITY;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Insufficient funds");
         } else if (ex instanceof MethodArgumentTypeMismatchException) {
             status = HttpStatus.BAD_REQUEST;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), "Invalid method argument: " + ex.getMessage());

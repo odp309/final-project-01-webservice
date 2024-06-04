@@ -72,7 +72,7 @@ public class WalletService implements WalletInterface {
         BankAccount bankAccount = bankAccountRepository.findByAccountNumber(request.getAccountNumber());
 
         Wallet newWallet = new Wallet();
-        newWallet.setBalance(request.getBalance());
+        newWallet.setBalance(request.getTotalAmount());
         newWallet.setCreatedAt(new Date());
         newWallet.setBankAccount(bankAccount);
         newWallet.setUser(user);
@@ -80,7 +80,7 @@ public class WalletService implements WalletInterface {
         walletRepository.save(newWallet);
 
         WalletResponseDTO response = new WalletResponseDTO();
-        response.setBalance(request.getBalance());
+        response.setBalance(request.getTotalAmount());
         response.setAccountNumber(bankAccount.getAccountNumber());
         response.setUserId(user.getId());
         response.setCurrencyCode(currency.getCode());

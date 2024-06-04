@@ -13,5 +13,5 @@ public class AddWalletRequestDTO {
     private UUID userId;
     private String accountNumber;
     private String currencyCode;
-    private BigDecimal balance;
+    private BigDecimal totalAmount;
 }

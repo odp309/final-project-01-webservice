@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/public/exchange-rate")
+@RequestMapping("/api/v1/public/exchange_rate")
 @Tag(name = "Public API", description = "Public API open to the public")
 public class ExchangeRatePublicController {
 

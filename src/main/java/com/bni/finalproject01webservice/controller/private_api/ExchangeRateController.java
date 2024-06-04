@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/private/exchange-rate")
+@RequestMapping("/api/v1/private/exchange_rate")
 @SecurityRequirement(name = "access-token")
 @Tag(name = "Private API", description = "Private API secured with JWT token")
 public class ExchangeRateController {
