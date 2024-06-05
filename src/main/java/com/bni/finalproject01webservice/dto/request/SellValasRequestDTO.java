@@ -11,7 +11,7 @@ import java.util.UUID;
 public class SellValasRequestDTO {
 
     private UUID walletId;
-    private BigDecimal amountToBuy;
+    private BigDecimal amountToSell;
     private String pin;
 
 }

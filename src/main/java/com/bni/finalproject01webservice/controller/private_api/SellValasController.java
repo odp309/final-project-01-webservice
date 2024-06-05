@@ -3,8 +3,10 @@ package com.bni.finalproject01webservice.controller.private_api;
 
 import com.bni.finalproject01webservice.dto.request.DetailBuyValasRequestDTO;
 import com.bni.finalproject01webservice.dto.request.DetailSellValasRequestDTO;
+import com.bni.finalproject01webservice.dto.request.SellValasRequestDTO;
 import com.bni.finalproject01webservice.dto.response.DetailBuyValasResponseDTO;
 import com.bni.finalproject01webservice.dto.response.DetailSellValasResponseDTO;
+import com.bni.finalproject01webservice.dto.response.SellValasResponseDTO;
 import com.bni.finalproject01webservice.service.BuyValasService;
 import com.bni.finalproject01webservice.service.SellValasService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -23,8 +25,15 @@ public class SellValasController {
 
     @Autowired
     private SellValasService SellValasService;
+
     @PostMapping("/detail")
     public DetailSellValasResponseDTO detailSellValas(@RequestBody DetailSellValasRequestDTO request) {
         return SellValasService.detailSellValas(request);
     }
+
+    @PostMapping("/sell")
+    public SellValasResponseDTO sellValas(@RequestBody SellValasRequestDTO request) {
+        return SellValasService.sellValas(request);
+    }
+
 }
