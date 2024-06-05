@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.dto.response;
+package com.bni.finalproject01webservice.dto.sell_valas.response;
 
 import lombok.Getter;
 import lombok.Setter;

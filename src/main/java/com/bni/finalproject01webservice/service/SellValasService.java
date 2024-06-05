@@ -3,12 +3,10 @@ package com.bni.finalproject01webservice.service;
 import com.bni.finalproject01webservice.configuration.exceptions.TransactionException;
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.configuration.exceptions.WalletException;
-import com.bni.finalproject01webservice.dto.request.DetailSellValasRequestDTO;
-import com.bni.finalproject01webservice.dto.request.SellValasRequestDTO;
-import com.bni.finalproject01webservice.dto.response.BuyValasResponseDTO;
-import com.bni.finalproject01webservice.dto.response.DetailBuyValasResponseDTO;
-import com.bni.finalproject01webservice.dto.response.DetailSellValasResponseDTO;
-import com.bni.finalproject01webservice.dto.response.SellValasResponseDTO;
+import com.bni.finalproject01webservice.dto.sell_valas.request.DetailSellValasRequestDTO;
+import com.bni.finalproject01webservice.dto.sell_valas.request.SellValasRequestDTO;
+import com.bni.finalproject01webservice.dto.sell_valas.response.DetailSellValasResponseDTO;
+import com.bni.finalproject01webservice.dto.sell_valas.response.SellValasResponseDTO;
 import com.bni.finalproject01webservice.interfaces.SellValasInterface;
 import com.bni.finalproject01webservice.model.BankAccount;
 import com.bni.finalproject01webservice.model.ExchangeRate;
@@ -94,5 +92,4 @@ public class SellValasService implements SellValasInterface {
 
         return response;
     }
-
 }
