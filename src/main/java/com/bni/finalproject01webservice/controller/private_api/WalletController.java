@@ -1,9 +1,9 @@
 package com.bni.finalproject01webservice.controller.private_api;
 
-import com.bni.finalproject01webservice.dto.request.AddWalletRequestDTO;
-import com.bni.finalproject01webservice.dto.request.WalletRequestDTO;
-import com.bni.finalproject01webservice.dto.response.GetAllWalletResponseDTO;
-import com.bni.finalproject01webservice.dto.response.WalletResponseDTO;
+import com.bni.finalproject01webservice.dto.wallet.request.AddWalletRequestDTO;
+import com.bni.finalproject01webservice.dto.wallet.request.WalletRequestDTO;
+import com.bni.finalproject01webservice.dto.wallet.response.GetAllWalletResponseDTO;
+import com.bni.finalproject01webservice.dto.wallet.response.WalletResponseDTO;
 import com.bni.finalproject01webservice.interfaces.WalletInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

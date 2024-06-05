@@ -1,6 +1,6 @@
 package com.bni.finalproject01webservice.controller.public_api;
 
-import com.bni.finalproject01webservice.dto.response.ExchangeRateResponseDTO;
+import com.bni.finalproject01webservice.dto.exchange_rate.response.ExchangeRateResponseDTO;
 import com.bni.finalproject01webservice.interfaces.ExchangeRateInterface;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

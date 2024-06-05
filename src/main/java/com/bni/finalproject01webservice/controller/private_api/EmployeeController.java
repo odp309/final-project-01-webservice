@@ -1,7 +1,7 @@
 package com.bni.finalproject01webservice.controller.private_api;
 
-import com.bni.finalproject01webservice.dto.request.RegisterEmployeeRequestDTO;
-import com.bni.finalproject01webservice.dto.response.RegisterResponseDTO;
+import com.bni.finalproject01webservice.dto.employee.request.RegisterEmployeeRequestDTO;
+import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

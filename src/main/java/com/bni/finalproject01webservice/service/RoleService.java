@@ -1,10 +1,8 @@
 package com.bni.finalproject01webservice.service;
 
-import com.bni.finalproject01webservice.dto.request.RoleRequestDTO;
-import com.bni.finalproject01webservice.dto.response.CurrencyResponseDTO;
-import com.bni.finalproject01webservice.dto.response.RoleResponseDTO;
+import com.bni.finalproject01webservice.dto.role.request.RoleRequestDTO;
+import com.bni.finalproject01webservice.dto.role.response.RoleResponseDTO;
 import com.bni.finalproject01webservice.interfaces.RoleInterface;
-import com.bni.finalproject01webservice.model.Currency;
 import com.bni.finalproject01webservice.model.Role;
 import com.bni.finalproject01webservice.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;

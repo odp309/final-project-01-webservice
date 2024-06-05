@@ -1,8 +1,7 @@
 package com.bni.finalproject01webservice.interfaces;
 
-import com.bni.finalproject01webservice.dto.response.CurrencyResponseDTO;
-import com.bni.finalproject01webservice.dto.response.InitResponseDTO;
-import com.bni.finalproject01webservice.model.Currency;
+import com.bni.finalproject01webservice.dto.currency.response.CurrencyResponseDTO;
+import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 
 import java.util.List;
 

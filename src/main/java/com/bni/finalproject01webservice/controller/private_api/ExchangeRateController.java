@@ -1,8 +1,8 @@
 package com.bni.finalproject01webservice.controller.private_api;
 
-import com.bni.finalproject01webservice.dto.request.ExchangeRateRequestDTO;
-import com.bni.finalproject01webservice.dto.response.ExchangeRateResponseDTO;
-import com.bni.finalproject01webservice.dto.response.FrankfurterResponseDTO;
+import com.bni.finalproject01webservice.dto.exchange_rate.request.ExchangeRateRequestDTO;
+import com.bni.finalproject01webservice.dto.exchange_rate.response.ExchangeRateResponseDTO;
+import com.bni.finalproject01webservice.dto.exchange_rate.response.FrankfurterResponseDTO;
 import com.bni.finalproject01webservice.interfaces.ExchangeRateInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

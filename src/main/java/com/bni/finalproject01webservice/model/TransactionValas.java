@@ -21,6 +21,15 @@ public class TransactionValas {
     @Column(nullable = false)
     private BigDecimal amount;
 
+    @Column(nullable = false)
+    private String type;
+
+    @Column(nullable = false)
+    private String operation;
+
+    @Column(nullable = false)
+    private String detail;
+
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 

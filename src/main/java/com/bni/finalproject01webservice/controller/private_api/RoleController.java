@@ -1,7 +1,7 @@
 package com.bni.finalproject01webservice.controller.private_api;
 
-import com.bni.finalproject01webservice.dto.request.RoleRequestDTO;
-import com.bni.finalproject01webservice.dto.response.RoleResponseDTO;
+import com.bni.finalproject01webservice.dto.role.request.RoleRequestDTO;
+import com.bni.finalproject01webservice.dto.role.response.RoleResponseDTO;
 import com.bni.finalproject01webservice.interfaces.RoleInterface;
 import com.bni.finalproject01webservice.model.Role;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

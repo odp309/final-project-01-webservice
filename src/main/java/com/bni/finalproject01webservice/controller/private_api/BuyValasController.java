@@ -1,9 +1,9 @@
 package com.bni.finalproject01webservice.controller.private_api;
 
-import com.bni.finalproject01webservice.dto.request.BuyValasRequestDTO;
-import com.bni.finalproject01webservice.dto.request.DetailBuyValasRequestDTO;
-import com.bni.finalproject01webservice.dto.response.BuyValasResponseDTO;
-import com.bni.finalproject01webservice.dto.response.DetailBuyValasResponseDTO;
+import com.bni.finalproject01webservice.dto.buy_valas.request.BuyValasRequestDTO;
+import com.bni.finalproject01webservice.dto.buy_valas.request.DetailBuyValasRequestDTO;
+import com.bni.finalproject01webservice.dto.buy_valas.response.BuyValasResponseDTO;
+import com.bni.finalproject01webservice.dto.buy_valas.response.DetailBuyValasResponseDTO;
 import com.bni.finalproject01webservice.service.BuyValasService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

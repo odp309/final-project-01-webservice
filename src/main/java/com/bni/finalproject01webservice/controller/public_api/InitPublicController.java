@@ -1,6 +1,6 @@
 package com.bni.finalproject01webservice.controller.public_api;
 
-import com.bni.finalproject01webservice.dto.response.InitResponseDTO;
+import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.interfaces.CurrencyInterface;
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import io.swagger.v3.oas.annotations.tags.Tag;

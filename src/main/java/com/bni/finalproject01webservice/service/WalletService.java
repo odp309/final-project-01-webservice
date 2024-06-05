@@ -2,9 +2,9 @@ package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.configuration.exceptions.WalletException;
-import com.bni.finalproject01webservice.dto.request.AddWalletRequestDTO;
-import com.bni.finalproject01webservice.dto.response.GetAllWalletResponseDTO;
-import com.bni.finalproject01webservice.dto.response.WalletResponseDTO;
+import com.bni.finalproject01webservice.dto.wallet.request.AddWalletRequestDTO;
+import com.bni.finalproject01webservice.dto.wallet.response.GetAllWalletResponseDTO;
+import com.bni.finalproject01webservice.dto.wallet.response.WalletResponseDTO;
 import com.bni.finalproject01webservice.interfaces.WalletInterface;
 import com.bni.finalproject01webservice.model.BankAccount;
 import com.bni.finalproject01webservice.model.Currency;
@@ -15,7 +15,6 @@ import com.bni.finalproject01webservice.repository.CurrencyRepository;
 import com.bni.finalproject01webservice.repository.UserRepository;
 import com.bni.finalproject01webservice.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

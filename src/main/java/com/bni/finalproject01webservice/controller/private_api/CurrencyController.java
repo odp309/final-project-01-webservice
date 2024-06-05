@@ -1,12 +1,10 @@
 package com.bni.finalproject01webservice.controller.private_api;
 
-import com.bni.finalproject01webservice.dto.response.CurrencyResponseDTO;
+import com.bni.finalproject01webservice.dto.currency.response.CurrencyResponseDTO;
 import com.bni.finalproject01webservice.interfaces.CurrencyInterface;
-import com.bni.finalproject01webservice.model.Currency;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,11 +1,11 @@
 package com.bni.finalproject01webservice.interfaces;
 
-import com.bni.finalproject01webservice.dto.request.AddBankAccountRequestDTO;
-import com.bni.finalproject01webservice.dto.request.GetAllBankAccountRequestDTO;
-import com.bni.finalproject01webservice.dto.request.GetBankAccountRequestDTO;
-import com.bni.finalproject01webservice.dto.request.GetBankAccountWalletRequestDTO;
-import com.bni.finalproject01webservice.dto.response.BankAccountResponseDTO;
-import com.bni.finalproject01webservice.dto.response.GetBankAccountWalletResponseDTO;
+import com.bni.finalproject01webservice.dto.bank_account.request.AddBankAccountRequestDTO;
+import com.bni.finalproject01webservice.dto.bank_account.request.GetAllBankAccountRequestDTO;
+import com.bni.finalproject01webservice.dto.bank_account.request.GetBankAccountRequestDTO;
+import com.bni.finalproject01webservice.dto.bank_account.request.GetBankAccountWalletRequestDTO;
+import com.bni.finalproject01webservice.dto.bank_account.response.BankAccountResponseDTO;
+import com.bni.finalproject01webservice.dto.bank_account.response.GetBankAccountWalletResponseDTO;
 
 import java.util.List;
 

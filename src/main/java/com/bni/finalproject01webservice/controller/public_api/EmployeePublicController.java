@@ -1,9 +1,9 @@
 package com.bni.finalproject01webservice.controller.public_api;
 
 import com.bni.finalproject01webservice.configuration.exceptions.RefreshTokenException;
-import com.bni.finalproject01webservice.dto.request.LoginRequestDTO;
-import com.bni.finalproject01webservice.dto.request.RefreshTokenRequestDTO;
-import com.bni.finalproject01webservice.dto.response.LoginResponseDTO;
+import com.bni.finalproject01webservice.dto.auth.request.LoginRequestDTO;
+import com.bni.finalproject01webservice.dto.auth.request.RefreshTokenRequestDTO;
+import com.bni.finalproject01webservice.dto.auth.response.LoginResponseDTO;
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import com.bni.finalproject01webservice.interfaces.JWTInterface;
 import com.bni.finalproject01webservice.interfaces.RefreshTokenInterface;

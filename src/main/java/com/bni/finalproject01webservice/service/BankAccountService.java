@@ -1,11 +1,13 @@
 package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.configuration.exceptions.WalletException;
-import com.bni.finalproject01webservice.dto.request.AddBankAccountRequestDTO;
-import com.bni.finalproject01webservice.dto.request.GetAllBankAccountRequestDTO;
-import com.bni.finalproject01webservice.dto.request.GetBankAccountRequestDTO;
-import com.bni.finalproject01webservice.dto.request.GetBankAccountWalletRequestDTO;
-import com.bni.finalproject01webservice.dto.response.*;
+import com.bni.finalproject01webservice.dto.bank_account.request.AddBankAccountRequestDTO;
+import com.bni.finalproject01webservice.dto.bank_account.request.GetAllBankAccountRequestDTO;
+import com.bni.finalproject01webservice.dto.bank_account.request.GetBankAccountRequestDTO;
+import com.bni.finalproject01webservice.dto.bank_account.request.GetBankAccountWalletRequestDTO;
+import com.bni.finalproject01webservice.dto.bank_account.response.BankAccountResponseDTO;
+import com.bni.finalproject01webservice.dto.bank_account.response.GetBankAccountWalletResponseDTO;
+import com.bni.finalproject01webservice.dto.wallet.response.SecureWalletResponseDTO;
 import com.bni.finalproject01webservice.model.BankAccount;
 import com.bni.finalproject01webservice.model.User;
 import com.bni.finalproject01webservice.model.Wallet;
