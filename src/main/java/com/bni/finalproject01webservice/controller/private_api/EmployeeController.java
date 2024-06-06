@@ -1,7 +1,9 @@
 package com.bni.finalproject01webservice.controller.private_api;
 
+import com.bni.finalproject01webservice.dto.employee.request.DataEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.RegisterEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
+import com.bni.finalproject01webservice.dto.employee.response.DataEmployeeResponseDTO;
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,6 +35,13 @@ public class EmployeeController {
         return ResponseEntity.ok(result);
     }
 
+    @PostMapping("/for-admin-mgr/get-all-employees")
+    @PreAuthorize("hasRole('ADMIN_MGR')")
+    public DataEmployeeResponseDTO getAllEmployee(@RequestBody DataEmployeeRequestDTO request) {
+        return employeeService.getAllEmployee(request);
+    }
+
+
     @GetMapping({"/for-admin-mgr"})
     @PreAuthorize("hasRole('ADMIN_MGR')")
     public String forAdminMgr() {
@@ -50,4 +59,7 @@ public class EmployeeController {
     public String forTeller() {
         return "This URL is only accessible to the teller";
     }
+
+
+
 }

@@ -2,7 +2,9 @@ package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.dto.auth.request.LoginRequestDTO;
+import com.bni.finalproject01webservice.dto.employee.request.DataEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.RegisterEmployeeRequestDTO;
+import com.bni.finalproject01webservice.dto.employee.response.DataEmployeeResponseDTO;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.LoginResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
@@ -21,7 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -184,4 +188,32 @@ public class EmployeeService implements EmployeeInterface {
 
         return response;
     }
+
+    @Override
+    public DataEmployeeResponseDTO getAllEmployee(DataEmployeeRequestDTO request) {
+        List<Employee> employees = employeeRepository.findByBranchName(request.getBranchName());
+
+        DataEmployeeResponseDTO response = new DataEmployeeResponseDTO();
+        response.setEmployee(employees.stream()
+                .map(employee -> {
+                    DataEmployeeResponseDTO.GetAllEmployee data = new DataEmployeeResponseDTO.GetAllEmployee();
+
+                    data.setId(employee.getId());
+                    data.setCreatedAt(employee.getCreatedAt());
+                    data.setEmail(employee.getEmail());
+                    data.setFirstName(employee.getFirstName());
+                    data.setIsActive(employee.getIsActive());
+                    data.setLastName(employee.getLastName());
+                    data.setNip(employee.getNip());
+                    data.setUpdatedAt(employee.getUpdatedAt());
+                    data.setBranchId(employee.getBranch().getId());
+                    data.setRoleId(employee.getRole().getId());
+                    return data;
+                })
+                .collect(Collectors.toList()));
+
+        return response;
+    }
+
+
 }

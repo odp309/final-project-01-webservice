@@ -82,6 +82,8 @@ public class BuyValasService implements BuyValasInterface {
         bankAccount.setUpdatedAt(new Date());
         bankAccountRepository.save(bankAccount);
 
+        
+
         response.setAmountToBuy(request.getAmountToBuy());
         response.setAmountToPay(request.getAmountToBuy().multiply(exchangeRate.getBuyRate()));
         response.setCurrencyCode(wallet.getCurrency().getCode());
