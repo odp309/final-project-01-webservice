@@ -2,17 +2,19 @@ package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.dto.auth.request.LoginRequestDTO;
-import com.bni.finalproject01webservice.dto.employee.request.DataEmployeeRequestDTO;
+import com.bni.finalproject01webservice.dto.employee.request.GetAllEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.RegisterEmployeeRequestDTO;
-import com.bni.finalproject01webservice.dto.employee.response.DataEmployeeResponseDTO;
+import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDTO;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.LoginResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import com.bni.finalproject01webservice.interfaces.JWTInterface;
 import com.bni.finalproject01webservice.interfaces.RefreshTokenInterface;
+import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.Employee;
 import com.bni.finalproject01webservice.model.Role;
+import com.bni.finalproject01webservice.repository.BranchRepository;
 import com.bni.finalproject01webservice.repository.EmployeeRepository;
 import com.bni.finalproject01webservice.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 public class EmployeeService implements EmployeeInterface {
 
     private final EmployeeRepository employeeRepository;
+    private final BranchRepository branchRepository;
     private final RoleRepository roleRepository;
     private final JWTInterface jwtService;
     private final RefreshTokenInterface refreshTokenService;
@@ -87,6 +90,7 @@ public class EmployeeService implements EmployeeInterface {
         }
 
         if (currEmployee == null) {
+            Branch branch = branchRepository.findByName("GAMBIR");
             Employee employee = new Employee();
             employee.setEmail("admin.manager@bni.co.id");
             employee.setPassword(passwordEncoder.encode("admin"));
@@ -94,6 +98,7 @@ public class EmployeeService implements EmployeeInterface {
             employee.setLastName("manager");
             employee.setNip("A000000");
             employee.setIsActive(true);
+            employee.setBranch(branch);
             employee.setRole(Objects.requireNonNullElse(currAdminMgrRole, adminMgrRole));
             employee.setCreatedAt(new Date());
             employeeRepository.save(employee);
@@ -190,30 +195,24 @@ public class EmployeeService implements EmployeeInterface {
     }
 
     @Override
-    public DataEmployeeResponseDTO getAllEmployee(DataEmployeeRequestDTO request) {
+    public List<EmployeeResponseDTO> getAllEmployee(GetAllEmployeeRequestDTO request) {
         List<Employee> employees = employeeRepository.findByBranchName(request.getBranchName());
 
-        DataEmployeeResponseDTO response = new DataEmployeeResponseDTO();
-        response.setEmployee(employees.stream()
+        return employees.stream()
                 .map(employee -> {
-                    DataEmployeeResponseDTO.GetAllEmployee data = new DataEmployeeResponseDTO.GetAllEmployee();
-
-                    data.setId(employee.getId());
-                    data.setCreatedAt(employee.getCreatedAt());
-                    data.setEmail(employee.getEmail());
-                    data.setFirstName(employee.getFirstName());
-                    data.setIsActive(employee.getIsActive());
-                    data.setLastName(employee.getLastName());
-                    data.setNip(employee.getNip());
-                    data.setUpdatedAt(employee.getUpdatedAt());
-                    data.setBranchId(employee.getBranch().getId());
-                    data.setRoleId(employee.getRole().getId());
-                    return data;
+                    EmployeeResponseDTO response = new EmployeeResponseDTO();
+                    response.setId(employee.getId());
+                    response.setBranchId(employee.getBranch().getId());
+                    response.setRoleId(employee.getRole().getId());
+                    response.setEmail(employee.getEmail());
+                    response.setFirstName(employee.getFirstName());
+                    response.setLastName(employee.getLastName());
+                    response.setNip(employee.getNip());
+                    response.setIsActive(employee.getIsActive());
+                    response.setCreatedAt(employee.getCreatedAt());
+                    response.setUpdatedAt(employee.getUpdatedAt());
+                    return response;
                 })
-                .collect(Collectors.toList()));
-
-        return response;
+                .collect(Collectors.toList());
     }
-
-
 }

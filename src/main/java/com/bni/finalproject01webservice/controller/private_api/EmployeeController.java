@@ -1,9 +1,9 @@
 package com.bni.finalproject01webservice.controller.private_api;
 
-import com.bni.finalproject01webservice.dto.employee.request.DataEmployeeRequestDTO;
+import com.bni.finalproject01webservice.dto.employee.request.GetAllEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.RegisterEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
-import com.bni.finalproject01webservice.dto.employee.response.DataEmployeeResponseDTO;
+import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDTO;
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/private/employee")
@@ -37,10 +39,9 @@ public class EmployeeController {
 
     @PostMapping("/for-admin-mgr/get-all-employees")
     @PreAuthorize("hasRole('ADMIN_MGR')")
-    public DataEmployeeResponseDTO getAllEmployee(@RequestBody DataEmployeeRequestDTO request) {
+    public List<EmployeeResponseDTO> getAllEmployee(@RequestBody GetAllEmployeeRequestDTO request) {
         return employeeService.getAllEmployee(request);
     }
-
 
     @GetMapping({"/for-admin-mgr"})
     @PreAuthorize("hasRole('ADMIN_MGR')")
@@ -59,7 +60,4 @@ public class EmployeeController {
     public String forTeller() {
         return "This URL is only accessible to the teller";
     }
-
-
-
 }

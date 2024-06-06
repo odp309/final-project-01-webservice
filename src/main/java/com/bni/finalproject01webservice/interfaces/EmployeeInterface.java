@@ -1,12 +1,14 @@
 package com.bni.finalproject01webservice.interfaces;
 
 import com.bni.finalproject01webservice.dto.auth.request.LoginRequestDTO;
-import com.bni.finalproject01webservice.dto.employee.request.DataEmployeeRequestDTO;
+import com.bni.finalproject01webservice.dto.employee.request.GetAllEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.RegisterEmployeeRequestDTO;
-import com.bni.finalproject01webservice.dto.employee.response.DataEmployeeResponseDTO;
+import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDTO;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.LoginResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
+
+import java.util.List;
 
 public interface EmployeeInterface {
 
@@ -18,6 +20,5 @@ public interface EmployeeInterface {
 
     RegisterResponseDTO registerTeller(RegisterEmployeeRequestDTO request);
 
-
-    DataEmployeeResponseDTO getAllEmployee(DataEmployeeRequestDTO request);
+    List<EmployeeResponseDTO> getAllEmployee(GetAllEmployeeRequestDTO request);
 }

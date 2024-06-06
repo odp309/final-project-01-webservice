@@ -1,10 +1,7 @@
 package com.bni.finalproject01webservice.controller.public_api;
 
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
-import com.bni.finalproject01webservice.interfaces.CurrencyInterface;
-import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
-import com.bni.finalproject01webservice.interfaces.OperationTypeInterface;
-import com.bni.finalproject01webservice.interfaces.TrxTypeInterface;
+import com.bni.finalproject01webservice.interfaces.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +17,7 @@ public class InitPublicController {
 
     private final EmployeeInterface employeeService;
     private final CurrencyInterface currencyService;
+    private final BranchInterface branchService;
     private final TrxTypeInterface trxTypeService;
     private final OperationTypeInterface operationTypeService;
 
@@ -44,6 +42,12 @@ public class InitPublicController {
     @PostMapping("/operation_type")
     public ResponseEntity<InitResponseDTO> initOperationType() {
         InitResponseDTO result = operationTypeService.initOperationType();
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/branch")
+    public ResponseEntity<InitResponseDTO> initBranch() {
+        InitResponseDTO result = branchService.initBranch();
         return ResponseEntity.ok(result);
     }
 }
