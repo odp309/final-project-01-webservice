@@ -24,6 +24,12 @@ public class Currency {
     @Column(name = "minimum_deposit", nullable = false)
     private BigDecimal minimumDeposit;
 
+    @Column(name = "minimum_buy", nullable = false)
+    private BigDecimal minimumBuy;
+
+    @Column(nullable = false)
+    private String icon;
+
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 

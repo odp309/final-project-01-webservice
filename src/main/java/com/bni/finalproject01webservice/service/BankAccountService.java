@@ -6,8 +6,10 @@ import com.bni.finalproject01webservice.dto.bank_account.request.GetAllBankAccou
 import com.bni.finalproject01webservice.dto.bank_account.request.GetBankAccountRequestDTO;
 import com.bni.finalproject01webservice.dto.bank_account.request.GetBankAccountWalletRequestDTO;
 import com.bni.finalproject01webservice.dto.bank_account.response.BankAccountResponseDTO;
+import com.bni.finalproject01webservice.dto.bank_account.response.BankAccountWithWalletResponseDTO;
 import com.bni.finalproject01webservice.dto.bank_account.response.GetBankAccountWalletResponseDTO;
 import com.bni.finalproject01webservice.dto.wallet.response.SecureWalletResponseDTO;
+import com.bni.finalproject01webservice.dto.wallet.response.WalletWithCurrencyIconResponseDTO;
 import com.bni.finalproject01webservice.model.BankAccount;
 import com.bni.finalproject01webservice.model.User;
 import com.bni.finalproject01webservice.model.Wallet;
@@ -72,15 +74,29 @@ public class BankAccountService implements BankAccountInterface {
     }
 
     @Override
-    public List<BankAccountResponseDTO> getAllBankAccountOfUser(GetAllBankAccountRequestDTO request) {
+    public List<BankAccountWithWalletResponseDTO> getAllBankAccountOfUser(GetAllBankAccountRequestDTO request) {
         List<BankAccount> bankAccounts = bankAccountRepository.findByUserId(request.getUserId());
 
         return bankAccounts.stream()
                 .map(bankAccount -> {
-                    BankAccountResponseDTO response = new BankAccountResponseDTO();
+                    int idBankAccountCount = bankAccounts.indexOf(bankAccount) + 1;
+                    List<Wallet> wallets = walletRepository.findByBankAccountAccountNumber(bankAccount.getAccountNumber());
+                    BankAccountWithWalletResponseDTO response = new BankAccountWithWalletResponseDTO();
+                    response.setId(idBankAccountCount);
                     response.setAccountNumber(bankAccount.getAccountNumber());
                     response.setType(bankAccount.getType());
                     response.setBalance(bankAccount.getBalance());
+                    response.setListWallet(wallets.stream()
+                            .map(wallet -> {
+                                int idWalletCount = wallets.indexOf(wallet) + 1;
+                                WalletWithCurrencyIconResponseDTO walletResponse = new WalletWithCurrencyIconResponseDTO();
+                                walletResponse.setId(idWalletCount);
+                                walletResponse.setCurrencyCode(wallet.getCurrency().getCode());
+                                walletResponse.setCurrencyName(wallet.getCurrency().getName());
+                                walletResponse.setBalance(wallet.getBalance());
+                                walletResponse.setIcon(wallet.getCurrency().getIcon());
+                                return walletResponse;
+                            }).collect(Collectors.toList()));
                     return response;
                 })
                 .collect(Collectors.toList());

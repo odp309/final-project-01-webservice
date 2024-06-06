@@ -33,6 +33,9 @@ public class User {
     @Column(nullable = false)
     private String pin;
 
+    @Column(name = "is_cooldown", nullable = false)
+    private Boolean isCooldown;
+
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
@@ -57,10 +60,10 @@ public class User {
     private List<Wallet> wallets;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderValas> orders;
+    private List<FinancialTrx> financialTrxs;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TransactionValas> transactions;
+    private List<WithdrawalTrx> withdrawalTrxs;
 
 //    @ManyToMany(
 //            fetch = FetchType.EAGER,

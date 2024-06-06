@@ -67,6 +67,7 @@ public class UserService implements UserInterface {
         newUser.setPin(passwordEncoder.encode(request.getPin()));
         newUser.setFirstName(request.getFirstName());
         newUser.setLastName(request.getLastName());
+        newUser.setIsCooldown(false);
         newUser.setRole(role);
         newUser.setCreatedAt(new Date());
 

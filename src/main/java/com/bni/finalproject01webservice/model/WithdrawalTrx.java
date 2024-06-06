@@ -11,8 +11,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "order_valas")
-public class OrderValas {
+@Table(name = "withdrawal_trx")
+public class WithdrawalTrx {
 
     @Id
     @GeneratedValue
@@ -21,14 +21,17 @@ public class OrderValas {
     @Column(nullable = false)
     private BigDecimal amount;
 
+    @Column(nullable = false)
+    private String detail;
+
+    @Column(nullable = false)
+    private String status;
+
     @Column(name = "reservation_number", unique = true, nullable = false)
     private String reservationNumber;
 
     @Column(name = "reservation_date", nullable = false)
     private Date reservationDate;
-
-    @Column(nullable = false)
-    private String status;
 
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
@@ -49,4 +52,17 @@ public class OrderValas {
     @ManyToOne
     @JoinColumn(name = "branch_id", nullable = false)
     private Branch branch;
+
+    @ManyToOne
+    @JoinColumn(name = "trx_type_id", nullable = false)
+    private TrxType trxType;
+
+    @ManyToOne
+    @JoinColumn(name = "operation_type_id", nullable = false)
+    private OperationType operationType;
+
+    /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////
+
+    @OneToOne(mappedBy = "withdrawalTrx", cascade = CascadeType.ALL, orphanRemoval = true)
+    private TrxHistory trxHistory;
 }

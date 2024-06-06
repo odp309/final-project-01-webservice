@@ -45,7 +45,7 @@ public class Branch {
     private List<Employee> employees;
 
     @OneToMany(mappedBy = "branch")
-    private List<OrderValas> orders;
+    private List<WithdrawalTrx> withdrawalTrxs;
 
     @OneToMany(mappedBy = "branch")
     private List<BranchReserve> reserves;

@@ -11,8 +11,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "transaction_valas")
-public class TransactionValas {
+@Table(name = "financial_trx")
+public class FinancialTrx {
 
     @Id
     @GeneratedValue
@@ -20,12 +20,6 @@ public class TransactionValas {
 
     @Column(nullable = false)
     private BigDecimal amount;
-
-    @Column(nullable = false)
-    private String type;
-
-    @Column(nullable = false)
-    private String operation;
 
     @Column(nullable = false)
     private String detail;
@@ -45,4 +39,17 @@ public class TransactionValas {
     @ManyToOne
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
+
+    @ManyToOne
+    @JoinColumn(name = "trx_type_id", nullable = false)
+    private TrxType trxType;
+
+    @ManyToOne
+    @JoinColumn(name = "operation_type_id", nullable = false)
+    private OperationType operationType;
+
+    /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////
+
+    @OneToOne(mappedBy = "financialTrx", cascade = CascadeType.ALL, orphanRemoval = true)
+    private TrxHistory trxHistory;
 }

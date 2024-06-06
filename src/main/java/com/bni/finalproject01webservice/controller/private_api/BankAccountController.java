@@ -5,6 +5,7 @@ import com.bni.finalproject01webservice.dto.bank_account.request.GetAllBankAccou
 import com.bni.finalproject01webservice.dto.bank_account.request.GetBankAccountRequestDTO;
 import com.bni.finalproject01webservice.dto.bank_account.request.GetBankAccountWalletRequestDTO;
 import com.bni.finalproject01webservice.dto.bank_account.response.BankAccountResponseDTO;
+import com.bni.finalproject01webservice.dto.bank_account.response.BankAccountWithWalletResponseDTO;
 import com.bni.finalproject01webservice.dto.bank_account.response.GetBankAccountWalletResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BankAccountInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -34,7 +35,7 @@ public class BankAccountController {
     }
 
     @PostMapping("/get-all")
-    public List<BankAccountResponseDTO> getAllBankAccountOfUser(@RequestBody GetAllBankAccountRequestDTO request) {
+    public List<BankAccountWithWalletResponseDTO> getAllBankAccountOfUser(@RequestBody GetAllBankAccountRequestDTO request) {
         return bankAccountInterface.getAllBankAccountOfUser(request);
     }
 
