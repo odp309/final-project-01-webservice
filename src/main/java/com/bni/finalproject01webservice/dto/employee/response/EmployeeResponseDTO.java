@@ -13,7 +13,7 @@ public class EmployeeResponseDTO {
 
     private UUID id;
     private UUID branchId;
-    private Long roleId;
+    private String roleName;
     private String email;
     private String firstName;
     private String lastName;

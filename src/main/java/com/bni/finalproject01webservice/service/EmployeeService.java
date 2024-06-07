@@ -211,7 +211,7 @@ public class EmployeeService implements EmployeeInterface {
                     EmployeeResponseDTO response = new EmployeeResponseDTO();
                     response.setId(employee.getId());
                     response.setBranchId(employee.getBranch().getId());
-                    response.setRoleId(employee.getRole().getId());
+                    response.setRoleName(employee.getRole().getName());
                     response.setEmail(employee.getEmail());
                     response.setFirstName(employee.getFirstName());
                     response.setLastName(employee.getLastName());
