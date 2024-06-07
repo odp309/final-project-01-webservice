@@ -145,6 +145,7 @@ public class EmployeeService implements EmployeeInterface {
         }
 
         Role role = roleRepository.findByName("ADMIN");
+        Branch branch = branchRepository.findByName(request.getBranchName());
 
         Employee newEmployee = new Employee();
         newEmployee.setEmail(request.getEmail());
@@ -155,6 +156,7 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setNip(request.getNip());
         newEmployee.setRole(role);
         newEmployee.setCreatedAt(new Date());
+        newEmployee.setBranch(branch);
 
         employeeRepository.save(newEmployee);
 
@@ -174,6 +176,7 @@ public class EmployeeService implements EmployeeInterface {
         }
 
         Role role = roleRepository.findByName("TELLER");
+        Branch branch = branchRepository.findByName(request.getBranchName());
 
         Employee newEmployee = new Employee();
         newEmployee.setEmail(request.getEmail());
@@ -184,6 +187,7 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setNip(request.getNip());
         newEmployee.setRole(role);
         newEmployee.setCreatedAt(new Date());
+        newEmployee.setBranch(branch);
 
         employeeRepository.save(newEmployee);
 
