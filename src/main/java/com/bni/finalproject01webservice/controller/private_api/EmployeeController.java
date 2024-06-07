@@ -1,8 +1,10 @@
 package com.bni.finalproject01webservice.controller.private_api;
 
+import com.bni.finalproject01webservice.dto.employee.request.ActivateEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.GetAllEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.RegisterEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
+import com.bni.finalproject01webservice.dto.employee.response.ActivateEmployeeResponseDTO;
 import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDTO;
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -41,6 +43,12 @@ public class EmployeeController {
     @PreAuthorize("hasRole('ADMIN_MGR')")
     public List<EmployeeResponseDTO> getAllEmployee(@RequestBody GetAllEmployeeRequestDTO request) {
         return employeeService.getAllEmployee(request);
+    }
+
+    @PostMapping("/for-admin-mgr/activate-employee")
+    @PreAuthorize("hasRole('ADMIN_MGR')")
+    public ActivateEmployeeResponseDTO activateEmployee(@RequestBody ActivateEmployeeRequestDTO request) {
+        return employeeService.activateEmployee(request);
     }
 
     @GetMapping({"/for-admin-mgr"})
