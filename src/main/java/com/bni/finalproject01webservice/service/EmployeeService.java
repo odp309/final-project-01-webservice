@@ -2,8 +2,10 @@ package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.dto.auth.request.LoginRequestDTO;
+import com.bni.finalproject01webservice.dto.employee.request.ActivateEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.GetAllEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.RegisterEmployeeRequestDTO;
+import com.bni.finalproject01webservice.dto.employee.response.ActivateEmployeeResponseDTO;
 import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDTO;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.LoginResponseDTO;
@@ -14,6 +16,7 @@ import com.bni.finalproject01webservice.interfaces.RefreshTokenInterface;
 import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.Employee;
 import com.bni.finalproject01webservice.model.Role;
+import com.bni.finalproject01webservice.model.User;
 import com.bni.finalproject01webservice.repository.BranchRepository;
 import com.bni.finalproject01webservice.repository.EmployeeRepository;
 import com.bni.finalproject01webservice.repository.RoleRepository;
@@ -27,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -218,5 +222,29 @@ public class EmployeeService implements EmployeeInterface {
                     return response;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ActivateEmployeeResponseDTO activateEmployee(ActivateEmployeeRequestDTO request) {
+
+        ActivateEmployeeResponseDTO response = new ActivateEmployeeResponseDTO();
+
+        Employee employee = employeeRepository.findById(request.getId()).
+                orElseThrow(() -> new UserException("Employee Not Found"));
+
+        if (employee.getIsActive() == false) {
+            employee.setIsActive(true);
+            employeeRepository.save(employee);
+            response.setMessage("Employee has been activated!");
+        }
+        else
+        {
+            employee.setIsActive(false);
+            employeeRepository.save(employee);
+            response.setMessage("Employee has been deactivated!");
+        }
+
+
+        return response;
     }
 }
