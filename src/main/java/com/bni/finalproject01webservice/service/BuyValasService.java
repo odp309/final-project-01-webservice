@@ -47,8 +47,8 @@ public class BuyValasService implements BuyValasInterface {
         DetailBuyValasResponseDTO response = new DetailBuyValasResponseDTO();
         response.setCurrencyCode(exchangeRate.getCurrency().getCode());
         response.setCurrencyName(exchangeRate.getCurrency().getName());
-        response.setTotalAmountToBuy(request.getAmountToBuy().multiply(exchangeRate.getBuyRate()));
         response.setBuyRate(exchangeRate.getBuyRate());
+        response.setTotalAmountToBuy(request.getAmountToBuy().multiply(exchangeRate.getBuyRate()));
 
         return response;
     }
@@ -56,6 +56,7 @@ public class BuyValasService implements BuyValasInterface {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BuyValasResponseDTO buyValas(BuyValasRequestDTO request) {
+
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         BankAccount bankAccount = bankAccountRepository.findByAccountNumber(wallet.getBankAccount().getAccountNumber());
         User user = userRepository.findById(bankAccount.getUser().getId()).orElseThrow(() -> new UserException("User not found!"));
@@ -105,7 +106,7 @@ public class BuyValasService implements BuyValasInterface {
 
         BuyValasResponseDTO response = new BuyValasResponseDTO();
         response.setAmountToBuy(request.getAmountToBuy());
-        response.setAmountToPay(request.getAmountToBuy().multiply(exchangeRate.getBuyRate()));
+        response.setAmountToPay(paidPrice);
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
