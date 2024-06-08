@@ -56,7 +56,10 @@ public class CurrencyService implements CurrencyInterface {
             USD.setName("United States dollar");
             USD.setMinimumDeposit(BigDecimal.valueOf(10));
             USD.setMinimumBuy(BigDecimal.ONE);
-            USD.setIcon("../../../assets/icons/flags/United_States.png");
+            USD.setMinimumSell(BigDecimal.ONE);
+            USD.setMinimumWithdrawal(BigDecimal.valueOf(100));
+            USD.setFlagIcon("https://i.imgur.com/KR2l4rP.png");
+            USD.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             USD.setCreatedAt(new Date());
             currencyRepository.save(USD);
         }
@@ -66,7 +69,10 @@ public class CurrencyService implements CurrencyInterface {
             SGD.setName("Singapore dollar");
             SGD.setMinimumDeposit(BigDecimal.valueOf(10));
             SGD.setMinimumBuy(BigDecimal.ONE);
-            SGD.setIcon("../../../assets/icons/flags/Singapore.png");
+            SGD.setMinimumSell(BigDecimal.ONE);
+            SGD.setMinimumWithdrawal(BigDecimal.valueOf(100));
+            SGD.setFlagIcon("https://i.imgur.com/c8QU4XJ.png");
+            SGD.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             SGD.setCreatedAt(new Date());
             currencyRepository.save(SGD);
         }
@@ -76,7 +82,10 @@ public class CurrencyService implements CurrencyInterface {
             JPY.setName("Japanese yen");
             JPY.setMinimumDeposit(BigDecimal.valueOf(1000));
             JPY.setMinimumBuy(BigDecimal.ONE);
-            JPY.setIcon("../../../assets/icons/flags/Japan.png");
+            JPY.setMinimumSell(BigDecimal.ONE);
+            JPY.setMinimumWithdrawal(BigDecimal.valueOf(10000));
+            JPY.setFlagIcon("https://i.imgur.com/cEeytUt.png");
+            JPY.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             JPY.setCreatedAt(new Date());
             currencyRepository.save(JPY);
         }
@@ -86,7 +95,10 @@ public class CurrencyService implements CurrencyInterface {
             EUR.setName("Euro");
             EUR.setMinimumDeposit(BigDecimal.valueOf(10));
             EUR.setMinimumBuy(BigDecimal.ONE);
-            EUR.setIcon("../../../assets/icons/flags/European_Union.png");
+            EUR.setMinimumSell(BigDecimal.ONE);
+            EUR.setMinimumWithdrawal(BigDecimal.valueOf(100));
+            EUR.setFlagIcon("https://i.imgur.com/lBFrzJl.png");
+            EUR.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             EUR.setCreatedAt(new Date());
             currencyRepository.save(EUR);
         }
@@ -96,7 +108,10 @@ public class CurrencyService implements CurrencyInterface {
             GBP.setName("Pound sterling");
             GBP.setMinimumDeposit(BigDecimal.valueOf(10));
             GBP.setMinimumBuy(BigDecimal.ONE);
-            GBP.setIcon("../../../assets/icons/flags/UK.png");
+            GBP.setMinimumSell(BigDecimal.ONE);
+            GBP.setMinimumWithdrawal(BigDecimal.valueOf(50));
+            GBP.setFlagIcon("https://i.imgur.com/9YF70SA.png");
+            GBP.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             GBP.setCreatedAt(new Date());
             currencyRepository.save(GBP);
         }
@@ -106,7 +121,10 @@ public class CurrencyService implements CurrencyInterface {
             AUD.setName("Australian dollar");
             AUD.setMinimumDeposit(BigDecimal.valueOf(10));
             AUD.setMinimumBuy(BigDecimal.ONE);
-            AUD.setIcon("../../../assets/icons/flags/Australia.png");
+            AUD.setMinimumSell(BigDecimal.ONE);
+            AUD.setMinimumWithdrawal(BigDecimal.valueOf(100));
+            AUD.setFlagIcon("https://i.imgur.com/ouYv3jA.png");
+            AUD.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             AUD.setCreatedAt(new Date());
             currencyRepository.save(AUD);
         }
@@ -116,7 +134,10 @@ public class CurrencyService implements CurrencyInterface {
             MYR.setName("Malaysian ringgit");
             MYR.setMinimumDeposit(BigDecimal.valueOf(10));
             MYR.setMinimumBuy(BigDecimal.ONE);
-            MYR.setIcon("../../../assets/icons/flags/Malaysia.png");
+            MYR.setMinimumSell(BigDecimal.ONE);
+            MYR.setMinimumWithdrawal(BigDecimal.valueOf(100));
+            MYR.setFlagIcon("https://i.imgur.com/Ccfnua7.png");
+            MYR.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             MYR.setCreatedAt(new Date());
             currencyRepository.save(MYR);
         }
@@ -126,7 +147,10 @@ public class CurrencyService implements CurrencyInterface {
             NZD.setName("New Zealand dollar");
             NZD.setMinimumDeposit(BigDecimal.valueOf(100));
             NZD.setMinimumBuy(BigDecimal.ONE);
-            NZD.setIcon("../../../assets/icons/flags/New_Zealand.png");
+            NZD.setMinimumSell(BigDecimal.ONE);
+            NZD.setMinimumWithdrawal(BigDecimal.valueOf(100));
+            NZD.setFlagIcon("https://i.imgur.com/Rcymbsa.png");
+            NZD.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             NZD.setCreatedAt(new Date());
             currencyRepository.save(NZD);
         }
@@ -136,7 +160,10 @@ public class CurrencyService implements CurrencyInterface {
             THB.setName("Thai baht");
             THB.setMinimumDeposit(BigDecimal.valueOf(100));
             THB.setMinimumBuy(BigDecimal.ONE);
-            THB.setIcon("../../../assets/icons/flags/Thailand.png");
+            THB.setMinimumSell(BigDecimal.ONE);
+            THB.setMinimumWithdrawal(BigDecimal.valueOf(1000));
+            THB.setFlagIcon("https://i.imgur.com/dvcrF0R.png");
+            THB.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             THB.setCreatedAt(new Date());
             currencyRepository.save(THB);
         }
@@ -146,7 +173,10 @@ public class CurrencyService implements CurrencyInterface {
             CNY.setName("Chinese yuan");
             CNY.setMinimumDeposit(BigDecimal.valueOf(100));
             CNY.setMinimumBuy(BigDecimal.ONE);
-            CNY.setIcon("../../../assets/icons/flags/China.png");
+            CNY.setMinimumSell(BigDecimal.ONE);
+            CNY.setMinimumWithdrawal(BigDecimal.valueOf(100));
+            CNY.setFlagIcon("https://i.imgur.com/NuyGX6o.png");
+            CNY.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             CNY.setCreatedAt(new Date());
             currencyRepository.save(CNY);
         }
@@ -156,7 +186,10 @@ public class CurrencyService implements CurrencyInterface {
             CAD.setName("Canadian dollar");
             CAD.setMinimumDeposit(BigDecimal.valueOf(10));
             CAD.setMinimumBuy(BigDecimal.ONE);
-            CAD.setIcon("../../../assets/icons/flags/Canada.png");
+            CAD.setMinimumSell(BigDecimal.ONE);
+            CAD.setMinimumWithdrawal(BigDecimal.valueOf(100));
+            CAD.setFlagIcon("https://i.imgur.com/vMs98rY.png");
+            CAD.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             CAD.setCreatedAt(new Date());
             currencyRepository.save(CAD);
         }
@@ -166,7 +199,10 @@ public class CurrencyService implements CurrencyInterface {
             CHF.setName("Swiss Franc");
             CHF.setMinimumDeposit(BigDecimal.valueOf(10));
             CHF.setMinimumBuy(BigDecimal.ONE);
-            CHF.setIcon("../../../assets/icons/flags/Swiss.png");
+            CHF.setMinimumSell(BigDecimal.ONE);
+            CHF.setMinimumWithdrawal(BigDecimal.valueOf(100));
+            CHF.setFlagIcon("https://i.imgur.com/b1B5OyE.png");
+            CHF.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             CHF.setCreatedAt(new Date());
             currencyRepository.save(CHF);
         }
@@ -176,7 +212,10 @@ public class CurrencyService implements CurrencyInterface {
             HKD.setName("Hong Kong dollar");
             HKD.setMinimumDeposit(BigDecimal.valueOf(100));
             HKD.setMinimumBuy(BigDecimal.ONE);
-            HKD.setIcon("../../../assets/icons/flags/Hong_Kong.png");
+            HKD.setMinimumSell(BigDecimal.ONE);
+            HKD.setMinimumWithdrawal(BigDecimal.valueOf(500));
+            HKD.setFlagIcon("https://i.imgur.com/NhwC9kk.png");
+            HKD.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
             HKD.setCreatedAt(new Date());
             currencyRepository.save(HKD);
         }

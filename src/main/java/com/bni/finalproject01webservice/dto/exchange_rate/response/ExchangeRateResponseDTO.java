@@ -13,6 +13,7 @@ public class ExchangeRateResponseDTO {
 
     private String currencyCode;
     private String currencyName;
+    private String flagIcon;
     private BigDecimal buyRate;
     private BigDecimal sellRate;
 

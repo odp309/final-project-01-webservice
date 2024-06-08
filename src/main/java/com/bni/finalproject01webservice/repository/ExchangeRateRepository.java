@@ -36,6 +36,6 @@ public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, UUID
                         MAX(function('DATE', er.createdAt))
                     from
                         ExchangeRate er)""")
-    List<ExchangeRate> findLatestExchangeRate();
+    List<ExchangeRate> findAllLatestExchangeRate();
 }
 

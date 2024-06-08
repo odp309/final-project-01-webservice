@@ -13,5 +13,6 @@ public class WalletWithCurrencyIconResponseDTO {
     private String currencyCode;
     private String currencyName;
     private BigDecimal balance;
-    private String icon;
+    private String flagIcon;
+    private String landmarkIcon;
 }

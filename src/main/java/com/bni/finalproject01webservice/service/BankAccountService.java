@@ -1,5 +1,6 @@
 package com.bni.finalproject01webservice.service;
 
+import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.configuration.exceptions.WalletException;
 import com.bni.finalproject01webservice.dto.bank_account.request.AddBankAccountRequestDTO;
 import com.bni.finalproject01webservice.dto.bank_account.request.GetAllBankAccountRequestDTO;
@@ -22,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,20 +35,15 @@ public class BankAccountService implements BankAccountInterface {
 
     @Override
     public BankAccountResponseDTO addBankAccount(AddBankAccountRequestDTO request) {
-        Optional<User> user = userRepository.findById(request.getUserId());
+        User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new UserException("User not found!"));
 
-        if (user.isPresent()) {
-            User userObj = user.get();
-            BankAccount newBankAccount = new BankAccount();
-            newBankAccount.setUser(userObj);
-            newBankAccount.setAccountNumber(request.getAccountNumber());
-            newBankAccount.setType(request.getType());
-            newBankAccount.setBalance(request.getBalance());
-            newBankAccount.setCreatedAt(new Date());
-            bankAccountRepository.save(newBankAccount);
-        } else {
-            throw new RuntimeException("User not found");
-        }
+        BankAccount newBankAccount = new BankAccount();
+        newBankAccount.setUser(user);
+        newBankAccount.setAccountNumber(request.getAccountNumber());
+        newBankAccount.setType(request.getType());
+        newBankAccount.setBalance(request.getBalance());
+        newBankAccount.setCreatedAt(new Date());
+        bankAccountRepository.save(newBankAccount);
 
         BankAccountResponseDTO response = new BankAccountResponseDTO();
         response.setAccountNumber(request.getAccountNumber());
@@ -62,10 +57,10 @@ public class BankAccountService implements BankAccountInterface {
     public BankAccountResponseDTO getBankAccount(GetBankAccountRequestDTO request) {
         BankAccount bankAccount = bankAccountRepository.findByAccountNumber(request.getAccountNumber());
 
-
         if (bankAccount == null) {
             throw new RuntimeException("Bank Account not found");
         }
+
         BankAccountResponseDTO response = new BankAccountResponseDTO();
         response.setAccountNumber(bankAccount.getAccountNumber());
         response.setType(bankAccount.getType());
@@ -94,7 +89,8 @@ public class BankAccountService implements BankAccountInterface {
                                 walletResponse.setCurrencyCode(wallet.getCurrency().getCode());
                                 walletResponse.setCurrencyName(wallet.getCurrency().getName());
                                 walletResponse.setBalance(wallet.getBalance());
-                                walletResponse.setIcon(wallet.getCurrency().getIcon());
+                                walletResponse.setFlagIcon(wallet.getCurrency().getFlagIcon());
+                                walletResponse.setLandmarkIcon(wallet.getCurrency().getLandmarkIcon());
                                 return walletResponse;
                             }).collect(Collectors.toList()));
                     return response;

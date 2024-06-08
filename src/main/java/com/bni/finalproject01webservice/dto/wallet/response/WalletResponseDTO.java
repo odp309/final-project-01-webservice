@@ -1,5 +1,6 @@
 package com.bni.finalproject01webservice.dto.wallet.response;
 
+import com.bni.finalproject01webservice.dto.buy_valas.response.BuyValasResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +11,7 @@ import java.util.UUID;
 @Setter
 public class WalletResponseDTO {
 
-    private String accountNumber;
-    private String currencyCode;
     private UUID userId;
-    private BigDecimal balance;
+    private BigDecimal currentBalance;
+    private BuyValasResponseDTO buyValasResponse;
 }

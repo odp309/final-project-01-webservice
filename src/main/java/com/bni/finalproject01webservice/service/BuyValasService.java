@@ -7,15 +7,18 @@ import com.bni.finalproject01webservice.dto.buy_valas.request.BuyValasRequestDTO
 import com.bni.finalproject01webservice.dto.buy_valas.request.DetailBuyValasRequestDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.response.BuyValasResponseDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.response.DetailBuyValasResponseDTO;
+import com.bni.finalproject01webservice.dto.financial_trx.request.FinancialTrxRequestDTO;
+import com.bni.finalproject01webservice.dto.financial_trx.response.FinancialTrxResponseDTO;
+import com.bni.finalproject01webservice.dto.trx_history.request.TrxHistoryRequestDTO;
+import com.bni.finalproject01webservice.dto.trx_history.response.TrxHistoryResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BuyValasInterface;
+import com.bni.finalproject01webservice.interfaces.FinancialTrxInterface;
+import com.bni.finalproject01webservice.interfaces.TrxHistoryInterface;
 import com.bni.finalproject01webservice.model.BankAccount;
 import com.bni.finalproject01webservice.model.ExchangeRate;
 import com.bni.finalproject01webservice.model.User;
 import com.bni.finalproject01webservice.model.Wallet;
-import com.bni.finalproject01webservice.repository.BankAccountRepository;
-import com.bni.finalproject01webservice.repository.ExchangeRateRepository;
-import com.bni.finalproject01webservice.repository.UserRepository;
-import com.bni.finalproject01webservice.repository.WalletRepository;
+import com.bni.finalproject01webservice.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +37,9 @@ public class BuyValasService implements BuyValasInterface {
     private final PasswordEncoder passwordEncoder;
     private final WalletRepository walletRepository;
 
+    private final FinancialTrxInterface financialTrxService;
+    private final TrxHistoryInterface trxHistoryService;
+
     @Override
     public DetailBuyValasResponseDTO detailBuyValas(DetailBuyValasRequestDTO request) {
         ExchangeRate exchangeRate = exchangeRateRepository.findExchangeRate(request.currencyCode);
@@ -50,15 +56,13 @@ public class BuyValasService implements BuyValasInterface {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BuyValasResponseDTO buyValas(BuyValasRequestDTO request) {
-        BuyValasResponseDTO response = new BuyValasResponseDTO();
-
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         BankAccount bankAccount = bankAccountRepository.findByAccountNumber(wallet.getBankAccount().getAccountNumber());
         User user = userRepository.findById(bankAccount.getUser().getId()).orElseThrow(() -> new UserException("User not found!"));
         ExchangeRate exchangeRate = exchangeRateRepository.findExchangeRate(wallet.getCurrency().getCode());
 
-        if (wallet.getCurrency().getMinimumDeposit().compareTo(BigDecimal.ONE) < 0) {
-            throw new TransactionException("Amount is less than the minimum deposit!");
+        if (request.getAmountToBuy().compareTo(wallet.getCurrency().getMinimumBuy()) < 0) {
+            throw new TransactionException("Amount is less than the minimum buy!");
         }
 
         boolean checkPin = passwordEncoder.matches(request.getPin(), user.getPin());
@@ -74,21 +78,38 @@ public class BuyValasService implements BuyValasInterface {
             throw new TransactionException("Balance insufficient!");
         }
 
+        // wallet update balance (+)
         wallet.setBalance(wallet.getBalance().add(request.getAmountToBuy()));
         wallet.setUpdatedAt(new Date());
         walletRepository.save(wallet);
 
+        // bank account update balance (-)
         bankAccount.setBalance(currBalance.subtract(paidPrice));
         bankAccount.setUpdatedAt(new Date());
         bankAccountRepository.save(bankAccount);
 
-        
+        // create financial trx
+        FinancialTrxRequestDTO financialTrxRequest = new FinancialTrxRequestDTO();
+        financialTrxRequest.setUser(user);
+        financialTrxRequest.setWallet(wallet);
+        financialTrxRequest.setTrxTypeName("Beli");
+        financialTrxRequest.setOperationTypeName("D");
+        financialTrxRequest.setRate(exchangeRate.getBuyRate());
+        financialTrxRequest.setAmount(request.getAmountToBuy());
+        FinancialTrxResponseDTO financialTrxResponse = financialTrxService.addFinancialTrx(financialTrxRequest);
 
+        // create history trx
+        TrxHistoryRequestDTO trxHistoryRequest = new TrxHistoryRequestDTO();
+        trxHistoryRequest.setFinancialTrxId(financialTrxResponse.getFinancialTrxId());
+        TrxHistoryResponseDTO trxHistoryResponse = trxHistoryService.addTrxHistory(trxHistoryRequest);
+
+        BuyValasResponseDTO response = new BuyValasResponseDTO();
         response.setAmountToBuy(request.getAmountToBuy());
         response.setAmountToPay(request.getAmountToBuy().multiply(exchangeRate.getBuyRate()));
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
+        response.setTrxHistory(trxHistoryResponse);
 
         return response;
     }

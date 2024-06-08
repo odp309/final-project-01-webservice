@@ -84,13 +84,14 @@ public class ExchangeRateService implements ExchangeRateInterface {
 
     @Override
     public List<ExchangeRateResponseDTO> getAllExchangeRate() {
-        List<ExchangeRate> exchangeRates = exchangeRateRepository.findLatestExchangeRate();
+        List<ExchangeRate> exchangeRates = exchangeRateRepository.findAllLatestExchangeRate();
 
         return exchangeRates.stream()
                 .map(exchangeRate -> {
                     ExchangeRateResponseDTO response = new ExchangeRateResponseDTO();
                     response.setCurrencyCode(exchangeRate.getCurrency().getCode());
                     response.setCurrencyName(exchangeRate.getCurrency().getName());
+                    response.setFlagIcon(exchangeRate.getCurrency().getFlagIcon());
                     response.setBuyRate(exchangeRate.getBuyRate());
                     response.setSellRate(exchangeRate.getSellRate());
                     response.setCreatedAt(exchangeRate.getCreatedAt());

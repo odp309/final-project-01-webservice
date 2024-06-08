@@ -27,8 +27,17 @@ public class Currency {
     @Column(name = "minimum_buy", nullable = false)
     private BigDecimal minimumBuy;
 
+    @Column(name = "minimum_sell", nullable = false)
+    private BigDecimal minimumSell;
+
+    @Column(name = "minimum_withdrawal", nullable = false)
+    private BigDecimal minimumWithdrawal;
+
     @Column(nullable = false)
-    private String icon;
+    private String flagIcon;
+
+    @Column(nullable = false)
+    private String landmarkIcon;
 
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
