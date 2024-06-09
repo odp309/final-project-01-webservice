@@ -61,6 +61,10 @@ public class CustomExceptionHandler {
             status = HttpStatus.NOT_FOUND;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "Wallet not found");
+        } else if (ex instanceof TransactionException && ex.getMessage().equals("Transfers to the same account are not allowed!")) {
+            status = HttpStatus.UNPROCESSABLE_ENTITY;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Self-transfers are not permitted");
         } else if (ex instanceof TransactionException && ex.getMessage().equals("Balance insufficient!")) {
             status = HttpStatus.UNPROCESSABLE_ENTITY;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
@@ -73,6 +77,10 @@ public class CustomExceptionHandler {
             status = HttpStatus.UNPROCESSABLE_ENTITY;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "Buy amount is less than the minimum buy");
+        } else if (ex instanceof TransactionException && ex.getMessage().equals("Amount is less than the minimum transfer!")) {
+            status = HttpStatus.UNPROCESSABLE_ENTITY;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Transfer amount is less than the minimum transfer");
         } else if (ex instanceof TransactionException && ex.getMessage().equals("Amount is less than the minimum deposit!")) {
             status = HttpStatus.UNPROCESSABLE_ENTITY;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());

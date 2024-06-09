@@ -20,16 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class SellValasController {
 
     @Autowired
-    private SellValasService SellValasService;
+    private SellValasService sellValasService;
 
     @PostMapping("/detail")
     public DetailSellValasResponseDTO detailSellValas(@RequestBody DetailSellValasRequestDTO request) {
-        return SellValasService.detailSellValas(request);
+        return sellValasService.detailSellValas(request);
     }
 
     @PostMapping("/sell")
     public SellValasResponseDTO sellValas(@RequestBody SellValasRequestDTO request) {
-        return SellValasService.sellValas(request);
+        return sellValasService.sellValas(request);
     }
-
 }

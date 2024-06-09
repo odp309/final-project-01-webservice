@@ -30,6 +30,9 @@ public class Currency {
     @Column(name = "minimum_sell", nullable = false)
     private BigDecimal minimumSell;
 
+    @Column(name = "minimum_transfer", nullable = false)
+    private BigDecimal minimumTransfer;
+
     @Column(name = "minimum_withdrawal", nullable = false)
     private BigDecimal minimumWithdrawal;
 

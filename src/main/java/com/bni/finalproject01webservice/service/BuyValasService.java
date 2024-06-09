@@ -123,6 +123,7 @@ public class BuyValasService implements BuyValasInterface {
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
+        response.setCreatedAt(new Date());
         response.setTrxHistory(trxHistoryResponse);
 
         return response;

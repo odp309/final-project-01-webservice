@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.dto.sell_valas.response;
+package com.bni.finalproject01webservice.dto.transfer_valas.response;
 
 import com.bni.finalproject01webservice.dto.trx_history.response.TrxHistoryResponseDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -10,16 +10,16 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class SellValasResponseDTO {
+public class TransferValasResponseDTO {
 
-    private BigDecimal amountToReceive;
-    private BigDecimal amountToSell;
+    private BigDecimal amountToTransfer;
     private String currencyCode;
-    private String currencyName;
-    private String accountNumber;
+    private String recipientFirstName;
+    private String recipientLastName;
+    private String recipientAccountNumber;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd MMMM yyyy HH:mm", timezone = "Asia/Jakarta")
     private Date createdAt;
 
-    private TrxHistoryResponseDTO trxHistory;
+    private TrxHistoryResponseDTO senderTrxHistory;
 }

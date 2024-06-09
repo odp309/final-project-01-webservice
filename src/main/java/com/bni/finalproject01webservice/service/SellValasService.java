@@ -25,6 +25,7 @@ import com.bni.finalproject01webservice.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -68,6 +69,7 @@ public class SellValasService implements SellValasInterface {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public SellValasResponseDTO sellValas(SellValasRequestDTO request) {
 
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
@@ -123,6 +125,7 @@ public class SellValasService implements SellValasInterface {
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
+        response.setCreatedAt(new Date());
         response.setTrxHistory(trxHistoryResponse);
 
         return response;

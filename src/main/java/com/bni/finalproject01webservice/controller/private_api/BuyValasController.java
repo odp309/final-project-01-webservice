@@ -18,15 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirement(name = "access-token")
 @Tag(name = "Private API", description = "Private API secured with JWT token")
 public class BuyValasController {
+
     @Autowired
-    private BuyValasService BuyValasService;
+    private BuyValasService buyValasService;
+
     @PostMapping("/detail")
     public DetailBuyValasResponseDTO detailBuyValas(@RequestBody DetailBuyValasRequestDTO request) {
-        return BuyValasService.detailBuyValas(request);
+        return buyValasService.detailBuyValas(request);
     }
 
     @PostMapping("/buy")
     public BuyValasResponseDTO buyValas(@RequestBody BuyValasRequestDTO request) {
-        return BuyValasService.buyValas(request);
+        return buyValasService.buyValas(request);
     }
 }
