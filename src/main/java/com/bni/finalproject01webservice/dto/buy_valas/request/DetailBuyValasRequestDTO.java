@@ -4,11 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class DetailBuyValasRequestDTO {
 
-    public BigDecimal amountToBuy;
-    public String currencyCode;
+    private UUID walletId;
+    private BigDecimal amountToBuy;
 }

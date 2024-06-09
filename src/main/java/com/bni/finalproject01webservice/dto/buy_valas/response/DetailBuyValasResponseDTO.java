@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 @Setter
 public class DetailBuyValasResponseDTO {
 
-    public String currencyCode;
-    public String currencyName;
-    public BigDecimal buyRate;
-    public BigDecimal totalAmountToBuy;
+    private String currencyCode;
+    private String currencyName;
+    private BigDecimal buyRate;
+    private BigDecimal totalAmountToBuy;
 }

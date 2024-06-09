@@ -42,7 +42,20 @@ public class BuyValasService implements BuyValasInterface {
 
     @Override
     public DetailBuyValasResponseDTO detailBuyValas(DetailBuyValasRequestDTO request) {
-        ExchangeRate exchangeRate = exchangeRateRepository.findExchangeRate(request.currencyCode);
+        Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
+
+        if (request.getAmountToBuy().compareTo(wallet.getCurrency().getMinimumBuy()) < 0) {
+            throw new TransactionException("Amount is less than the minimum buy!");
+        }
+
+        BankAccount bankAccount = bankAccountRepository.findByAccountNumber(wallet.getBankAccount().getAccountNumber());
+        ExchangeRate exchangeRate = exchangeRateRepository.findExchangeRate(wallet.getCurrency().getCode());
+
+        BigDecimal paidPrice = request.getAmountToBuy().multiply(exchangeRate.getBuyRate());
+
+        if (paidPrice.compareTo(bankAccount.getBalance()) > 0) {
+            throw new TransactionException("Balance insufficient!");
+        }
 
         DetailBuyValasResponseDTO response = new DetailBuyValasResponseDTO();
         response.setCurrencyCode(exchangeRate.getCurrency().getCode());

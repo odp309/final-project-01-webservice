@@ -46,7 +46,17 @@ public class SellValasService implements SellValasInterface {
     @Override
     public DetailSellValasResponseDTO detailSellValas(DetailSellValasRequestDTO request) {
 
-        ExchangeRate exchangeRate = exchangeRateRepository.findExchangeRate(request.currencyCode);
+        Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
+
+        if (request.getAmountToSell().compareTo(wallet.getCurrency().getMinimumSell()) < 0) {
+            throw new TransactionException("Amount is less than the minimum sell!");
+        }
+
+        ExchangeRate exchangeRate = exchangeRateRepository.findExchangeRate(wallet.getCurrency().getCode());
+
+        if (request.getAmountToSell().compareTo(wallet.getBalance()) > 0) {
+            throw new TransactionException("Wallet balance insufficient!");
+        }
 
         DetailSellValasResponseDTO response = new DetailSellValasResponseDTO();
         response.setCurrencyCode(exchangeRate.getCurrency().getCode());

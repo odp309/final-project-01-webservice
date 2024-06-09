@@ -10,10 +10,10 @@ import java.math.BigDecimal;
 @Setter
 public class SellValasResponseDTO {
 
-    public BigDecimal amountToReceive;
-    public BigDecimal amountToSell;
-    public String currencyCode;
-    public String currencyName;
-    public String accountNumber;
-    public TrxHistoryResponseDTO trxHistory;
+    private BigDecimal amountToReceive;
+    private BigDecimal amountToSell;
+    private String currencyCode;
+    private String currencyName;
+    private String accountNumber;
+    private TrxHistoryResponseDTO trxHistory;
 }
