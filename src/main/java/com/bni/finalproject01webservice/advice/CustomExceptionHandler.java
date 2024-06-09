@@ -65,6 +65,10 @@ public class CustomExceptionHandler {
             status = HttpStatus.UNPROCESSABLE_ENTITY;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "Insufficient funds");
+        } else if (ex instanceof TransactionException && ex.getMessage().equals("Wallet balance insufficient!")) {
+            status = HttpStatus.UNPROCESSABLE_ENTITY;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Insufficient wallet funds");
         } else if (ex instanceof TransactionException && ex.getMessage().equals("Amount is less than the minimum buy!")) {
             status = HttpStatus.UNPROCESSABLE_ENTITY;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());

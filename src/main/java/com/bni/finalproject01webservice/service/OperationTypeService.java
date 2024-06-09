@@ -18,7 +18,7 @@ public class OperationTypeService implements OperationTypeInterface {
     @Override
     public InitResponseDTO initOperationType() {
         OperationType currDebit = operationTypeRepository.findByName("D");
-        OperationType currCredit = operationTypeRepository.findByName("C");
+        OperationType currCredit = operationTypeRepository.findByName("K");
 
         OperationType debit = new OperationType();
         OperationType credit = new OperationType();
@@ -31,7 +31,7 @@ public class OperationTypeService implements OperationTypeInterface {
         }
 
         if (currCredit == null) {
-            credit.setName("C");
+            credit.setName("K");
             credit.setDescription("Penambahan saldo nasabah");
             credit.setCreatedAt(new Date());
             operationTypeRepository.save(credit);
