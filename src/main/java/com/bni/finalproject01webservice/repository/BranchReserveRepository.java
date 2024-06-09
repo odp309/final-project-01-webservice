@@ -6,8 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface BranchRepository extends JpaRepository<Branch, UUID> {
+public interface BranchReserveRepository extends JpaRepository<BranchReserve, UUID> {
 
-    Branch findByName(String name);
-
+    BranchReserve findByBranchNameAndCurrencyCode(String name, String code);
 }
