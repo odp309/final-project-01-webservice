@@ -39,6 +39,12 @@ public class Branch {
     @Column(nullable = false)
     private String province;
 
+    @Column(nullable = false)
+    private double latitude;
+
+    @Column(nullable = false)
+    private double longitude;
+
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
