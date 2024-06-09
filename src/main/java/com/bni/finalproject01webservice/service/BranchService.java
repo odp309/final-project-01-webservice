@@ -1,12 +1,8 @@
 package com.bni.finalproject01webservice.service;
 
-import com.bni.finalproject01webservice.configuration.exceptions.WalletException;
-import com.bni.finalproject01webservice.dto.branch_reserve.request.InitBranchReserveRequestDTO;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BranchInterface;
 import com.bni.finalproject01webservice.model.Branch;
-import com.bni.finalproject01webservice.model.BranchReserve;
-import com.bni.finalproject01webservice.model.Currency;
 import com.bni.finalproject01webservice.repository.BranchRepository;
 import com.bni.finalproject01webservice.repository.BranchReserveRepository;
 import com.bni.finalproject01webservice.repository.CurrencyRepository;

@@ -1,6 +1,5 @@
 package com.bni.finalproject01webservice.repository;
 
-import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.BranchReserve;
 import org.springframework.data.jpa.repository.JpaRepository;
 

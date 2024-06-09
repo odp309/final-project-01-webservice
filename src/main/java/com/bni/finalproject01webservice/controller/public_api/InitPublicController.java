@@ -50,6 +50,4 @@ public class InitPublicController {
         InitResponseDTO result = branchService.initBranch();
         return ResponseEntity.ok(result);
     }
-
-
 }
