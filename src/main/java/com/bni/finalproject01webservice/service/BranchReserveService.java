@@ -1,6 +1,8 @@
 package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.dto.branch_reserve.request.AddBranchReserveRequestDTO;
+import com.bni.finalproject01webservice.dto.branch_reserve.request.AddStockRequestDTO;
+import com.bni.finalproject01webservice.dto.branch_reserve.response.AddStockResponseDTO;
 import com.bni.finalproject01webservice.dto.branch_reserve.response.BranchReserveResponseDTO;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BranchReserveInterface;
@@ -51,5 +53,33 @@ public class BranchReserveService implements BranchReserveInterface {
         response.setTempBalance(reserve.getTempBalance());
 
         return response;
+    }
+
+    @Override
+    public AddStockResponseDTO addStockBranchReserve(AddStockRequestDTO request) {
+
+        AddStockResponseDTO response = new AddStockResponseDTO();
+
+        BranchReserve currentBranchReserve = branchReserveRepository.findByBranchNameAndCurrencyCode(request.getBranchName(), request.getCurrencyCode());
+
+        if (currentBranchReserve == null) {
+            throw new RuntimeException("Branch Reserve not found!");
+        }
+//
+//        Branch branch = branchRepository.findByName(request.getBranchName());
+//        Currency currency = currencyRepository.findByCode(request.getCurrencyCode());
+
+        BigDecimal updatedBalance = currentBranchReserve.getBalance().add(request.getBalance());
+        currentBranchReserve.setBalance(updatedBalance);
+
+        BigDecimal updatedBalanceTemp = currentBranchReserve.getTempBalance().add(request.getBalance());
+        currentBranchReserve.setTempBalance(updatedBalanceTemp);
+
+        branchReserveRepository.save(currentBranchReserve);
+
+        response.setMessage("Success");
+
+        return response;
+
     }
 }
