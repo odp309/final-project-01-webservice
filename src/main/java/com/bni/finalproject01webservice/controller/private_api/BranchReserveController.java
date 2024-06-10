@@ -36,7 +36,7 @@ public class BranchReserveController {
     }
 
     @PostMapping("/get")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public List<GetBranchReserveResponseDTO> getBranchReserve(@RequestBody GetBranchReserveRequestDTO request) {
         return branchReserveService.getBranchReserveList(request);
     }

@@ -7,6 +7,8 @@ import com.bni.finalproject01webservice.dto.branch_reserve.response.AddStockResp
 import com.bni.finalproject01webservice.dto.branch_reserve.response.BranchReserveResponseDTO;
 import com.bni.finalproject01webservice.dto.branch_reserve.response.GetBranchReserveResponseDTO;
 import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDTO;
+import com.bni.finalproject01webservice.dto.reservation_list.request.ReservationListRequestDTO;
+import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BranchReserveInterface;
 import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.BranchReserve;
@@ -38,6 +40,8 @@ public class BranchReserveService implements BranchReserveInterface {
         if (currentBranchReserve != null) {
             throw new RuntimeException("Branch Reserve already exist!");
         }
+
+
 
         Branch branch = branchRepository.findByName(request.getBranchName());
         Currency currency = currencyRepository.findByCode(request.getCurrencyCode());
@@ -101,4 +105,6 @@ public class BranchReserveService implements BranchReserveInterface {
                 })
                 .collect(Collectors.toList());
     }
+
+
 }
