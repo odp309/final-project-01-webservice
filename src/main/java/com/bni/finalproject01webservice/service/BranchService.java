@@ -36,7 +36,7 @@ public class BranchService implements BranchInterface {
             gambir.setProvince("DKI JAKARTA");
             gambir.setAddress("JL. KEBON SIRIH NO. 51-53, JAK-PUS");
             gambir.setPhone("081344829471");
-            gambir.setType("KANTOR CABANG UTAMA");
+            gambir.setType("KANTOR CABANG UTAMA/KCU");
             gambir.setLatitude(-6.182840832410299);
             gambir.setLongitude(106.82785241195475);
             gambir.setCreatedAt(new Date());
@@ -50,7 +50,7 @@ public class BranchService implements BranchInterface {
             grahaPangeranSurabaya.setProvince("JAWA TIMUR");
             grahaPangeranSurabaya.setAddress("JL.ACHMAD YANI NO.286, SURABAYA, GEDUNG GRAHA PANGERAN LT.1-2");
             grahaPangeranSurabaya.setPhone("081329577231");
-            grahaPangeranSurabaya.setType("KANTOR CABANG UTAMA");
+            grahaPangeranSurabaya.setType("KANTOR CABANG UTAMA/KCU");
             grahaPangeranSurabaya.setLatitude(-7.344216376359213);
             grahaPangeranSurabaya.setLongitude(112.7285092273135);
             grahaPangeranSurabaya.setCreatedAt(new Date());
@@ -64,7 +64,7 @@ public class BranchService implements BranchInterface {
             malang.setProvince("JAWA TIMUR");
             malang.setAddress("JL. JEND. BASUKI RAHMAT NO.75-77, MALANG");
             malang.setPhone("081354539000");
-            malang.setType("KANTOR CABANG UTAMA");
+            malang.setType("KANTOR CABANG UTAMA/KCU");
             malang.setLatitude(-7.975701057723503);
             malang.setLongitude(112.62908908198607);
             malang.setCreatedAt(new Date());
@@ -79,11 +79,12 @@ public class BranchService implements BranchInterface {
 
     @Override
     public List<BranchResponseDTO> getAllBranchOrderByDistance(BranchRequestDTO request) {
-        List<Branch> branches = branchRepository.findAllBranchOrderByDistance(request.getLatitude(), request.getLongitude());
+        List<Branch> branches = branchRepository.findAllBranchOrderByDistance(request.getLatitude(), request.getLongitude(), request.getAmountToWithdraw(), request.getCurrencyCode());
 
         return branches.stream()
                 .map(branch -> {
                     BranchResponseDTO response = new BranchResponseDTO();
+                    response.setId(branch.getId());
                     response.setName(branch.getName());
                     response.setType(branch.getType());
                     response.setPhone(branch.getPhone());

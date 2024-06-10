@@ -60,5 +60,5 @@ public class Branch {
     private List<WithdrawalTrx> withdrawalTrxs;
 
     @OneToMany(mappedBy = "branch")
-    private List<BranchReserve> reserves;
+    private List<BranchReserve> branchReserves;
 }
