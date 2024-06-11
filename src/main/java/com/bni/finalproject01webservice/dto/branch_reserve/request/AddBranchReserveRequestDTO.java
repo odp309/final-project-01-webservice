@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class AddBranchReserveRequestDTO {
 
-    private String branchName;
+    private String branchCode;
     private String currencyCode;
 }

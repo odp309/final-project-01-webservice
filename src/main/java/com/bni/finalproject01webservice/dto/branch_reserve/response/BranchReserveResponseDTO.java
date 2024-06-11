@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 @Setter
 public class BranchReserveResponseDTO {
 
+    private String branchCode;
     private String branchName;
     private String currencyCode;
     private BigDecimal balance;
-    private BigDecimal tempBalance;
 }

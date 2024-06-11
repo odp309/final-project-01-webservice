@@ -8,8 +8,7 @@ import java.util.UUID;
 
 public interface BranchReserveRepository extends JpaRepository<BranchReserve, UUID> {
 
-    BranchReserve findByBranchNameAndCurrencyCode(String name, String code);
+    BranchReserve findByBranchCodeAndCurrencyCode(String branchCode, String currencyCode);
 
-    List<BranchReserve> findByBranchName(String name);
-
+    List<BranchReserve> findByBranchCode(String code);
 }

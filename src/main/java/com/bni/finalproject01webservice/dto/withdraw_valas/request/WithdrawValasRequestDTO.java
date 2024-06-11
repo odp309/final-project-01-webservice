@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.dto.withdrawal_trx.request;
+package com.bni.finalproject01webservice.dto.withdraw_valas.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,10 +9,11 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class DetailWithdrawalTrxRequestDTO {
+public class WithdrawValasRequestDTO {
 
     private UUID walletId;
     private BigDecimal amountToWithdraw;
     private Date reservationDate;
-    private UUID branchId;
+    private String branchCode;
+    private String pin;
 }

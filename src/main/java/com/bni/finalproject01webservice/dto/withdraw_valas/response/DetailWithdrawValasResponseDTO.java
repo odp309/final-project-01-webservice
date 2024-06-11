@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.dto.withdrawal_trx.response;
+package com.bni.finalproject01webservice.dto.withdraw_valas.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class DetailWithdrawalTrxResponseDTO {
+public class DetailWithdrawValasResponseDTO {
 
     private String branchName;
     private String branchTypeFull;

@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class ReservationListRequestDTO {
 
-    private String brachName;
+    private String branchCode;
 }

@@ -48,7 +48,7 @@ public class Employee {
     private Role role;
 
     @ManyToOne
-    @JoinColumn(name = "branch_id")
+    @JoinColumn(name = "branch_code")
     private Branch branch;
 
     /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////

@@ -6,9 +6,6 @@ import com.bni.finalproject01webservice.dto.branch_reserve.request.GetBranchRese
 import com.bni.finalproject01webservice.dto.branch_reserve.response.AddStockResponseDTO;
 import com.bni.finalproject01webservice.dto.branch_reserve.response.BranchReserveResponseDTO;
 import com.bni.finalproject01webservice.dto.branch_reserve.response.GetBranchReserveResponseDTO;
-import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDTO;
-import com.bni.finalproject01webservice.dto.reservation_list.request.ReservationListRequestDTO;
-import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BranchReserveInterface;
 import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.BranchReserve;
@@ -35,15 +32,13 @@ public class BranchReserveService implements BranchReserveInterface {
     @Override
     public BranchReserveResponseDTO addBranchReserve(AddBranchReserveRequestDTO request) {
 
-        BranchReserve currentBranchReserve = branchReserveRepository.findByBranchNameAndCurrencyCode(request.getBranchName(), request.getCurrencyCode());
+        BranchReserve currentBranchReserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(request.getBranchCode(), request.getCurrencyCode());
 
         if (currentBranchReserve != null) {
             throw new RuntimeException("Branch Reserve already exist!");
         }
 
-
-
-        Branch branch = branchRepository.findByName(request.getBranchName());
+        Branch branch = branchRepository.findById(request.getBranchCode()).orElseThrow(() -> new RuntimeException("Branch not found!"));
         Currency currency = currencyRepository.findByCode(request.getCurrencyCode());
 
         BranchReserve reserve = new BranchReserve();
@@ -51,14 +46,13 @@ public class BranchReserveService implements BranchReserveInterface {
         reserve.setBalance(BigDecimal.ZERO);
         reserve.setCurrency(currency);
         reserve.setCreatedAt(new Date());
-        reserve.setTempBalance(BigDecimal.ZERO);
         branchReserveRepository.save(reserve);
 
         BranchReserveResponseDTO response = new BranchReserveResponseDTO();
+        response.setBranchCode(reserve.getBranch().getCode());
         response.setBranchName(reserve.getBranch().getName());
         response.setCurrencyCode(reserve.getCurrency().getCode());
         response.setBalance(reserve.getBalance());
-        response.setTempBalance(reserve.getTempBalance());
 
         return response;
     }
@@ -66,9 +60,7 @@ public class BranchReserveService implements BranchReserveInterface {
     @Override
     public AddStockResponseDTO addStockBranchReserve(AddStockRequestDTO request) {
 
-        AddStockResponseDTO response = new AddStockResponseDTO();
-
-        BranchReserve currentBranchReserve = branchReserveRepository.findByBranchNameAndCurrencyCode(request.getBranchName(), request.getCurrencyCode());
+        BranchReserve currentBranchReserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(request.getBranchCode(), request.getCurrencyCode());
 
         if (currentBranchReserve == null) {
             throw new RuntimeException("Branch Reserve not found!");
@@ -76,14 +68,10 @@ public class BranchReserveService implements BranchReserveInterface {
 
         BigDecimal updatedBalance = currentBranchReserve.getBalance().add(request.getBalance());
         currentBranchReserve.setBalance(updatedBalance);
-
-        BigDecimal updatedBalanceTemp = currentBranchReserve.getTempBalance().add(request.getBalance());
-        currentBranchReserve.setTempBalance(updatedBalanceTemp);
-
         currentBranchReserve.setUpdatedAt(new Date());
-
         branchReserveRepository.save(currentBranchReserve);
 
+        AddStockResponseDTO response = new AddStockResponseDTO();
         response.setMessage("Success");
 
         return response;
@@ -92,7 +80,7 @@ public class BranchReserveService implements BranchReserveInterface {
 
     @Override
     public List<GetBranchReserveResponseDTO> getBranchReserveList(GetBranchReserveRequestDTO request) {
-        List<BranchReserve> branchReserveList = branchReserveRepository.findByBranchName(request.getBranchName());
+        List<BranchReserve> branchReserveList = branchReserveRepository.findByBranchCode(request.getBranchCode());
 
         return branchReserveList.stream()
                 .map(branchReserve -> {
@@ -105,6 +93,4 @@ public class BranchReserveService implements BranchReserveInterface {
                 })
                 .collect(Collectors.toList());
     }
-
-
 }

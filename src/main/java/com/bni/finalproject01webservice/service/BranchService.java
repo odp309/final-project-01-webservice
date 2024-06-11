@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,17 +22,17 @@ public class BranchService implements BranchInterface {
 
     @Override
     public InitResponseDTO initBranch() {
-        Branch currGambir = branchRepository.findByName("GAMBIR");
-        Branch currGrahaPangeranSurabaya = branchRepository.findByName("GRAHA PANGERAN SURABAYA");
-        Branch currMalang = branchRepository.findByName("MALANG");
+        Optional<Branch> currGambir = branchRepository.findById("9007");
+        Optional<Branch> currGrahaPangeranSurabaya = branchRepository.findById("9121");
+        Optional<Branch> currMalang = branchRepository.findById("9070");
 
         Branch gambir = new Branch();
         Branch grahaPangeranSurabaya = new Branch();
         Branch malang = new Branch();
 
-        if (currGambir == null) {
+        if (currGambir.isEmpty()) {
+            gambir.setCode("9007");
             gambir.setName("GAMBIR");
-            gambir.setCodeArea(15);
             gambir.setCity("JAKARTA PUSAT");
             gambir.setProvince("DKI JAKARTA");
             gambir.setAddress("JL. KEBON SIRIH NO. 51-53, JAK-PUS");
@@ -43,9 +44,9 @@ public class BranchService implements BranchInterface {
             branchRepository.save(gambir);
         }
 
-        if (currGrahaPangeranSurabaya == null) {
+        if (currGrahaPangeranSurabaya.isEmpty()) {
+            grahaPangeranSurabaya.setCode("9121");
             grahaPangeranSurabaya.setName("GRAHA PANGERAN SURABAYA");
-            grahaPangeranSurabaya.setCodeArea(6);
             grahaPangeranSurabaya.setCity("SURABAYA");
             grahaPangeranSurabaya.setProvince("JAWA TIMUR");
             grahaPangeranSurabaya.setAddress("JL.ACHMAD YANI NO.286, SURABAYA, GEDUNG GRAHA PANGERAN LT.1-2");
@@ -57,9 +58,9 @@ public class BranchService implements BranchInterface {
             branchRepository.save(grahaPangeranSurabaya);
         }
 
-        if (currMalang == null) {
+        if (currMalang.isEmpty()) {
+            malang.setCode("9070");
             malang.setName("MALANG");
-            malang.setCodeArea(18);
             malang.setCity("MALANG");
             malang.setProvince("JAWA TIMUR");
             malang.setAddress("JL. JEND. BASUKI RAHMAT NO.75-77, MALANG");
@@ -84,11 +85,10 @@ public class BranchService implements BranchInterface {
         return branches.stream()
                 .map(branch -> {
                     BranchResponseDTO response = new BranchResponseDTO();
-                    response.setId(branch.getId());
+                    response.setCode(branch.getCode());
                     response.setName(branch.getName());
                     response.setType(branch.getType());
                     response.setPhone(branch.getPhone());
-                    response.setCodeArea(branch.getCodeArea());
                     response.setAddress(branch.getAddress());
                     response.setCity(branch.getCity());
                     response.setProvince(branch.getProvince());

@@ -9,9 +9,7 @@ import java.math.BigDecimal;
 @Setter
 public class AddStockRequestDTO {
 
-    private String branchName;
+    private String branchCode;
     private String currencyCode;
     private BigDecimal balance;
-
-
 }

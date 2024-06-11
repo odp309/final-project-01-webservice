@@ -9,11 +9,10 @@ import java.util.UUID;
 @Setter
 public class BranchResponseDTO {
 
-    private UUID id;
+    private String code;
     private String name;
     private String type;
     private String phone;
-    private int codeArea;
     private String address;
     private String city;
     private String province;

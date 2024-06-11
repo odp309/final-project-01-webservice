@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class GetAllEmployeeRequestDTO {
 
-    private String branchName;
+    private String branchCode;
 }

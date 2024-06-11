@@ -7,11 +7,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
-public interface BranchRepository extends JpaRepository<Branch, UUID> {
-
-    Branch findByName(String name);
+public interface BranchRepository extends JpaRepository<Branch, String> {
 
     @Query("""
             select

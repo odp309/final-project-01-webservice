@@ -16,7 +16,6 @@ import com.bni.finalproject01webservice.interfaces.RefreshTokenInterface;
 import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.Employee;
 import com.bni.finalproject01webservice.model.Role;
-import com.bni.finalproject01webservice.model.User;
 import com.bni.finalproject01webservice.repository.BranchRepository;
 import com.bni.finalproject01webservice.repository.EmployeeRepository;
 import com.bni.finalproject01webservice.repository.RoleRepository;
@@ -30,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -94,7 +92,7 @@ public class EmployeeService implements EmployeeInterface {
         }
 
         if (currEmployee == null) {
-            Branch branch = branchRepository.findByName("GAMBIR");
+            Branch branch = branchRepository.findById("9007").orElseThrow(() -> new RuntimeException("Branch not found!"));
             Employee employee = new Employee();
             employee.setEmail("admin.manager@bni.co.id");
             employee.setPassword(passwordEncoder.encode("admin"));
@@ -149,7 +147,7 @@ public class EmployeeService implements EmployeeInterface {
         }
 
         Role role = roleRepository.findByName("ADMIN");
-        Branch branch = branchRepository.findByName(request.getBranchName());
+        Branch branch = branchRepository.findById(request.getBranchCode()).orElseThrow(() -> new RuntimeException("Branch not found!"));
 
         Employee newEmployee = new Employee();
         newEmployee.setEmail(request.getEmail());
@@ -180,7 +178,7 @@ public class EmployeeService implements EmployeeInterface {
         }
 
         Role role = roleRepository.findByName("TELLER");
-        Branch branch = branchRepository.findByName(request.getBranchName());
+        Branch branch = branchRepository.findById(request.getBranchCode()).orElseThrow(() -> new RuntimeException("Branch not found!"));
 
         Employee newEmployee = new Employee();
         newEmployee.setEmail(request.getEmail());
@@ -204,13 +202,13 @@ public class EmployeeService implements EmployeeInterface {
 
     @Override
     public List<EmployeeResponseDTO> getAllEmployee(GetAllEmployeeRequestDTO request) {
-        List<Employee> employees = employeeRepository.findByBranchName(request.getBranchName());
+        List<Employee> employees = employeeRepository.findByBranchCode(request.getBranchCode());
 
         return employees.stream()
                 .map(employee -> {
                     EmployeeResponseDTO response = new EmployeeResponseDTO();
                     response.setId(employee.getId());
-                    response.setBranchId(employee.getBranch().getId());
+                    response.setBranchCode(employee.getBranch().getCode());
                     response.setRoleName(employee.getRole().getName());
                     response.setEmail(employee.getEmail());
                     response.setFirstName(employee.getFirstName());
@@ -232,18 +230,15 @@ public class EmployeeService implements EmployeeInterface {
         Employee employee = employeeRepository.findById(request.getId()).
                 orElseThrow(() -> new UserException("Employee Not Found"));
 
-        if (employee.getIsActive() == false) {
+        if (!employee.getIsActive()) {
             employee.setIsActive(true);
             employeeRepository.save(employee);
             response.setMessage("Employee has been activated!");
-        }
-        else
-        {
+        } else {
             employee.setIsActive(false);
             employeeRepository.save(employee);
             response.setMessage("Employee has been deactivated!");
         }
-
 
         return response;
     }

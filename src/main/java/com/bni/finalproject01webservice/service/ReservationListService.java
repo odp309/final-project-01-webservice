@@ -1,10 +1,8 @@
 package com.bni.finalproject01webservice.service;
 
-import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.request.ReservationListRequestDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
 import com.bni.finalproject01webservice.interfaces.ReservationInterface;
-import com.bni.finalproject01webservice.model.Employee;
 import com.bni.finalproject01webservice.model.WithdrawalTrx;
 import com.bni.finalproject01webservice.repository.WithdrawalTrxRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +20,7 @@ public class ReservationListService implements ReservationInterface {
     @Override
     public List<ReservationListResponseDTO> getAllReservation(ReservationListRequestDTO request) {
 
-        List<WithdrawalTrx> reserve = withdrawalTrxRepository.findByBranchName(request.getBrachName());
+        List<WithdrawalTrx> reserve = withdrawalTrxRepository.findByBranchCode(request.getBranchCode());
 
         return reserve.stream()
                 .map(data -> {

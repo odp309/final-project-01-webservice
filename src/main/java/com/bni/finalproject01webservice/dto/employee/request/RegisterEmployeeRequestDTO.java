@@ -12,5 +12,5 @@ public class RegisterEmployeeRequestDTO {
     private String lastName;
     private String password;
     private String nip;
-    private String branchName;
+    private String branchCode;
 }

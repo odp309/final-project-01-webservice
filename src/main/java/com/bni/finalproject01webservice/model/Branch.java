@@ -15,8 +15,7 @@ import java.util.UUID;
 public class Branch {
 
     @Id
-    @GeneratedValue
-    private UUID id;
+    private String code;
 
     @Column(unique = true, nullable = false)
     private String name;
@@ -26,9 +25,6 @@ public class Branch {
 
     @Column(nullable = false)
     private String phone;
-
-    @Column(name = "code_area", unique = true, nullable = false)
-    private int codeArea;
 
     @Column(nullable = false)
     private String address;

@@ -50,7 +50,7 @@ public class WithdrawalTrx {
     private Wallet wallet;
 
     @ManyToOne
-    @JoinColumn(name = "branch_id", nullable = false)
+    @JoinColumn(name = "branch_code", nullable = false)
     private Branch branch;
 
     @ManyToOne

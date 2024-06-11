@@ -21,9 +21,6 @@ public class BranchReserve {
     @Column(nullable = false)
     private BigDecimal balance;
 
-    @Column(name = "temp_balance", nullable = false)
-    private BigDecimal tempBalance;
-
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
@@ -33,7 +30,7 @@ public class BranchReserve {
     //////////////////////// FOREIGN KEY RELATION BLOCK ///////////////////////
 
     @ManyToOne
-    @JoinColumn(name = "branch_id", nullable = false)
+    @JoinColumn(name = "branch_code", nullable = false)
     private Branch branch;
 
     @ManyToOne
