@@ -15,6 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.Random;
+
 @Service
 @RequiredArgsConstructor
 public class WithdrawalTrxService implements WithdrawalTrxInterface {
@@ -31,8 +36,26 @@ public class WithdrawalTrxService implements WithdrawalTrxInterface {
         OperationType operationType = operationTypeRepository.findByName(request.getOperationTypeName());
 
         WithdrawalTrx withdrawalTrx = new WithdrawalTrx();
-//        withdrawalTrx.setAmount(request.getAmount());
+        withdrawalTrx.setAmount(request.getAmount());
+        withdrawalTrx.setStatus(request.getStatus());
+        withdrawalTrx.setReservationDate(request.getReservationDate());
 
         return null;
+    }
+
+    private String generateReservationNumber(Date reservationDate, String branchCode) {
+        Random random = new Random();
+        int number = random.nextInt(10000); // Generate a number between 0 and 9999
+        String randomNumber = String.format("%04d", number);
+
+        LocalDate localDate = reservationDate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        int day = localDate.getDayOfMonth();
+        int month = localDate.getMonthValue();
+        int year = localDate.getYear();
+
+        return "RES" + day + month + String.valueOf(year).substring(2) + branchCode + randomNumber;
     }
 }

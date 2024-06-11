@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -16,5 +17,7 @@ public class WithdrawalTrxRequestDTO {
     private String trxTypeName;
     private String operationTypeName;
     private String branchCode;
+    private String status;
     private BigDecimal amount;
+    private Date reservationDate;
 }

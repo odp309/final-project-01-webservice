@@ -1,6 +1,8 @@
 package com.bni.finalproject01webservice.service;
 
+import com.bni.finalproject01webservice.dto.currency.request.GetMinimumCurrencyRequestDTO;
 import com.bni.finalproject01webservice.dto.currency.response.CurrencyResponseDTO;
+import com.bni.finalproject01webservice.dto.currency.response.GetMinimumCurrencyResponseDTO;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.interfaces.CurrencyInterface;
 import com.bni.finalproject01webservice.model.Currency;
@@ -253,5 +255,55 @@ public class CurrencyService implements CurrencyInterface {
                     return currencyResponseDTO;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public GetMinimumCurrencyResponseDTO getMinimumBuy(GetMinimumCurrencyRequestDTO request) {
+        Currency currency = currencyRepository.findByCode(request.getCurrencyCode());
+
+        GetMinimumCurrencyResponseDTO response = new GetMinimumCurrencyResponseDTO();
+        response.setMinimum(currency.getMinimumBuy());
+
+        return response;
+    }
+
+    @Override
+    public GetMinimumCurrencyResponseDTO getMinimumSell(GetMinimumCurrencyRequestDTO request) {
+        Currency currency = currencyRepository.findByCode(request.getCurrencyCode());
+
+        GetMinimumCurrencyResponseDTO response = new GetMinimumCurrencyResponseDTO();
+        response.setMinimum(currency.getMinimumSell());
+
+        return response;
+    }
+
+    @Override
+    public GetMinimumCurrencyResponseDTO getMinimumTransfer(GetMinimumCurrencyRequestDTO request) {
+        Currency currency = currencyRepository.findByCode(request.getCurrencyCode());
+
+        GetMinimumCurrencyResponseDTO response = new GetMinimumCurrencyResponseDTO();
+        response.setMinimum(currency.getMinimumTransfer());
+
+        return response;
+    }
+
+    @Override
+    public GetMinimumCurrencyResponseDTO getMinimumDeposit(GetMinimumCurrencyRequestDTO request) {
+        Currency currency = currencyRepository.findByCode(request.getCurrencyCode());
+
+        GetMinimumCurrencyResponseDTO response = new GetMinimumCurrencyResponseDTO();
+        response.setMinimum(currency.getMinimumDeposit());
+
+        return response;
+    }
+
+    @Override
+    public GetMinimumCurrencyResponseDTO getMinimumWithdrawal(GetMinimumCurrencyRequestDTO request) {
+        Currency currency = currencyRepository.findByCode(request.getCurrencyCode());
+
+        GetMinimumCurrencyResponseDTO response = new GetMinimumCurrencyResponseDTO();
+        response.setMinimum(currency.getMinimumWithdrawal());
+
+        return response;
     }
 }
