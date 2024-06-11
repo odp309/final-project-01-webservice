@@ -53,6 +53,7 @@ public class JWTService implements JWTInterface {
                 .claim("lastName", employee.getLastName())
                 .claim("role", employee.getRole())
                 .claim("branch", employee.getBranch().getName())
+                .claim("branchCode", employee.getBranch().getCode())
                 .expiration(Date.from(expirationTime))
                 .signWith(getJWTKey())
                 .compact();
