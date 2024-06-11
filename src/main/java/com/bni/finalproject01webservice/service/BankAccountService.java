@@ -86,6 +86,7 @@ public class BankAccountService implements BankAccountInterface {
                                 int idWalletCount = wallets.indexOf(wallet) + 1;
                                 WalletWithCurrencyIconResponseDTO walletResponse = new WalletWithCurrencyIconResponseDTO();
                                 walletResponse.setId(idWalletCount);
+                                walletResponse.setWalletId(wallet.getId());
                                 walletResponse.setCurrencyCode(wallet.getCurrency().getCode());
                                 walletResponse.setCurrencyName(wallet.getCurrency().getName());
                                 walletResponse.setBalance(wallet.getBalance());
