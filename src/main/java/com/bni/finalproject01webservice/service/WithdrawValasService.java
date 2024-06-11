@@ -45,7 +45,11 @@ public class WithdrawValasService implements WithdrawValasInterface {
     public DetailWithdrawValasResponseDTO detailWithdrawValas(DetailWithdrawValasRequestDTO request) {
 
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
-        Branch branch = branchRepository.findById(request.getBranchCode()).orElseThrow(() -> new RuntimeException("Branch not found!"));
+        Branch branch = branchRepository.findBranchWithValidation(request.getBranchCode(), request.getAmountToWithdraw(), wallet.getCurrency().getCode());
+
+        if (branch == null) {
+            throw new RuntimeException("Branch not found!");
+        }
 
         if (request.getAmountToWithdraw().compareTo(wallet.getCurrency().getMinimumWithdrawal()) < 0) {
             throw new TransactionException("Amount is less than the minimum withdrawal!");
@@ -86,8 +90,6 @@ public class WithdrawValasService implements WithdrawValasInterface {
         if (request.getAmountToWithdraw().compareTo(wallet.getBalance()) > 0) {
             throw new TransactionException("Wallet balance insufficient!");
         }
-
-//        Branch branch = branchRepository.findById(request.getBranchCode()).orElseThrow(() -> new RuntimeException("Branch not found!"));
 
         Branch branch = branchRepository.findBranchWithValidation(request.getBranchCode(), request.getAmountToWithdraw(), wallet.getCurrency().getCode());
 

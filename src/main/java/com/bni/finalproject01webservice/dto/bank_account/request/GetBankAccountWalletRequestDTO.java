@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class GetBankAccountWalletRequestDTO {
 
-    private String accountNumber;
+    private String senderAccountNumber;
+    private String recipientAccountNumber;
     private String currencyCode;
 }

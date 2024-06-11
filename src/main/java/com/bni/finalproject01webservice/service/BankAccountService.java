@@ -1,5 +1,6 @@
 package com.bni.finalproject01webservice.service;
 
+import com.bni.finalproject01webservice.configuration.exceptions.TransactionException;
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.configuration.exceptions.WalletException;
 import com.bni.finalproject01webservice.dto.bank_account.request.AddBankAccountRequestDTO;
@@ -46,6 +47,8 @@ public class BankAccountService implements BankAccountInterface {
         bankAccountRepository.save(newBankAccount);
 
         BankAccountResponseDTO response = new BankAccountResponseDTO();
+        response.setFirstName(user.getFirstName());
+        response.setLastName(user.getLastName());
         response.setAccountNumber(request.getAccountNumber());
         response.setType(request.getType());
         response.setBalance(request.getBalance());
@@ -67,6 +70,7 @@ public class BankAccountService implements BankAccountInterface {
         response.setAccountNumber(bankAccount.getAccountNumber());
         response.setType(bankAccount.getType());
         response.setBalance(bankAccount.getBalance());
+
         return response;
     }
 
@@ -103,7 +107,19 @@ public class BankAccountService implements BankAccountInterface {
 
     @Override
     public GetBankAccountWalletResponseDTO getBankAccountWallet(GetBankAccountWalletRequestDTO request) {
-        Wallet currentWallet = walletRepository.findByBankAccountAccountNumberAndCurrencyCode(request.getAccountNumber(), request.getCurrencyCode());
+
+        BankAccount bankAccount = bankAccountRepository.findByAccountNumber(request.getSenderAccountNumber());
+        User senderUser = userRepository.findById(bankAccount.getUser().getId()).orElseThrow(() -> new UserException("User not found!"));
+
+        List<String> senderUserAccountNumbers = senderUser.getBankAccounts().stream()
+                .map(BankAccount::getAccountNumber)
+                .toList();
+
+        if (senderUserAccountNumbers.contains(request.getRecipientAccountNumber())) {
+            throw new TransactionException("Transfers to the same account are not allowed!");
+        }
+
+        Wallet currentWallet = walletRepository.findByBankAccountAccountNumberAndCurrencyCode(request.getRecipientAccountNumber(), request.getCurrencyCode());
 
         if (currentWallet == null) {
             throw new WalletException("Wallet not found!");

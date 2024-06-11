@@ -37,7 +37,7 @@ public interface BranchRepository extends JpaRepository<Branch, String> {
                 b.branchReserves br
             where
                 b.code = :branchCode
-                and br.balance = :amountToWithdraw
+                and br.balance >= :amountToWithdraw
                 and br.currency.code = :currencyCode
             """)
     Branch findBranchWithValidation(@Param("branchCode") String branchCode,
