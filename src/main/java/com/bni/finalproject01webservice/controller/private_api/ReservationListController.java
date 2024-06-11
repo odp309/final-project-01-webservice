@@ -6,7 +6,9 @@ import com.bni.finalproject01webservice.dto.branch_reserve.request.GetBranchRese
 import com.bni.finalproject01webservice.dto.branch_reserve.response.BranchReserveResponseDTO;
 import com.bni.finalproject01webservice.dto.branch_reserve.response.GetBranchReserveResponseDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.request.ReservationListRequestDTO;
+import com.bni.finalproject01webservice.dto.reservation_list.request.UpdateReservationStatusRequestDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
+import com.bni.finalproject01webservice.dto.reservation_list.response.UpdateReservationStatusResponseDTO;
 import com.bni.finalproject01webservice.interfaces.ReservationInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,5 +34,9 @@ public class ReservationListController {
         return reservationService.getAllReservation(request);
     }
 
+    @PostMapping("/update-status")
+    public UpdateReservationStatusResponseDTO updateReservationUpdate(@RequestBody UpdateReservationStatusRequestDTO request) {
+        return reservationService.updateReservationStatus(request);
+    }
 
 }
