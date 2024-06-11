@@ -6,18 +6,17 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.UUID;
 
 @Getter
 @Setter
-public class ReservationTransactionValasRequestDTO {
+public class DetailWithdrawalTrxResponseDTO {
 
-    private UUID walletId;
     private String branchName;
-    private String type;
+    private String branchTypeFull;
+    private String branchType;
     private String currencyCode;
-    private BigDecimal amount;
+    private BigDecimal amountToWithdraw;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Asia/Jakarta")
-    private Date date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd MMMM yyyy", timezone = "Asia/Jakarta")
+    private Date reservationDate;
 }
