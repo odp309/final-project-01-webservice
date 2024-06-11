@@ -12,6 +12,7 @@ import java.util.Date;
 public class ReservationListResponseDTO {
     private String reservationNumber;
     private String customerName;
+    private String accountNumber;
     private String currencyCode;
     private BigDecimal amount;
     private String status;
@@ -19,4 +20,6 @@ public class ReservationListResponseDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Asia/Jakarta")
     private Date reservationDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Asia/Jakarta")
+    private Date createdDate;
 }

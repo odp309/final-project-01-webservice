@@ -29,10 +29,13 @@ public class ReservationListService implements ReservationInterface {
                     ReservationListResponseDTO response = new ReservationListResponseDTO();
                     response.setReservationNumber(data.getReservationNumber());
                     response.setReservationDate(data.getReservationDate());
+                    response.setCreatedDate(data.getCreatedAt());
                     response.setStatus(data.getStatus());
                     response.setAmount(data.getAmount());
                     response.setCurrencyCode(data.getWallet().getCurrency().getCode());
                     response.setCustomerName(data.getUser().getFirstName() + " " + data.getUser().getLastName());
+                    response.setAccountNumber(data.getWallet().getBankAccount().getAccountNumber());
+
                     return response;
                 })
                 .collect(Collectors.toList());
