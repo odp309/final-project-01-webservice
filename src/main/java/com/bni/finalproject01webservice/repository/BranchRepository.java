@@ -27,4 +27,20 @@ public interface BranchRepository extends JpaRepository<Branch, String> {
                                               @Param("longitude") double longitude,
                                               @Param("amountToWithdraw") BigDecimal amountToWithdraw,
                                               @Param("currencyCode") String currencyCode);
+
+    @Query("""
+            select
+            	b
+            from
+            	Branch b
+            left join
+                b.branchReserves br
+            where
+                b.code = :branchCode
+                and br.balance = :amountToWithdraw
+                and br.currency.code = :currencyCode
+            """)
+    Branch findBranchWithValidation(@Param("branchCode") String branchCode,
+                                    @Param("amountToWithdraw") BigDecimal amountToWithdraw,
+                                    @Param("currencyCode") String currencyCode);
 }

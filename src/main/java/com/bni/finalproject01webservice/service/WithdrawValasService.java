@@ -3,10 +3,14 @@ package com.bni.finalproject01webservice.service;
 import com.bni.finalproject01webservice.configuration.exceptions.TransactionException;
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.configuration.exceptions.WalletException;
+import com.bni.finalproject01webservice.dto.trx_history.request.TrxHistoryRequestDTO;
+import com.bni.finalproject01webservice.dto.trx_history.response.TrxHistoryResponseDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.request.DetailWithdrawValasRequestDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.request.WithdrawValasRequestDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.response.DetailWithdrawValasResponseDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.response.WithdrawValasResponseDTO;
+import com.bni.finalproject01webservice.dto.withdrawal_trx.request.WithdrawalTrxRequestDTO;
+import com.bni.finalproject01webservice.dto.withdrawal_trx.response.WithdrawalTrxResponseDTO;
 import com.bni.finalproject01webservice.interfaces.TrxHistoryInterface;
 import com.bni.finalproject01webservice.interfaces.WithdrawValasInterface;
 import com.bni.finalproject01webservice.interfaces.WithdrawalTrxInterface;
@@ -20,6 +24,9 @@ import com.bni.finalproject01webservice.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +43,7 @@ public class WithdrawValasService implements WithdrawValasInterface {
 
     @Override
     public DetailWithdrawValasResponseDTO detailWithdrawValas(DetailWithdrawValasRequestDTO request) {
+
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         Branch branch = branchRepository.findById(request.getBranchCode()).orElseThrow(() -> new RuntimeException("Branch not found!"));
 
@@ -59,7 +67,9 @@ public class WithdrawValasService implements WithdrawValasInterface {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public WithdrawValasResponseDTO withdrawValas(WithdrawValasRequestDTO request) {
+
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         User user = userRepository.findById(wallet.getUser().getId()).orElseThrow(() -> new UserException("User not found!"));
 
@@ -77,8 +87,48 @@ public class WithdrawValasService implements WithdrawValasInterface {
             throw new TransactionException("Wallet balance insufficient!");
         }
 
-        Branch branch = branchRepository.findById(request.getBranchCode()).orElseThrow(() -> new RuntimeException("Branch not found!"));
+//        Branch branch = branchRepository.findById(request.getBranchCode()).orElseThrow(() -> new RuntimeException("Branch not found!"));
 
-        return null;
+        Branch branch = branchRepository.findBranchWithValidation(request.getBranchCode(), request.getAmountToWithdraw(), wallet.getCurrency().getCode());
+
+        if (branch == null) {
+            throw new RuntimeException("Branch not found!");
+        }
+
+        // wallet update balance (-)
+        wallet.setBalance(wallet.getBalance().subtract(request.getAmountToWithdraw()));
+        wallet.setUpdatedAt(new Date());
+        walletRepository.save(wallet);
+
+        // create withdrawal trx
+        WithdrawalTrxRequestDTO withdrawalTrxRequest = new WithdrawalTrxRequestDTO();
+        withdrawalTrxRequest.setUser(user);
+        withdrawalTrxRequest.setWallet(wallet);
+        withdrawalTrxRequest.setBranch(branch);
+        withdrawalTrxRequest.setTrxTypeName("Tarik");
+        withdrawalTrxRequest.setOperationTypeName("D");
+        withdrawalTrxRequest.setStatus("Terjadwal");
+        withdrawalTrxRequest.setAmount(request.getAmountToWithdraw());
+        withdrawalTrxRequest.setReservationDate(request.getReservationDate());
+        WithdrawalTrxResponseDTO withdrawalTrxResponse = withdrawalTrxService.addWithdrawalTrx(withdrawalTrxRequest);
+
+        // create history trx
+        TrxHistoryRequestDTO trxHistoryRequest = new TrxHistoryRequestDTO();
+        trxHistoryRequest.setWithdrawalTrxId(withdrawalTrxResponse.getWithdrawalTrxId());
+        TrxHistoryResponseDTO trxHistoryResponse = trxHistoryService.addTrxHistory(trxHistoryRequest);
+
+        WithdrawValasResponseDTO response = new WithdrawValasResponseDTO();
+        response.setAmountToWithdraw(request.getAmountToWithdraw());
+        response.setBranchType(branch.getType().split("/")[1]);
+        response.setBranchName(branch.getName());
+        response.setBranchAddress(branch.getAddress());
+        response.setBranchCity(branch.getCity());
+        response.setBranchProvince(branch.getProvince());
+        response.setCurrencyCode(wallet.getCurrency().getCode());
+        response.setReservationNumber(withdrawalTrxResponse.getReservationNumber());
+        response.setReservationDate(request.getReservationDate());
+        response.setTrxHistory(trxHistoryResponse);
+
+        return response;
     }
 }

@@ -12,5 +12,4 @@ public interface WithdrawalTrxRepository extends JpaRepository<WithdrawalTrx, UU
     List<WithdrawalTrx> findByBranchCode (String code);
 
     WithdrawalTrx findByReservationNumber(String reservationNumber);
-
 }

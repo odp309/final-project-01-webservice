@@ -62,6 +62,8 @@ public class BankAccountService implements BankAccountInterface {
         }
 
         BankAccountResponseDTO response = new BankAccountResponseDTO();
+        response.setFirstName(bankAccount.getUser().getFirstName());
+        response.setLastName(bankAccount.getUser().getLastName());
         response.setAccountNumber(bankAccount.getAccountNumber());
         response.setType(bankAccount.getType());
         response.setBalance(bankAccount.getBalance());

@@ -10,4 +10,5 @@ import java.util.UUID;
 public class WithdrawalTrxResponseDTO {
 
     private UUID withdrawalTrxId;
+    private String reservationNumber;
 }

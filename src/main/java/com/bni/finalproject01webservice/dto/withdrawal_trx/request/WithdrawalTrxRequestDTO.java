@@ -1,5 +1,6 @@
 package com.bni.finalproject01webservice.dto.withdrawal_trx.request;
 
+import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.User;
 import com.bni.finalproject01webservice.model.Wallet;
 import lombok.Getter;
@@ -14,9 +15,9 @@ public class WithdrawalTrxRequestDTO {
 
     private User user;
     private Wallet wallet;
+    private Branch branch;
     private String trxTypeName;
     private String operationTypeName;
-    private String branchCode;
     private String status;
     private BigDecimal amount;
     private Date reservationDate;
