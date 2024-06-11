@@ -108,14 +108,7 @@ public class BankAccountService implements BankAccountInterface {
     @Override
     public GetBankAccountWalletResponseDTO getBankAccountWallet(GetBankAccountWalletRequestDTO request) {
 
-        BankAccount bankAccount = bankAccountRepository.findByAccountNumber(request.getSenderAccountNumber());
-        User senderUser = userRepository.findById(bankAccount.getUser().getId()).orElseThrow(() -> new UserException("User not found!"));
-
-        List<String> senderUserAccountNumbers = senderUser.getBankAccounts().stream()
-                .map(BankAccount::getAccountNumber)
-                .toList();
-
-        if (senderUserAccountNumbers.contains(request.getRecipientAccountNumber())) {
+        if (request.getSenderAccountNumber().equals(request.getRecipientAccountNumber())) {
             throw new TransactionException("Transfers to the same account are not allowed!");
         }
 

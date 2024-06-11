@@ -68,11 +68,15 @@ public class TransferValasService implements TransferValasInterface {
         Wallet senderWallet = walletRepository.findById(request.getSenderWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         User senderUser = userRepository.findById(senderWallet.getUser().getId()).orElseThrow(() -> new UserException("User not found!"));
 
-        List<String> senderUserAccountNumbers = senderUser.getBankAccounts().stream()
-                .map(BankAccount::getAccountNumber)
-                .toList();
+//        List<String> senderUserAccountNumbers = senderUser.getBankAccounts().stream()
+//                .map(BankAccount::getAccountNumber)
+//                .toList();
+//
+//        if (senderUserAccountNumbers.contains(request.getRecipientAccountNumber())) {
+//            throw new TransactionException("Transfers to the same account are not allowed!");
+//        }
 
-        if (senderUserAccountNumbers.contains(request.getRecipientAccountNumber())) {
+        if (senderWallet.getBankAccount().getAccountNumber().equals(request.getRecipientAccountNumber())) {
             throw new TransactionException("Transfers to the same account are not allowed!");
         }
 
