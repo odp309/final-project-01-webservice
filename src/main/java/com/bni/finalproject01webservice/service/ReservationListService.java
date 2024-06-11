@@ -1,13 +1,16 @@
 package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.dto.reservation_list.request.ReservationListRequestDTO;
+import com.bni.finalproject01webservice.dto.reservation_list.request.UpdateReservationStatusRequestDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
+import com.bni.finalproject01webservice.dto.reservation_list.response.UpdateReservationStatusResponseDTO;
 import com.bni.finalproject01webservice.interfaces.ReservationInterface;
 import com.bni.finalproject01webservice.model.WithdrawalTrx;
 import com.bni.finalproject01webservice.repository.WithdrawalTrxRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,5 +40,38 @@ public class ReservationListService implements ReservationInterface {
                     return response;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UpdateReservationStatusResponseDTO updateReservationStatus(UpdateReservationStatusRequestDTO request) {
+
+       WithdrawalTrx reservation = withdrawalTrxRepository.findByReservationNumber(request.getReservationNumber());
+       UpdateReservationStatusResponseDTO response = new UpdateReservationStatusResponseDTO();
+
+//        if (reservation.getReservationDate().compareTo(new Date()) > 0)
+//        {
+//            response.setUpdatedStatus("-");
+//            response.setMessage("Your reservation number is no longer valid");
+//            return response;
+//        }
+
+        if (reservation.getStatus().equalsIgnoreCase("SCHEDULED"))
+        {
+            reservation.setStatus("SUCCESS");
+            reservation.setUpdatedAt(new Date());
+            withdrawalTrxRepository.save(reservation);
+            //harus tambah response lastupdatedBy siapa tapi nanti nunggu bagas ubah modelnya dulu
+            //tambah juga nanti di responseDTO nya
+
+            response.setUpdatedStatus("SUCCESS");
+            response.setMessage("Withdrawal Transaction Succeed");
+        }
+        else
+        {
+            response.setUpdatedStatus("-");
+            response.setMessage("Your reservation number is no longer valid");
+        }
+
+        return response;
     }
 }
