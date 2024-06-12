@@ -54,14 +54,6 @@ public class Withdrawal {
     @JoinColumn(name = "branch_code", nullable = false)
     private Branch branch;
 
-    @ManyToOne
-    @JoinColumn(name = "trx_type_id", nullable = false)
-    private TrxType trxType;
-
-    @ManyToOne
-    @JoinColumn(name = "operation_type_id", nullable = false)
-    private OperationType operationType;
-
     /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////
 
     @OneToMany(mappedBy = "withdrawal")

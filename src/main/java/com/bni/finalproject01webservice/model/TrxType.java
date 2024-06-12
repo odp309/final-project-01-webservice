@@ -35,8 +35,5 @@ public class TrxType {
     private List<FinancialTrx> financialTrxs;
 
     @OneToMany(mappedBy = "trxType")
-    private List<Withdrawal> withdrawals;
-
-    @OneToMany(mappedBy = "trxType")
     private List<WithdrawalDetail> withdrawalDetails;
 }

@@ -51,8 +51,8 @@ public class WithdrawalService implements WithdrawalInterface {
         withdrawal.setUser(request.getUser());
         withdrawal.setWallet(request.getWallet());
         withdrawal.setBranch(request.getBranch());
-        withdrawal.setTrxType(trxType);
-        withdrawal.setOperationType(operationType);
+//        withdrawal.setTrxType(trxType);
+//        withdrawal.setOperationType(operationType);
         withdrawalRepository.save(withdrawal);
 
         WithdrawalResponseDTO response = new WithdrawalResponseDTO();
