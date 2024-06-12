@@ -9,11 +9,8 @@ import com.bni.finalproject01webservice.dto.buy_valas.response.BuyValasResponseD
 import com.bni.finalproject01webservice.dto.buy_valas.response.DetailBuyValasResponseDTO;
 import com.bni.finalproject01webservice.dto.financial_trx.request.FinancialTrxRequestDTO;
 import com.bni.finalproject01webservice.dto.financial_trx.response.FinancialTrxResponseDTO;
-import com.bni.finalproject01webservice.dto.trx_history.request.TrxHistoryRequestDTO;
-import com.bni.finalproject01webservice.dto.trx_history.response.TrxHistoryResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BuyValasInterface;
 import com.bni.finalproject01webservice.interfaces.FinancialTrxInterface;
-import com.bni.finalproject01webservice.interfaces.TrxHistoryInterface;
 import com.bni.finalproject01webservice.model.BankAccount;
 import com.bni.finalproject01webservice.model.ExchangeRate;
 import com.bni.finalproject01webservice.model.User;
@@ -38,7 +35,6 @@ public class BuyValasService implements BuyValasInterface {
     private final WalletRepository walletRepository;
 
     private final FinancialTrxInterface financialTrxService;
-    private final TrxHistoryInterface trxHistoryService;
 
     @Override
     public DetailBuyValasResponseDTO detailBuyValas(DetailBuyValasRequestDTO request) {
@@ -112,11 +108,6 @@ public class BuyValasService implements BuyValasInterface {
         financialTrxRequest.setAmount(request.getAmountToBuy());
         FinancialTrxResponseDTO financialTrxResponse = financialTrxService.addFinancialTrx(financialTrxRequest);
 
-        // create history trx
-        TrxHistoryRequestDTO trxHistoryRequest = new TrxHistoryRequestDTO();
-        trxHistoryRequest.setFinancialTrxId(financialTrxResponse.getFinancialTrxId());
-        TrxHistoryResponseDTO trxHistoryResponse = trxHistoryService.addTrxHistory(trxHistoryRequest);
-
         BuyValasResponseDTO response = new BuyValasResponseDTO();
         response.setAmountToBuy(request.getAmountToBuy());
         response.setAmountToPay(paidPrice);
@@ -124,7 +115,6 @@ public class BuyValasService implements BuyValasInterface {
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
         response.setCreatedAt(new Date());
-        response.setTrxHistory(trxHistoryResponse);
 
         return response;
     }

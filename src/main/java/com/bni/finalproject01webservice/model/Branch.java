@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -53,7 +52,7 @@ public class Branch {
     private List<Employee> employees;
 
     @OneToMany(mappedBy = "branch")
-    private List<WithdrawalTrx> withdrawalTrxs;
+    private List<Withdrawal> withdrawals;
 
     @OneToMany(mappedBy = "branch")
     private List<BranchReserve> branchReserves;

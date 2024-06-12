@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.dto.withdrawal_trx.request;
+package com.bni.finalproject01webservice.dto.withdrawal.request;
 
 import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.User;
@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class WithdrawalTrxRequestDTO {
+public class WithdrawalRequestDTO {
 
     private User user;
     private Wallet wallet;

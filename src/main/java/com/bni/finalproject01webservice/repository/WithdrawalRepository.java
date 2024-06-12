@@ -1,6 +1,6 @@
 package com.bni.finalproject01webservice.repository;
 
-import com.bni.finalproject01webservice.model.WithdrawalTrx;
+import com.bni.finalproject01webservice.model.Withdrawal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,33 +11,33 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public interface WithdrawalTrxRepository extends JpaRepository<WithdrawalTrx, UUID> {
+public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
 
-    List<WithdrawalTrx> findByBranchCode (String code);
+    List<Withdrawal> findByBranchCode (String code);
 
-    WithdrawalTrx findByReservationNumber(String reservationNumber);
+    Withdrawal findByReservationNumber(String reservationNumber);
 
     @Query("""
             select
             	wt
             from
-            	WithdrawalTrx wt
+            	Withdrawal wt
             where
             	DATE(wt.reservationDate) = :today
             	and wt.status = 'Terjadwal'
             """)
-    List<WithdrawalTrx> findScheduledWithdrawalForToday(@Param("today") LocalDate today);
+    List<Withdrawal> findScheduledWithdrawalForToday(@Param("today") LocalDate today);
 
     @Modifying
     @Transactional
     @Query("""
             update
-            	WithdrawalTrx wt
+            	Withdrawal wt
             set
             	wt.status = 'Kadaluarsa',
             	wt.updatedAt = current_timestamp
             where
             	wt.id = :id
             """)
-    void updateWithdrawalTrxStatusToExpired(@Param("id") UUID id);
+    void updateWithdrawalStatusToExpired(@Param("id") UUID id);
 }

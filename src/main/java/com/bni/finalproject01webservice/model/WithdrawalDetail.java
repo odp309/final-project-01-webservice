@@ -4,22 +4,18 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "financial_trx")
-public class FinancialTrx {
+@Table(name = "withdrawal_detail")
+public class WithdrawalDetail {
 
     @Id
     @GeneratedValue
     private UUID id;
-
-    @Column(nullable = false)
-    private BigDecimal amount;
 
     @Column(nullable = false)
     private String detail;
@@ -39,6 +35,10 @@ public class FinancialTrx {
     @ManyToOne
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
+
+    @ManyToOne
+    @JoinColumn(name = "withdrawal_id", nullable = false)
+    private Withdrawal withdrawal;
 
     @ManyToOne
     @JoinColumn(name = "trx_type_id", nullable = false)

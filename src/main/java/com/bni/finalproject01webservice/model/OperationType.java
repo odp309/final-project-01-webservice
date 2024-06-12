@@ -35,5 +35,8 @@ public class OperationType {
     private List<FinancialTrx> financialTrxs;
 
     @OneToMany(mappedBy = "operationType")
-    private List<WithdrawalTrx> withdrawalTrxs;
+    private List<Withdrawal> withdrawals;
+
+    @OneToMany(mappedBy = "operationType")
+    private List<WithdrawalDetail> withdrawalDetails;
 }
