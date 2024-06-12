@@ -25,8 +25,8 @@ public class Withdrawal {
     @Column(nullable = false)
     private String status;
 
-    @Column(name = "reservation_number", unique = true, nullable = false)
-    private String reservationNumber;
+    @Column(name = "reservation_code", unique = true, nullable = false)
+    private String reservationCode;
 
     @Column(name = "reservation_date", nullable = false)
     private Date reservationDate;

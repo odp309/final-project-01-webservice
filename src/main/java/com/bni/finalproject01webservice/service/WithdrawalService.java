@@ -3,11 +3,7 @@ package com.bni.finalproject01webservice.service;
 import com.bni.finalproject01webservice.dto.withdrawal.request.WithdrawalRequestDTO;
 import com.bni.finalproject01webservice.dto.withdrawal.response.WithdrawalResponseDTO;
 import com.bni.finalproject01webservice.interfaces.WithdrawalInterface;
-import com.bni.finalproject01webservice.model.OperationType;
-import com.bni.finalproject01webservice.model.TrxType;
 import com.bni.finalproject01webservice.model.Withdrawal;
-import com.bni.finalproject01webservice.repository.OperationTypeRepository;
-import com.bni.finalproject01webservice.repository.TrxTypeRepository;
 import com.bni.finalproject01webservice.repository.WithdrawalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,18 +19,14 @@ import java.util.Random;
 public class WithdrawalService implements WithdrawalInterface {
 
     private final WithdrawalRepository withdrawalRepository;
-    private final TrxTypeRepository trxTypeRepository;
-    private final OperationTypeRepository operationTypeRepository;
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public WithdrawalResponseDTO addWithdrawal(WithdrawalRequestDTO request) {
-        TrxType trxType = trxTypeRepository.findByName(request.getTrxTypeName());
-        OperationType operationType = operationTypeRepository.findByName(request.getOperationTypeName());
-
         String reservationNumber = this.generateReservationNumber(request.getReservationDate(), request.getBranch().getCode());
 
-        while (withdrawalRepository.findByReservationNumber(reservationNumber) != null) {
+        while (withdrawalRepository.findByReservationCode(reservationNumber) != null) {
             reservationNumber = this.generateReservationNumber(request.getReservationDate(), request.getBranch().getCode());
         }
 
@@ -45,7 +37,7 @@ public class WithdrawalService implements WithdrawalInterface {
 //                request.getBranch().getType().split("/")[1] + " " + request.getBranch().getName() + "/" +
 //                reservationNumber);
         withdrawal.setStatus(request.getStatus());
-        withdrawal.setReservationNumber(reservationNumber);
+        withdrawal.setReservationCode(reservationNumber);
         withdrawal.setReservationDate(request.getReservationDate());
         withdrawal.setCreatedAt(new Date());
         withdrawal.setUser(request.getUser());

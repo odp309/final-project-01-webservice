@@ -15,7 +15,7 @@ public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
 
     List<Withdrawal> findByBranchCode (String code);
 
-    Withdrawal findByReservationNumber(String reservationNumber);
+    Withdrawal findByReservationCode(String reservationCode);
 
     @Query("""
             select

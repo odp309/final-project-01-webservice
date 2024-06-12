@@ -28,7 +28,7 @@ public class ReservationListService implements ReservationInterface {
         return reserve.stream()
                 .map(data -> {
                     ReservationListResponseDTO response = new ReservationListResponseDTO();
-                    response.setReservationNumber(data.getReservationNumber());
+                    response.setReservationNumber(data.getReservationCode());
                     response.setReservationDate(data.getReservationDate());
                     response.setCreatedDate(data.getCreatedAt());
                     response.setStatus(data.getStatus());
@@ -45,7 +45,7 @@ public class ReservationListService implements ReservationInterface {
     @Override
     public UpdateReservationStatusResponseDTO updateReservationStatus(UpdateReservationStatusRequestDTO request) {
 
-       Withdrawal reservation = withdrawalRepository.findByReservationNumber(request.getReservationNumber());
+       Withdrawal reservation = withdrawalRepository.findByReservationCode(request.getReservationNumber());
        UpdateReservationStatusResponseDTO response = new UpdateReservationStatusResponseDTO();
 
 //        if (reservation.getReservationDate().compareTo(new Date()) > 0)
