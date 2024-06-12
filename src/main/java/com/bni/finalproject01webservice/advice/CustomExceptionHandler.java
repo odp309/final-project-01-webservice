@@ -93,6 +93,22 @@ public class CustomExceptionHandler {
             status = HttpStatus.UNPROCESSABLE_ENTITY;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "Withdrawal amount is less than the minimum withdrawal");
+        } else if (ex instanceof WithdrawalException && ex.getMessage().equals("Workdays must be greater than zero!")) {
+            status = HttpStatus.UNPROCESSABLE_ENTITY;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Workdays cannot be zero");
+        } else if (ex instanceof WithdrawalException && ex.getMessage().equals("Workdays cannot be larger than 5!")) {
+            status = HttpStatus.UNPROCESSABLE_ENTITY;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Workdays maximum is five");
+        } else if (ex instanceof WithdrawalException && ex.getMessage().equals("The selected date is a weekend!")) {
+            status = HttpStatus.UNPROCESSABLE_ENTITY;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Cannot select weekend date");
+        } else if (ex instanceof WithdrawalException && ex.getMessage().equals("The selected date is a holiday!")) {
+            status = HttpStatus.UNPROCESSABLE_ENTITY;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Cannot select holiday date");
         } else if (ex instanceof MethodArgumentTypeMismatchException) {
             status = HttpStatus.BAD_REQUEST;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), "Invalid method argument: " + ex.getMessage());

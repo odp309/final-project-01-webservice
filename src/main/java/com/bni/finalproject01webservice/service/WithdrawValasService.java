@@ -3,6 +3,7 @@ package com.bni.finalproject01webservice.service;
 import com.bni.finalproject01webservice.configuration.exceptions.TransactionException;
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.configuration.exceptions.WalletException;
+import com.bni.finalproject01webservice.configuration.exceptions.WithdrawalException;
 import com.bni.finalproject01webservice.dto.trx_history.request.TrxHistoryRequestDTO;
 import com.bni.finalproject01webservice.dto.trx_history.response.TrxHistoryResponseDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.request.DetailWithdrawValasRequestDTO;
@@ -14,35 +15,58 @@ import com.bni.finalproject01webservice.dto.withdrawal_trx.response.WithdrawalTr
 import com.bni.finalproject01webservice.interfaces.TrxHistoryInterface;
 import com.bni.finalproject01webservice.interfaces.WithdrawValasInterface;
 import com.bni.finalproject01webservice.interfaces.WithdrawalTrxInterface;
-import com.bni.finalproject01webservice.model.Branch;
-import com.bni.finalproject01webservice.model.User;
-import com.bni.finalproject01webservice.model.Wallet;
-import com.bni.finalproject01webservice.repository.BankAccountRepository;
-import com.bni.finalproject01webservice.repository.BranchRepository;
-import com.bni.finalproject01webservice.repository.UserRepository;
-import com.bni.finalproject01webservice.repository.WalletRepository;
+import com.bni.finalproject01webservice.model.*;
+import com.bni.finalproject01webservice.repository.*;
+import com.bni.finalproject01webservice.utility.IndonesianHolidays;
+import com.bni.finalproject01webservice.utility.WorkingDaysCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.*;
 import java.util.Date;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class WithdrawValasService implements WithdrawValasInterface {
 
-    private final BankAccountRepository bankAccountRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final WalletRepository walletRepository;
     private final BranchRepository branchRepository;
+    private final BranchReserveRepository branchReserveRepository;
+    private final WithdrawalTrxRepository withdrawalTrxRepository;
 
     private final WithdrawalTrxInterface withdrawalTrxService;
     private final TrxHistoryInterface trxHistoryService;
+    private final WorkingDaysCalculator workingDaysCalculator;
+
+    private final Set<DayOfWeek> WEEKEND = EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
 
     @Override
     public DetailWithdrawValasResponseDTO detailWithdrawValas(DetailWithdrawValasRequestDTO request) {
+
+        LocalDateTime startDate = LocalDateTime.now();
+        LocalDate endDate = request.getReservationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        if (WEEKEND.contains(endDate.getDayOfWeek())) {
+            throw new WithdrawalException("The selected date is a weekend!");
+        }
+        if (IndonesianHolidays.isHoliday(endDate)) {
+            throw new WithdrawalException("The selected date is a holiday!");
+        }
+
+        long workingDays = workingDaysCalculator.countWorkingDays(startDate, endDate);
+
+        if (workingDays == 0) {
+            throw new WithdrawalException("Workdays must be greater than zero!");
+        } else if (workingDays > 5) {
+            throw new WithdrawalException("Workdays cannot be larger than 5!");
+        }
 
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         Branch branch = branchRepository.findBranchWithValidation(request.getBranchCode(), request.getAmountToWithdraw(), wallet.getCurrency().getCode());
@@ -74,6 +98,24 @@ public class WithdrawValasService implements WithdrawValasInterface {
     @Transactional(rollbackFor = Exception.class)
     public WithdrawValasResponseDTO withdrawValas(WithdrawValasRequestDTO request) {
 
+        LocalDateTime startDate = LocalDateTime.now();
+        LocalDate endDate = request.getReservationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        if (WEEKEND.contains(endDate.getDayOfWeek())) {
+            throw new WithdrawalException("The selected date is a weekend!");
+        }
+        if (IndonesianHolidays.isHoliday(endDate)) {
+            throw new WithdrawalException("The selected date is a holiday!");
+        }
+
+        long workingDays = workingDaysCalculator.countWorkingDays(startDate, endDate);
+
+        if (workingDays == 0) {
+            throw new WithdrawalException("Workdays must be greater than zero!");
+        } else if (workingDays > 5) {
+            throw new WithdrawalException("Workdays cannot be larger than 5!");
+        }
+
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         User user = userRepository.findById(wallet.getUser().getId()).orElseThrow(() -> new UserException("User not found!"));
 
@@ -97,10 +139,17 @@ public class WithdrawValasService implements WithdrawValasInterface {
             throw new RuntimeException("Branch not found!");
         }
 
+        BranchReserve branchReserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(request.getBranchCode(), wallet.getCurrency().getCode());
+
         // wallet update balance (-)
         wallet.setBalance(wallet.getBalance().subtract(request.getAmountToWithdraw()));
         wallet.setUpdatedAt(new Date());
         walletRepository.save(wallet);
+
+        // branch reserve update balance (-)
+        branchReserve.setBalance(branchReserve.getBalance().subtract(request.getAmountToWithdraw()));
+        branchReserve.setUpdatedAt(new Date());
+        branchReserveRepository.save(branchReserve);
 
         // create withdrawal trx
         WithdrawalTrxRequestDTO withdrawalTrxRequest = new WithdrawalTrxRequestDTO();
@@ -132,5 +181,18 @@ public class WithdrawValasService implements WithdrawValasInterface {
         response.setTrxHistory(trxHistoryResponse);
 
         return response;
+    }
+
+    @Override
+    public void withdrawValasChecker() {
+        LocalDate today = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        if (currentTime.isAfter(LocalTime.of(15, 0))) {
+            List<WithdrawalTrx> scheduledWithdrawalTrx = withdrawalTrxRepository.findScheduledWithdrawalForToday(today);
+            for (WithdrawalTrx withdrawalTrx : scheduledWithdrawalTrx) {
+                withdrawalTrxRepository.updateWithdrawalTrxStatusToExpired(withdrawalTrx.getId());
+            }
+        }
     }
 }

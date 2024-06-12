@@ -10,4 +10,6 @@ public interface WithdrawValasInterface {
     DetailWithdrawValasResponseDTO detailWithdrawValas(DetailWithdrawValasRequestDTO request);
 
     WithdrawValasResponseDTO withdrawValas(WithdrawValasRequestDTO request);
+
+    void withdrawValasChecker();
 }
