@@ -5,5 +5,5 @@ import com.bni.finalproject01webservice.dto.withdrawal_detail.response.Withdrawa
 
 public interface WithdrawalDetailInterface {
 
-    WithdrawalDetailResponseDTO withdrawalDetail(WithdrawalDetailRequestDTO request);
+    WithdrawalDetailResponseDTO addWithdrawalDetail(WithdrawalDetailRequestDTO request);
 }

@@ -5,6 +5,7 @@ import com.bni.finalproject01webservice.dto.withdrawal_detail.response.Withdrawa
 import com.bni.finalproject01webservice.interfaces.WithdrawalDetailInterface;
 import com.bni.finalproject01webservice.model.OperationType;
 import com.bni.finalproject01webservice.model.TrxType;
+import com.bni.finalproject01webservice.model.Withdrawal;
 import com.bni.finalproject01webservice.model.WithdrawalDetail;
 import com.bni.finalproject01webservice.repository.OperationTypeRepository;
 import com.bni.finalproject01webservice.repository.TrxTypeRepository;
@@ -23,21 +24,30 @@ public class WithdrawalDetailService implements WithdrawalDetailInterface {
     private final OperationTypeRepository operationTypeRepository;
 
     @Override
-    public WithdrawalDetailResponseDTO withdrawalDetail(WithdrawalDetailRequestDTO request) {
+    public WithdrawalDetailResponseDTO addWithdrawalDetail(WithdrawalDetailRequestDTO request) {
 
         TrxType trxType = trxTypeRepository.findByName(request.getTrxTypeName());
         OperationType operationType = operationTypeRepository.findByName(request.getOperationTypeName());
+        Withdrawal withdrawal = request.getWithdrawal();
 
         WithdrawalDetail withdrawalDetail = new WithdrawalDetail();
-        withdrawalDetail.setDetail(request.getDetail());
-        withdrawalDetail.setCreatedAt(new Date());
-        withdrawalDetail.setUser(request.getUser());
-        withdrawalDetail.setWallet(request.getWallet());
+        withdrawalDetail.setUser(withdrawal.getUser());
+        withdrawalDetail.setWallet(withdrawal.getWallet());
         withdrawalDetail.setWithdrawal(request.getWithdrawal());
+        withdrawalDetail.setDetail(
+                request.getTrxTypeName() + "/" +
+                withdrawal.getAmount() + " " + withdrawal.getWallet().getCurrency().getCode() + "/" +
+                withdrawal.getBranch().getType().split("/")[1] + " " + withdrawal.getBranch().getName() + "/" +
+                withdrawal.getReservationCode());
         withdrawalDetail.setTrxType(trxType);
         withdrawalDetail.setOperationType(operationType);
+        withdrawalDetail.setCreatedAt(new Date());
         withdrawalDetailRepository.save(withdrawalDetail);
 
-        return null;
+        WithdrawalDetailResponseDTO response = new WithdrawalDetailResponseDTO();
+        response.setWithdrawalDetail(withdrawalDetail.getId());
+        response.setDetail(withdrawalDetail.getDetail());
+
+        return response;
     }
 }

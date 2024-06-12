@@ -18,7 +18,7 @@ public class WithdrawValasResponseDTO {
     private String branchCity;
     private String branchProvince;
     private String currencyCode;
-    private String reservationNumber;
+    private String reservationCode;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd MMMM yyyy", timezone = "Asia/Jakarta")
     private Date reservationDate;

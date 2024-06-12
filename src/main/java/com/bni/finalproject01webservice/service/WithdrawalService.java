@@ -20,41 +20,33 @@ public class WithdrawalService implements WithdrawalInterface {
 
     private final WithdrawalRepository withdrawalRepository;
 
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public WithdrawalResponseDTO addWithdrawal(WithdrawalRequestDTO request) {
-        String reservationNumber = this.generateReservationNumber(request.getReservationDate(), request.getBranch().getCode());
+        String reservationCode = this.generateReservationCode(request.getReservationDate(), request.getBranch().getCode());
 
-        while (withdrawalRepository.findByReservationCode(reservationNumber) != null) {
-            reservationNumber = this.generateReservationNumber(request.getReservationDate(), request.getBranch().getCode());
+        while (withdrawalRepository.findByReservationCode(reservationCode) != null) {
+            reservationCode = this.generateReservationCode(request.getReservationDate(), request.getBranch().getCode());
         }
 
         Withdrawal withdrawal = new Withdrawal();
         withdrawal.setAmount(request.getAmount());
-//        withdrawal.setDetail(request.getTrxTypeName() + "/" +
-//                request.getAmount() + " " + request.getWallet().getCurrency().getCode() + "/" +
-//                request.getBranch().getType().split("/")[1] + " " + request.getBranch().getName() + "/" +
-//                reservationNumber);
         withdrawal.setStatus(request.getStatus());
-        withdrawal.setReservationCode(reservationNumber);
+        withdrawal.setReservationCode(reservationCode);
         withdrawal.setReservationDate(request.getReservationDate());
         withdrawal.setCreatedAt(new Date());
         withdrawal.setUser(request.getUser());
         withdrawal.setWallet(request.getWallet());
         withdrawal.setBranch(request.getBranch());
-//        withdrawal.setTrxType(trxType);
-//        withdrawal.setOperationType(operationType);
         withdrawalRepository.save(withdrawal);
 
         WithdrawalResponseDTO response = new WithdrawalResponseDTO();
-        response.setWithdrawalId(withdrawal.getId());
-        response.setReservationNumber(reservationNumber);
+        response.setWithdrawal(withdrawal);
 
         return response;
     }
 
-    private String generateReservationNumber(Date reservationDate, String branchCode) {
+    private String generateReservationCode(Date reservationDate, String branchCode) {
         Random random = new Random();
         int number = random.nextInt(10000); // Generate a number between 0 and 9999
         String randomNumber = String.format("%04d", number);

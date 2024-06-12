@@ -16,8 +16,6 @@ public class WithdrawalRequestDTO {
     private User user;
     private Wallet wallet;
     private Branch branch;
-    private String trxTypeName;
-    private String operationTypeName;
     private String status;
     private BigDecimal amount;
     private Date reservationDate;

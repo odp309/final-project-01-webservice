@@ -10,8 +10,10 @@ import com.bni.finalproject01webservice.dto.withdraw_valas.response.DetailWithdr
 import com.bni.finalproject01webservice.dto.withdraw_valas.response.WithdrawValasResponseDTO;
 import com.bni.finalproject01webservice.dto.withdrawal.request.WithdrawalRequestDTO;
 import com.bni.finalproject01webservice.dto.withdrawal.response.WithdrawalResponseDTO;
-import com.bni.finalproject01webservice.interfaces.FinancialTrxInterface;
+import com.bni.finalproject01webservice.dto.withdrawal_detail.request.WithdrawalDetailRequestDTO;
+import com.bni.finalproject01webservice.dto.withdrawal_detail.response.WithdrawalDetailResponseDTO;
 import com.bni.finalproject01webservice.interfaces.WithdrawValasInterface;
+import com.bni.finalproject01webservice.interfaces.WithdrawalDetailInterface;
 import com.bni.finalproject01webservice.interfaces.WithdrawalInterface;
 import com.bni.finalproject01webservice.model.*;
 import com.bni.finalproject01webservice.repository.*;
@@ -37,7 +39,7 @@ public class WithdrawValasService implements WithdrawValasInterface {
     private final WithdrawalRepository withdrawalRepository;
 
     private final WithdrawalInterface withdrawalService;
-    private final FinancialTrxInterface financialTrxService;
+    private final WithdrawalDetailInterface withdrawalDetailService;
     private final WorkingDaysCalculator workingDaysCalculator;
 
     private final Set<DayOfWeek> WEEKEND = EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
@@ -146,17 +148,22 @@ public class WithdrawValasService implements WithdrawValasInterface {
         branchReserve.setUpdatedAt(new Date());
         branchReserveRepository.save(branchReserve);
 
-        // create withdrawal trx
+        // create withdrawal
         WithdrawalRequestDTO withdrawalRequest = new WithdrawalRequestDTO();
         withdrawalRequest.setUser(user);
         withdrawalRequest.setWallet(wallet);
         withdrawalRequest.setBranch(branch);
-        withdrawalRequest.setTrxTypeName("Tarik");
-        withdrawalRequest.setOperationTypeName("D");
         withdrawalRequest.setStatus("Terjadwal");
         withdrawalRequest.setAmount(request.getAmountToWithdraw());
         withdrawalRequest.setReservationDate(request.getReservationDate());
         WithdrawalResponseDTO withdrawalResponse = withdrawalService.addWithdrawal(withdrawalRequest);
+
+        // create withdrawal detail
+        WithdrawalDetailRequestDTO withdrawalDetailRequest = new WithdrawalDetailRequestDTO();
+        withdrawalDetailRequest.setWithdrawal(withdrawalResponse.getWithdrawal());
+        withdrawalDetailRequest.setTrxTypeName("Tarik");
+        withdrawalDetailRequest.setOperationTypeName("D");
+        WithdrawalDetailResponseDTO withdrawalDetailResponse = withdrawalDetailService.addWithdrawalDetail(withdrawalDetailRequest);
 
         WithdrawValasResponseDTO response = new WithdrawValasResponseDTO();
         response.setAmountToWithdraw(request.getAmountToWithdraw());
@@ -166,7 +173,7 @@ public class WithdrawValasService implements WithdrawValasInterface {
         response.setBranchCity(branch.getCity());
         response.setBranchProvince(branch.getProvince());
         response.setCurrencyCode(wallet.getCurrency().getCode());
-        response.setReservationNumber(withdrawalResponse.getReservationNumber());
+        response.setReservationCode(withdrawalResponse.getWithdrawal().getReservationCode());
         response.setReservationDate(request.getReservationDate());
 
         return response;
