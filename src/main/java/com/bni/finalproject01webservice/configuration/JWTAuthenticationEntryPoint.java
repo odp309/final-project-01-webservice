@@ -29,16 +29,16 @@ public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {
         Throwable cause = (Throwable) request.getAttribute("javax.servlet.error.exception");
 
         if (cause instanceof JwtAuthenticationException && cause.getCause() instanceof ExpiredJwtException) {
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, cause.getMessage());
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, cause.getMessage());
             errorDetail.setProperty("access_denied_reason", "Expired JWT token");
         } else if (cause instanceof JwtAuthenticationException && cause.getCause() instanceof JwtException) {
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, cause.getMessage());
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, cause.getMessage());
             errorDetail.setProperty("access_denied_reason", "Invalid JWT token");
         } else if (cause instanceof JwtAuthenticationException && cause.getCause() instanceof IllegalArgumentException) {
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, cause.getMessage());
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, cause.getMessage());
             errorDetail.setProperty("access_denied_reason", "Illegal JWT token");
         } else {
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Authentication required");
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, "Authentication required");
             errorDetail.setProperty("access_denied_reason", "Authentication Failure");
         }
 

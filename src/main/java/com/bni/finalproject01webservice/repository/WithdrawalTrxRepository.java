@@ -34,7 +34,8 @@ public interface WithdrawalTrxRepository extends JpaRepository<WithdrawalTrx, UU
             update
             	WithdrawalTrx wt
             set
-            	wt.status = 'Kadaluarsa'
+            	wt.status = 'Kadaluarsa',
+            	wt.updatedAt = current_timestamp
             where
             	wt.id = :id
             """)

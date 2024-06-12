@@ -4,6 +4,8 @@ import com.bni.finalproject01webservice.configuration.exceptions.TransactionExce
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.configuration.exceptions.WalletException;
 import com.bni.finalproject01webservice.configuration.exceptions.WithdrawalException;
+import com.bni.finalproject01webservice.dto.financial_trx.request.FinancialTrxRequestDTO;
+import com.bni.finalproject01webservice.dto.financial_trx.response.FinancialTrxResponseDTO;
 import com.bni.finalproject01webservice.dto.trx_history.request.TrxHistoryRequestDTO;
 import com.bni.finalproject01webservice.dto.trx_history.response.TrxHistoryResponseDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.request.DetailWithdrawValasRequestDTO;
@@ -25,10 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -184,14 +183,30 @@ public class WithdrawValasService implements WithdrawValasInterface {
     }
 
     @Override
-    public void withdrawValasChecker() {
+    public void withdrawValasScheduledChecker() {
         LocalDate today = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
 
-        if (currentTime.isAfter(LocalTime.of(15, 0))) {
+        if (currentTime.isAfter(LocalTime.of(11, 44))) {
+//            if (currentTime.isAfter(LocalTime.of(15, 0))) {
             List<WithdrawalTrx> scheduledWithdrawalTrx = withdrawalTrxRepository.findScheduledWithdrawalForToday(today);
             for (WithdrawalTrx withdrawalTrx : scheduledWithdrawalTrx) {
+                BranchReserve branchReserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(withdrawalTrx.getBranch().getCode(), withdrawalTrx.getWallet().getCurrency().getCode());
+
                 withdrawalTrxRepository.updateWithdrawalTrxStatusToExpired(withdrawalTrx.getId());
+                userRepository.updateIsCooldownToTrue(withdrawalTrx.getUser().getId());
+                walletRepository.updateWalletBalance(withdrawalTrx.getWallet().getId(), withdrawalTrx.getWallet().getBalance().add(withdrawalTrx.getAmount()));
+                branchReserveRepository.updateBranchReserveBalance(branchReserve.getId(), branchReserve.getBalance().add(withdrawalTrx.getAmount()));
+
+                // create financial trx
+//                FinancialTrxRequestDTO financialTrxRequest = new FinancialTrxRequestDTO();
+//                financialTrxRequest.setUser(user);
+//                financialTrxRequest.setWallet(wallet);
+//                financialTrxRequest.setTrxTypeName("Jual");
+//                financialTrxRequest.setOperationTypeName("K");
+//                financialTrxRequest.setRate(exchangeRate.getSellRate());
+//                financialTrxRequest.setAmount(request.getAmountToSell());
+//                FinancialTrxResponseDTO financialTrxResponse = financialTrxService.addFinancialTrx(financialTrxRequest);
             }
         }
     }
