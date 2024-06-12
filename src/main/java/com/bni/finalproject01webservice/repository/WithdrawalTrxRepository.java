@@ -17,6 +17,8 @@ public interface WithdrawalTrxRepository extends JpaRepository<WithdrawalTrx, UU
 
     WithdrawalTrx findByReservationNumber(String reservationNumber);
 
+    List<WithdrawalTrx> findByWalletId (UUID walletId);
+
     @Query("""
             select
             	wt
