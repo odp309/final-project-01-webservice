@@ -11,5 +11,5 @@ public interface WithdrawValasInterface {
 
     WithdrawValasResponseDTO withdrawValas(WithdrawValasRequestDTO request);
 
-    void withdrawValasChecker();
+    void withdrawValasScheduledChecker();
 }
