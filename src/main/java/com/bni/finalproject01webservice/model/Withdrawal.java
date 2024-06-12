@@ -6,13 +6,14 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "withdrawal_trx")
-public class WithdrawalTrx {
+@Table(name = "withdrawal")
+public class Withdrawal {
 
     @Id
     @GeneratedValue
@@ -22,9 +23,6 @@ public class WithdrawalTrx {
     private BigDecimal amount;
 
     @Column(nullable = false)
-    private String detail;
-
-    @Column(nullable = false)
     private String status;
 
     @Column(name = "reservation_number", unique = true, nullable = false)
@@ -32,6 +30,9 @@ public class WithdrawalTrx {
 
     @Column(name = "reservation_date", nullable = false)
     private Date reservationDate;
+
+    @Column(name = "done_by")
+    private String doneBy;
 
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
@@ -63,6 +64,6 @@ public class WithdrawalTrx {
 
     /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////
 
-    @OneToOne(mappedBy = "withdrawalTrx", cascade = CascadeType.ALL, orphanRemoval = true)
-    private TrxHistory trxHistory;
+    @OneToMany(mappedBy = "withdrawal")
+    private List<WithdrawalDetail> withdrawalDetails;
 }

@@ -9,12 +9,8 @@ import com.bni.finalproject01webservice.dto.transfer_valas.request.DetailTransfe
 import com.bni.finalproject01webservice.dto.transfer_valas.request.TransferValasRequestDTO;
 import com.bni.finalproject01webservice.dto.transfer_valas.response.DetailTransferValasResponseDTO;
 import com.bni.finalproject01webservice.dto.transfer_valas.response.TransferValasResponseDTO;
-import com.bni.finalproject01webservice.dto.trx_history.request.TrxHistoryRequestDTO;
-import com.bni.finalproject01webservice.dto.trx_history.response.TrxHistoryResponseDTO;
 import com.bni.finalproject01webservice.interfaces.FinancialTrxInterface;
 import com.bni.finalproject01webservice.interfaces.TransferValasInterface;
-import com.bni.finalproject01webservice.interfaces.TrxHistoryInterface;
-import com.bni.finalproject01webservice.model.BankAccount;
 import com.bni.finalproject01webservice.model.User;
 import com.bni.finalproject01webservice.model.Wallet;
 import com.bni.finalproject01webservice.repository.BankAccountRepository;
@@ -26,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +33,6 @@ public class TransferValasService implements TransferValasInterface {
     private final WalletRepository walletRepository;
 
     private final FinancialTrxInterface financialTrxService;
-    private final TrxHistoryInterface trxHistoryService;
 
     @Override
     public DetailTransferValasResponseDTO detailTransferValas(DetailTransferValasRequestDTO request) {
@@ -122,11 +116,6 @@ public class TransferValasService implements TransferValasInterface {
         senderFinancialTrxRequest.setAmount(request.getAmountToTransfer());
         FinancialTrxResponseDTO senderFinancialTrxResponse = financialTrxService.addFinancialTrx(senderFinancialTrxRequest);
 
-        // create history trx for sender
-        TrxHistoryRequestDTO senderTrxHistoryRequest = new TrxHistoryRequestDTO();
-        senderTrxHistoryRequest.setFinancialTrxId(senderFinancialTrxResponse.getFinancialTrxId());
-        TrxHistoryResponseDTO senderTrxHistoryResponse = trxHistoryService.addTrxHistory(senderTrxHistoryRequest);
-
         // create financial trx for recipient
         FinancialTrxRequestDTO recipientFinancialTrxRequest = new FinancialTrxRequestDTO();
         recipientFinancialTrxRequest.setUser(senderUser);
@@ -137,11 +126,6 @@ public class TransferValasService implements TransferValasInterface {
         recipientFinancialTrxRequest.setAmount(request.getAmountToTransfer());
         FinancialTrxResponseDTO recipientFinancialTrxResponse = financialTrxService.addFinancialTrx(recipientFinancialTrxRequest);
 
-        // create history trx for recipient
-        TrxHistoryRequestDTO recipientTrxHistoryRequest = new TrxHistoryRequestDTO();
-        recipientTrxHistoryRequest.setFinancialTrxId(recipientFinancialTrxResponse.getFinancialTrxId());
-        TrxHistoryResponseDTO recipientTrxHistoryResponse = trxHistoryService.addTrxHistory(recipientTrxHistoryRequest);
-
         TransferValasResponseDTO response = new TransferValasResponseDTO();
         response.setAmountToTransfer(request.getAmountToTransfer());
         response.setCurrencyCode(senderWallet.getCurrency().getCode());
@@ -149,7 +133,6 @@ public class TransferValasService implements TransferValasInterface {
         response.setRecipientLastName(recipientUser.getLastName());
         response.setRecipientAccountNumber(request.getRecipientAccountNumber());
         response.setCreatedAt(new Date());
-        response.setSenderTrxHistory(senderTrxHistoryResponse);
 
         return response;
     }

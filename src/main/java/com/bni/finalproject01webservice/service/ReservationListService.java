@@ -5,8 +5,8 @@ import com.bni.finalproject01webservice.dto.reservation_list.request.UpdateReser
 import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.UpdateReservationStatusResponseDTO;
 import com.bni.finalproject01webservice.interfaces.ReservationInterface;
-import com.bni.finalproject01webservice.model.WithdrawalTrx;
-import com.bni.finalproject01webservice.repository.WithdrawalTrxRepository;
+import com.bni.finalproject01webservice.model.Withdrawal;
+import com.bni.finalproject01webservice.repository.WithdrawalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReservationListService implements ReservationInterface {
 
-    private final WithdrawalTrxRepository withdrawalTrxRepository;
+    private final WithdrawalRepository withdrawalRepository;
 
     @Override
     public List<ReservationListResponseDTO> getAllReservation(ReservationListRequestDTO request) {
 
-        List<WithdrawalTrx> reserve = withdrawalTrxRepository.findByBranchCode(request.getBranchCode());
+        List<Withdrawal> reserve = withdrawalRepository.findByBranchCode(request.getBranchCode());
 
         return reserve.stream()
                 .map(data -> {
@@ -45,7 +45,7 @@ public class ReservationListService implements ReservationInterface {
     @Override
     public UpdateReservationStatusResponseDTO updateReservationStatus(UpdateReservationStatusRequestDTO request) {
 
-       WithdrawalTrx reservation = withdrawalTrxRepository.findByReservationNumber(request.getReservationNumber());
+       Withdrawal reservation = withdrawalRepository.findByReservationNumber(request.getReservationNumber());
        UpdateReservationStatusResponseDTO response = new UpdateReservationStatusResponseDTO();
 
 //        if (reservation.getReservationDate().compareTo(new Date()) > 0)
@@ -59,7 +59,7 @@ public class ReservationListService implements ReservationInterface {
         {
             reservation.setStatus("SUCCESS");
             reservation.setUpdatedAt(new Date());
-            withdrawalTrxRepository.save(reservation);
+            withdrawalRepository.save(reservation);
             //harus tambah response lastupdatedBy siapa tapi nanti nunggu bagas ubah modelnya dulu
             //tambah juga nanti di responseDTO nya
 

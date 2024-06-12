@@ -45,8 +45,11 @@ public class Wallet {
     /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////
 
     @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WithdrawalTrx> withdrawalTrxs;
+    private List<Withdrawal> withdrawals;
 
     @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FinancialTrx> financialTrxs;
+
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WithdrawalDetail> withdrawalDetails;
 }

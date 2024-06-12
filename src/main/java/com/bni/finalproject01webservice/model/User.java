@@ -63,7 +63,10 @@ public class User {
     private List<FinancialTrx> financialTrxs;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WithdrawalTrx> withdrawalTrxs;
+    private List<Withdrawal> withdrawals;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WithdrawalDetail> withdrawalDetails;
 
 //    @ManyToMany(
 //            fetch = FetchType.EAGER,

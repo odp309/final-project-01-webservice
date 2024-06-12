@@ -4,19 +4,15 @@ import com.bni.finalproject01webservice.configuration.exceptions.TransactionExce
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.configuration.exceptions.WalletException;
 import com.bni.finalproject01webservice.configuration.exceptions.WithdrawalException;
-import com.bni.finalproject01webservice.dto.financial_trx.request.FinancialTrxRequestDTO;
-import com.bni.finalproject01webservice.dto.financial_trx.response.FinancialTrxResponseDTO;
-import com.bni.finalproject01webservice.dto.trx_history.request.TrxHistoryRequestDTO;
-import com.bni.finalproject01webservice.dto.trx_history.response.TrxHistoryResponseDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.request.DetailWithdrawValasRequestDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.request.WithdrawValasRequestDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.response.DetailWithdrawValasResponseDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.response.WithdrawValasResponseDTO;
-import com.bni.finalproject01webservice.dto.withdrawal_trx.request.WithdrawalTrxRequestDTO;
-import com.bni.finalproject01webservice.dto.withdrawal_trx.response.WithdrawalTrxResponseDTO;
-import com.bni.finalproject01webservice.interfaces.TrxHistoryInterface;
+import com.bni.finalproject01webservice.dto.withdrawal.request.WithdrawalRequestDTO;
+import com.bni.finalproject01webservice.dto.withdrawal.response.WithdrawalResponseDTO;
+import com.bni.finalproject01webservice.interfaces.FinancialTrxInterface;
 import com.bni.finalproject01webservice.interfaces.WithdrawValasInterface;
-import com.bni.finalproject01webservice.interfaces.WithdrawalTrxInterface;
+import com.bni.finalproject01webservice.interfaces.WithdrawalInterface;
 import com.bni.finalproject01webservice.model.*;
 import com.bni.finalproject01webservice.repository.*;
 import com.bni.finalproject01webservice.utility.IndonesianHolidays;
@@ -38,10 +34,10 @@ public class WithdrawValasService implements WithdrawValasInterface {
     private final WalletRepository walletRepository;
     private final BranchRepository branchRepository;
     private final BranchReserveRepository branchReserveRepository;
-    private final WithdrawalTrxRepository withdrawalTrxRepository;
+    private final WithdrawalRepository withdrawalRepository;
 
-    private final WithdrawalTrxInterface withdrawalTrxService;
-    private final TrxHistoryInterface trxHistoryService;
+    private final WithdrawalInterface withdrawalService;
+    private final FinancialTrxInterface financialTrxService;
     private final WorkingDaysCalculator workingDaysCalculator;
 
     private final Set<DayOfWeek> WEEKEND = EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
@@ -151,21 +147,16 @@ public class WithdrawValasService implements WithdrawValasInterface {
         branchReserveRepository.save(branchReserve);
 
         // create withdrawal trx
-        WithdrawalTrxRequestDTO withdrawalTrxRequest = new WithdrawalTrxRequestDTO();
-        withdrawalTrxRequest.setUser(user);
-        withdrawalTrxRequest.setWallet(wallet);
-        withdrawalTrxRequest.setBranch(branch);
-        withdrawalTrxRequest.setTrxTypeName("Tarik");
-        withdrawalTrxRequest.setOperationTypeName("D");
-        withdrawalTrxRequest.setStatus("Terjadwal");
-        withdrawalTrxRequest.setAmount(request.getAmountToWithdraw());
-        withdrawalTrxRequest.setReservationDate(request.getReservationDate());
-        WithdrawalTrxResponseDTO withdrawalTrxResponse = withdrawalTrxService.addWithdrawalTrx(withdrawalTrxRequest);
-
-        // create history trx
-        TrxHistoryRequestDTO trxHistoryRequest = new TrxHistoryRequestDTO();
-        trxHistoryRequest.setWithdrawalTrxId(withdrawalTrxResponse.getWithdrawalTrxId());
-        TrxHistoryResponseDTO trxHistoryResponse = trxHistoryService.addTrxHistory(trxHistoryRequest);
+        WithdrawalRequestDTO withdrawalRequest = new WithdrawalRequestDTO();
+        withdrawalRequest.setUser(user);
+        withdrawalRequest.setWallet(wallet);
+        withdrawalRequest.setBranch(branch);
+        withdrawalRequest.setTrxTypeName("Tarik");
+        withdrawalRequest.setOperationTypeName("D");
+        withdrawalRequest.setStatus("Terjadwal");
+        withdrawalRequest.setAmount(request.getAmountToWithdraw());
+        withdrawalRequest.setReservationDate(request.getReservationDate());
+        WithdrawalResponseDTO withdrawalResponse = withdrawalService.addWithdrawal(withdrawalRequest);
 
         WithdrawValasResponseDTO response = new WithdrawValasResponseDTO();
         response.setAmountToWithdraw(request.getAmountToWithdraw());
@@ -175,9 +166,8 @@ public class WithdrawValasService implements WithdrawValasInterface {
         response.setBranchCity(branch.getCity());
         response.setBranchProvince(branch.getProvince());
         response.setCurrencyCode(wallet.getCurrency().getCode());
-        response.setReservationNumber(withdrawalTrxResponse.getReservationNumber());
+        response.setReservationNumber(withdrawalResponse.getReservationNumber());
         response.setReservationDate(request.getReservationDate());
-        response.setTrxHistory(trxHistoryResponse);
 
         return response;
     }
@@ -189,23 +179,23 @@ public class WithdrawValasService implements WithdrawValasInterface {
 
         if (currentTime.isAfter(LocalTime.of(11, 44))) {
 //            if (currentTime.isAfter(LocalTime.of(15, 0))) {
-            List<WithdrawalTrx> scheduledWithdrawalTrx = withdrawalTrxRepository.findScheduledWithdrawalForToday(today);
-            for (WithdrawalTrx withdrawalTrx : scheduledWithdrawalTrx) {
-                BranchReserve branchReserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(withdrawalTrx.getBranch().getCode(), withdrawalTrx.getWallet().getCurrency().getCode());
+            List<Withdrawal> scheduledWithdrawals = withdrawalRepository.findScheduledWithdrawalForToday(today);
+            for (Withdrawal withdrawal : scheduledWithdrawals) {
+                BranchReserve branchReserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(withdrawal.getBranch().getCode(), withdrawal.getWallet().getCurrency().getCode());
 
-                withdrawalTrxRepository.updateWithdrawalTrxStatusToExpired(withdrawalTrx.getId());
-                userRepository.updateIsCooldownToTrue(withdrawalTrx.getUser().getId());
-                walletRepository.updateWalletBalance(withdrawalTrx.getWallet().getId(), withdrawalTrx.getWallet().getBalance().add(withdrawalTrx.getAmount()));
-                branchReserveRepository.updateBranchReserveBalance(branchReserve.getId(), branchReserve.getBalance().add(withdrawalTrx.getAmount()));
+                withdrawalRepository.updateWithdrawalStatusToExpired(withdrawal.getId());
+                userRepository.updateIsCooldownToTrue(withdrawal.getUser().getId());
+                walletRepository.updateWalletBalance(withdrawal.getWallet().getId(), withdrawal.getWallet().getBalance().add(withdrawal.getAmount()));
+                branchReserveRepository.updateBranchReserveBalance(branchReserve.getId(), branchReserve.getBalance().add(withdrawal.getAmount()));
 
-                // create financial trx
+//                // create financial trx
 //                FinancialTrxRequestDTO financialTrxRequest = new FinancialTrxRequestDTO();
-//                financialTrxRequest.setUser(user);
-//                financialTrxRequest.setWallet(wallet);
+//                financialTrxRequest.setUser(withdrawal.getUser());
+//                financialTrxRequest.setWallet(withdrawal.getWallet());
 //                financialTrxRequest.setTrxTypeName("Jual");
 //                financialTrxRequest.setOperationTypeName("K");
 //                financialTrxRequest.setRate(exchangeRate.getSellRate());
-//                financialTrxRequest.setAmount(request.getAmountToSell());
+//                financialTrxRequest.setAmount(withdrawal.getAmount());
 //                FinancialTrxResponseDTO financialTrxResponse = financialTrxService.addFinancialTrx(financialTrxRequest);
             }
         }

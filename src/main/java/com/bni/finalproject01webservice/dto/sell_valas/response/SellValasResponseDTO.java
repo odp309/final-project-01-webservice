@@ -1,6 +1,5 @@
 package com.bni.finalproject01webservice.dto.sell_valas.response;
 
-import com.bni.finalproject01webservice.dto.trx_history.response.TrxHistoryResponseDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +19,4 @@ public class SellValasResponseDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd MMMM yyyy HH:mm", timezone = "Asia/Jakarta")
     private Date createdAt;
-
-    private TrxHistoryResponseDTO trxHistory;
 }

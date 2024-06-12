@@ -18,6 +18,9 @@ public class BranchReserve {
     @GeneratedValue
     private UUID id;
 
+    @Column(name = "done_by")
+    private String doneBy;
+
     @Column(nullable = false)
     private BigDecimal balance;
 

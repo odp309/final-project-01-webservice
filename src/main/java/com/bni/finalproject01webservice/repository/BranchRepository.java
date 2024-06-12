@@ -18,7 +18,7 @@ public interface BranchRepository extends JpaRepository<Branch, String> {
             left join
                 b.branchReserves br
             where
-                br.balance = :amountToWithdraw
+                br.balance >= :amountToWithdraw
                 and br.currency.code = :currencyCode
             order by
             	(6371 * acos(cos(radians(:latitude)) * cos(radians(b.latitude)) * cos(radians(b.longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(b.latitude))))
