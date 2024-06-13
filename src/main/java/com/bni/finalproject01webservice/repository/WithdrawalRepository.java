@@ -17,6 +17,7 @@ public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
 
     Withdrawal findByReservationCode(String reservationCode);
 
+
     @Query("""
             select
             	wt
@@ -27,6 +28,20 @@ public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
             	and wt.status = 'Terjadwal'
             """)
     List<Withdrawal> findScheduledWithdrawalForToday(@Param("today") LocalDate today);
+
+    @Query("""
+            SELECT 
+            wd.id,
+            w.amount, 
+            w.createdAt, 
+            w.status, 
+            w.wallet.currency.code, 
+            wd.trxType.name 
+            FROM WithdrawalDetail wd 
+            JOIN wd.withdrawal w 
+            WHERE w.wallet.id = :walletId
+            """)
+    List<Object[]> findBySelectedWalletId (@Param("walletId") UUID walletId);
 
     @Modifying
     @Transactional
