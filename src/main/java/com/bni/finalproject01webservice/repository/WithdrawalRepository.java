@@ -31,13 +31,14 @@ public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
 
     @Query("""
             SELECT 
-            w.id,
+            wd.id,
             w.amount, 
             w.createdAt, 
             w.status, 
             w.wallet.currency.code, 
             wd.trxType.name 
-            FROM Withdrawal w JOIN w.withdrawalDetails wd  
+            FROM WithdrawalDetail wd 
+            JOIN wd.withdrawal w 
             WHERE w.wallet.id = :walletId
             """)
     List<Object[]> findBySelectedWalletId (@Param("walletId") UUID walletId);
