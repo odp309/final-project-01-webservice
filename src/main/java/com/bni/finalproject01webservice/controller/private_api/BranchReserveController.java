@@ -9,6 +9,7 @@ import com.bni.finalproject01webservice.dto.branch_reserve.response.GetBranchRes
 import com.bni.finalproject01webservice.interfaces.BranchReserveInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +32,8 @@ public class BranchReserveController {
 
     @PostMapping("/add-stock")
     @PreAuthorize("hasRole('ADMIN')")
-    public AddStockResponseDTO addStock(@RequestBody AddStockRequestDTO request) {
-        return branchReserveService.addStockBranchReserve(request);
+    public AddStockResponseDTO addStock(@RequestBody AddStockRequestDTO request, HttpServletRequest headerRequest) {
+        return branchReserveService.addStockBranchReserve(request, headerRequest);
     }
 
     @PostMapping("/get")

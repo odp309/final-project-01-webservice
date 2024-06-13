@@ -21,7 +21,7 @@ public class TrxTypeService implements TrxTypeInterface {
         TrxType currBuy = trxTypeRepository.findByName("Beli");
         TrxType currSell = trxTypeRepository.findByName("Jual");
         TrxType currWithdraw = trxTypeRepository.findByName("Tarik");
-        TrxType currRefund = trxTypeRepository.findByName("Refund");
+        TrxType currRefund = trxTypeRepository.findByName("Pengembalian Dana");
 
         TrxType transfer = new TrxType();
         TrxType buy = new TrxType();
@@ -58,8 +58,8 @@ public class TrxTypeService implements TrxTypeInterface {
         }
 
         if (currRefund == null) {
-            refund.setName("Refund");
-            refund.setDescription("Refund valas ke nasabah");
+            refund.setName("Pengembalian Dana");
+            refund.setDescription("Pengembalian valas ke nasabah");
             refund.setCreatedAt(new Date());
             trxTypeRepository.save(refund);
         }

@@ -36,4 +36,7 @@ public class OperationType {
 
     @OneToMany(mappedBy = "operationType")
     private List<WithdrawalDetail> withdrawalDetails;
+
+    @OneToMany(mappedBy = "operationType")
+    private List<BranchReserveLog> branchReserveLogs;
 }

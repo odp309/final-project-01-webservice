@@ -63,8 +63,9 @@ public class WithdrawValasService implements WithdrawValasInterface {
 
         // withdrawal one at a time checking
         Withdrawal withdraw = withdrawalRepository.findByUserIdAndStatus(user.getId(), "Terjadwal");
+
         if (withdraw != null) {
-            throw new WithdrawalException("You already had ongoing withdrawal!");
+            throw new WithdrawalException("User already had ongoing withdrawal!");
         }
 
         LocalDateTime startDate = LocalDateTime.now();
