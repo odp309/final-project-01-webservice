@@ -10,4 +10,6 @@ public interface UserInterface {
     LoginResponseDTO login(LoginRequestDTO request);
 
     RegisterResponseDTO register(RegisterUserRequestDTO request);
+
+    void userIsCooldownChecker();
 }

@@ -17,8 +17,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -78,5 +80,11 @@ public class UserService implements UserInterface {
         response.setMessage("Register success!");
 
         return response;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void userIsCooldownChecker() {
+        userRepository.findUsersWithExpiredWithdrawalsAndCooldown();
     }
 }

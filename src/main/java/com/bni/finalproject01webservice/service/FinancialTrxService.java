@@ -32,13 +32,13 @@ public class FinancialTrxService implements FinancialTrxInterface {
         if (request.getTrxTypeName().equals("Transfer")) {
             financialTrx.setDetail(
                     request.getTrxTypeName() + "/" +
-                            request.getAmount() + " " + request.getWallet().getCurrency().getCode() + "/" +
+                            request.getAmount().stripTrailingZeros().toPlainString() + " " + request.getWallet().getCurrency().getCode() + "/" +
                             bankAccount.getUser().getFirstName() + " " + bankAccount.getUser().getLastName() + "/" +
                             bankAccount.getAccountNumber());
         } else {
             financialTrx.setDetail(
                     request.getTrxTypeName() + "/" +
-                            request.getAmount() + " " + request.getWallet().getCurrency().getCode() + "/" +
+                            request.getAmount().stripTrailingZeros().toPlainString() + " " + request.getWallet().getCurrency().getCode() + "/" +
                             request.getRate() + "/" +
                             "PT Bank Negara Indonesia (Persero), Tbk");
         }

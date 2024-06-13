@@ -36,7 +36,7 @@ public class WithdrawalDetailService implements WithdrawalDetailInterface {
         withdrawalDetail.setWithdrawal(request.getWithdrawal());
         withdrawalDetail.setDetail(
                 request.getTrxTypeName() + "/" +
-                withdrawal.getAmount() + " " + withdrawal.getWallet().getCurrency().getCode() + "/" +
+                withdrawal.getAmount().stripTrailingZeros().toPlainString() + " " + withdrawal.getWallet().getCurrency().getCode() + "/" +
                 withdrawal.getBranch().getType().split("/")[1] + " " + withdrawal.getBranch().getName() + "/" +
                 withdrawal.getReservationCode());
         withdrawalDetail.setTrxType(trxType);

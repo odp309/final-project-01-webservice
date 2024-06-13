@@ -14,6 +14,40 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     User findByEmail(String email);
 
+    @Modifying
+    @Transactional
+    @Query(value = """
+            update
+            	users
+            set
+            	is_cooldown = false,
+            	updated_at = current_timestamp
+            where id in (
+            	select
+            		u.id
+            	from
+            		users u
+            	join withdrawal w on
+            		u.id = w.user_id
+            	where
+            		w.status = 'Kadaluarsa'
+            		and u.is_cooldown = true
+            		and DATE(w.reservation_date) <= CURRENT_DATE - interval '3' day
+            		and w.created_at = (
+            		select
+            			MAX(w2.created_at)
+            		from
+            			withdrawal w2
+            		where
+            			w2.user_id = u.id
+            			and w2.status = 'Kadaluarsa'
+            	        )
+            	group by
+            		u.id
+            )
+            """, nativeQuery = true)
+    void findUsersWithExpiredWithdrawalsAndCooldown();
+
     @Query("""
             select
                 u
