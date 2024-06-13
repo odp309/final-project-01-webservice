@@ -109,6 +109,14 @@ public class CustomExceptionHandler {
             status = HttpStatus.UNPROCESSABLE_ENTITY;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "Cannot select holiday date");
+        } else if (ex instanceof WithdrawalException && ex.getMessage().equals("User is in cooldown!")) {
+            status = HttpStatus.FORBIDDEN;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "User in cooldown");
+        } else if (ex instanceof WithdrawalException && ex.getMessage().equals("User already had ongoing withdrawal!")) {
+            status = HttpStatus.FORBIDDEN;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Withdrawal can only be one at a time");
         } else if (ex instanceof MethodArgumentTypeMismatchException) {
             status = HttpStatus.BAD_REQUEST;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), "Invalid method argument: " + ex.getMessage());

@@ -47,29 +47,43 @@ public class WithdrawValasService implements WithdrawValasInterface {
     @Override
     public DetailWithdrawValasResponseDTO detailWithdrawValas(DetailWithdrawValasRequestDTO request) {
 
+        Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
+
+        // branch checking
+        Branch branch = branchRepository.findBranchWithValidation(request.getBranchCode(), request.getAmountToWithdraw(), wallet.getCurrency().getCode());
+        if (branch == null) {
+            throw new RuntimeException("Branch not found!");
+        }
+
+        // user cooldown checking
+        User user = userRepository.findById(wallet.getUser().getId()).orElseThrow(() -> new UserException("User not found!"));
+        if (user.getIsCooldown()) {
+            throw new WithdrawalException("User is in cooldown!");
+        }
+
+        // withdrawal one at a time checking
+        Withdrawal withdraw = withdrawalRepository.findByUserIdAndStatus(user.getId(), "Terjadwal");
+        if (withdraw != null) {
+            throw new WithdrawalException("You already had ongoing withdrawal!");
+        }
+
         LocalDateTime startDate = LocalDateTime.now();
         LocalDate endDate = request.getReservationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         if (WEEKEND.contains(endDate.getDayOfWeek())) {
             throw new WithdrawalException("The selected date is a weekend!");
         }
+
         if (IndonesianHolidays.isHoliday(endDate)) {
             throw new WithdrawalException("The selected date is a holiday!");
         }
 
+        // working days only 1 - 5
         long workingDays = workingDaysCalculator.countWorkingDays(startDate, endDate);
-
         if (workingDays == 0) {
             throw new WithdrawalException("Workdays must be greater than zero!");
         } else if (workingDays > 5) {
             throw new WithdrawalException("Workdays cannot be larger than 5!");
-        }
-
-        Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
-        Branch branch = branchRepository.findBranchWithValidation(request.getBranchCode(), request.getAmountToWithdraw(), wallet.getCurrency().getCode());
-
-        if (branch == null) {
-            throw new RuntimeException("Branch not found!");
         }
 
         if (request.getAmountToWithdraw().compareTo(wallet.getCurrency().getMinimumWithdrawal()) < 0) {

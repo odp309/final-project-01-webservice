@@ -1,8 +1,8 @@
 package com.bni.finalproject01webservice.controller.private_api;
 
-import com.bni.finalproject01webservice.dto.branch.request.BranchRequestDTO;
-import com.bni.finalproject01webservice.dto.branch.response.BranchResponseDTO;
-import com.bni.finalproject01webservice.interfaces.BranchInterface;
+import com.bni.finalproject01webservice.dto.withdrawal.request.ReportWithdrawalRequestDTO;
+import com.bni.finalproject01webservice.dto.withdrawal.response.ReportWithdrawalResponseDTO;
+import com.bni.finalproject01webservice.interfaces.WithdrawalInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +11,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/v1/private/branch")
+@RequestMapping("/api/v1/private/withdrawal")
 @SecurityRequirement(name = "access-token")
 @Tag(name = "Private API", description = "Private API secured with JWT token")
-public class BranchController {
+public class WithdrawalController {
 
     @Autowired
-    private BranchInterface branchService;
+    WithdrawalInterface withdrawalService;
 
-    @PostMapping("/get")
-    public List<BranchResponseDTO> getBranchOrderByDistance(@RequestBody BranchRequestDTO request) {
-        return branchService.getAllBranchOrderByDistance(request);
+    @PostMapping("/get-report")
+    public ReportWithdrawalResponseDTO getReport(@RequestBody ReportWithdrawalRequestDTO request) {
+        return withdrawalService.reportWithdrawal(request);
     }
 }
