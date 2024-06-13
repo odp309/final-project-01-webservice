@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -17,9 +18,6 @@ public class BranchReserve {
     @Id
     @GeneratedValue
     private UUID id;
-
-    @Column(name = "done_by")
-    private String doneBy;
 
     @Column(nullable = false)
     private BigDecimal balance;
@@ -39,4 +37,9 @@ public class BranchReserve {
     @ManyToOne
     @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
+
+    /////////////////////// BIDIRECTIONAL RELATION BLOCK //////////////////////
+
+    @OneToMany(mappedBy = "branchReserve", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BranchReserveLog> branchReserveLogs;
 }

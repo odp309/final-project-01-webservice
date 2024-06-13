@@ -9,6 +9,7 @@ import com.bni.finalproject01webservice.dto.branch_reserve.response.GetBranchRes
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.request.ReservationListRequestDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
@@ -16,9 +17,7 @@ public interface BranchReserveInterface {
 
     BranchReserveResponseDTO addBranchReserve(AddBranchReserveRequestDTO request);
 
-    AddStockResponseDTO addStockBranchReserve(AddStockRequestDTO request);
+    AddStockResponseDTO addStockBranchReserve(AddStockRequestDTO request, HttpServletRequest headerRequest);
 
     List<GetBranchReserveResponseDTO> getBranchReserveList(GetBranchReserveRequestDTO request);
-
-
 }

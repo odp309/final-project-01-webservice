@@ -6,13 +6,18 @@ import com.bni.finalproject01webservice.dto.branch_reserve.request.GetBranchRese
 import com.bni.finalproject01webservice.dto.branch_reserve.response.AddStockResponseDTO;
 import com.bni.finalproject01webservice.dto.branch_reserve.response.BranchReserveResponseDTO;
 import com.bni.finalproject01webservice.dto.branch_reserve.response.GetBranchReserveResponseDTO;
+import com.bni.finalproject01webservice.dto.branch_reserve_log.request.BranchReserveLogRequestDTO;
+import com.bni.finalproject01webservice.dto.branch_reserve_log.response.BranchReserveLogResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BranchReserveInterface;
+import com.bni.finalproject01webservice.interfaces.BranchReserveLogInterface;
+import com.bni.finalproject01webservice.interfaces.JWTInterface;
 import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.BranchReserve;
 import com.bni.finalproject01webservice.model.Currency;
 import com.bni.finalproject01webservice.repository.BranchRepository;
 import com.bni.finalproject01webservice.repository.BranchReserveRepository;
 import com.bni.finalproject01webservice.repository.CurrencyRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +33,9 @@ public class BranchReserveService implements BranchReserveInterface {
     private final BranchReserveRepository branchReserveRepository;
     private final CurrencyRepository currencyRepository;
     private final BranchRepository branchRepository;
+
+    private final BranchReserveLogInterface branchReserveLogService;
+    private final JWTInterface jwtService;
 
     @Override
     public BranchReserveResponseDTO addBranchReserve(AddBranchReserveRequestDTO request) {
@@ -58,7 +66,7 @@ public class BranchReserveService implements BranchReserveInterface {
     }
 
     @Override
-    public AddStockResponseDTO addStockBranchReserve(AddStockRequestDTO request) {
+    public AddStockResponseDTO addStockBranchReserve(AddStockRequestDTO request, HttpServletRequest headerRequest) {
 
         BranchReserve currentBranchReserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(request.getBranchCode(), request.getCurrencyCode());
 
@@ -66,16 +74,28 @@ public class BranchReserveService implements BranchReserveInterface {
             throw new RuntimeException("Branch Reserve not found!");
         }
 
-        BigDecimal updatedBalance = currentBranchReserve.getBalance().add(request.getBalance());
+        String token = headerRequest.getHeader("Authorization").substring(7);
+
+        BigDecimal updatedBalance = currentBranchReserve.getBalance().add(request.getAmount());
+
+        BranchReserveLogRequestDTO logRequest = new BranchReserveLogRequestDTO();
+        logRequest.setAmount(request.getAmount());
+        logRequest.setCurrentBalance(currentBranchReserve.getBalance());
+        logRequest.setUpdatedBalance(updatedBalance);
+        logRequest.setUpdatedBy(String.valueOf(jwtService.extractAllClaims(token).get("id")));
+        logRequest.setOperationTypeName("K");
+        logRequest.setBranchReserve(currentBranchReserve);
+        BranchReserveLogResponseDTO logResponse = branchReserveLogService.addBranchReserveLog(logRequest);
+
         currentBranchReserve.setBalance(updatedBalance);
         currentBranchReserve.setUpdatedAt(new Date());
         branchReserveRepository.save(currentBranchReserve);
 
         AddStockResponseDTO response = new AddStockResponseDTO();
         response.setMessage("Success");
+        response.setBranchReserveLogId(logResponse.getBranchReserveLogId());
 
         return response;
-
     }
 
     @Override
