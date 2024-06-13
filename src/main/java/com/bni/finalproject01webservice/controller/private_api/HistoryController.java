@@ -3,7 +3,9 @@ package com.bni.finalproject01webservice.controller.private_api;
 import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
 import com.bni.finalproject01webservice.dto.employee.request.RegisterEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.history.request.HistoryDataRequestDTO;
+import com.bni.finalproject01webservice.dto.history.request.HistoryDetailRequestDTO;
 import com.bni.finalproject01webservice.dto.history.response.HistoryDataResponseDTO;
+import com.bni.finalproject01webservice.dto.history.response.HistoryDetailResponseDTO;
 import com.bni.finalproject01webservice.interfaces.HistoryInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,6 +32,11 @@ public class HistoryController {
     @PostMapping("/get-all")
     public List<HistoryDataResponseDTO> getAllHistoryData(@RequestBody HistoryDataRequestDTO request) {
         return historyService.getHistoryData(request);
+    }
+
+    @PostMapping("/get-detail")
+    public HistoryDetailResponseDTO getHistoryDetail(@RequestBody HistoryDetailRequestDTO request) {
+        return historyService.getHistoryDetail(request);
     }
 
 }
