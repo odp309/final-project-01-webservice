@@ -1,13 +1,18 @@
 package com.bni.finalproject01webservice.service;
 
+import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.dto.history.request.HistoryDataRequestDTO;
+import com.bni.finalproject01webservice.dto.history.request.HistoryDetailRequestDTO;
 import com.bni.finalproject01webservice.dto.history.response.HistoryDataResponseDTO;
+import com.bni.finalproject01webservice.dto.history.response.HistoryDetailResponseDTO;
 import com.bni.finalproject01webservice.interfaces.HistoryInterface;
 import com.bni.finalproject01webservice.model.FinancialTrx;
 
 import com.bni.finalproject01webservice.model.Withdrawal;
+import com.bni.finalproject01webservice.model.WithdrawalDetail;
 import com.bni.finalproject01webservice.repository.FinancialTrxRepository;
 
+import com.bni.finalproject01webservice.repository.WithdrawalDetailRepository;
 import com.bni.finalproject01webservice.repository.WithdrawalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -15,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,9 +28,10 @@ public class HistoryService implements HistoryInterface {
 
     @Autowired
     private FinancialTrxRepository financialTrxRepository;
-
     @Autowired
     private WithdrawalRepository withdrawalRepository;
+    @Autowired
+    private WithdrawalDetailRepository withdrawalDetailRepository;
 
     @Override
     public List<HistoryDataResponseDTO> getHistoryData(HistoryDataRequestDTO request) {
@@ -73,4 +76,69 @@ public class HistoryService implements HistoryInterface {
         }
         return historyDataResponse;
     }
+
+    @Override
+    public HistoryDetailResponseDTO getHistoryDetail(HistoryDetailRequestDTO request) {
+        Optional<FinancialTrx> optionalFinancialTrx = financialTrxRepository.findById(request.getTrxId());
+
+        HistoryDetailResponseDTO response = new HistoryDetailResponseDTO();
+
+        if (optionalFinancialTrx.isPresent())
+        {
+            FinancialTrx financialTrxs = optionalFinancialTrx.get();
+            String[] cekDetail = (financialTrxs.getDetail()).split("/");
+            String firstWord = cekDetail[0].toLowerCase();
+
+
+            response.setTrxId(financialTrxs.getId());
+            response.setAmount(financialTrxs.getAmount());
+            response.setCreatedDate(financialTrxs.getCreatedAt());
+            response.setDetail(financialTrxs.getDetail());
+            response.setOperationType(financialTrxs.getOperationType().getName());
+            response.setTrxType(financialTrxs.getTrxType().getName());
+            response.setCurrencyCode(financialTrxs.getWallet().getCurrency().getCode());
+
+            switch (firstWord){
+                case "beli":
+                case "jual":
+                    BigDecimal kurs = new BigDecimal(cekDetail[2]);
+                    response.setKurs(kurs);
+                    response.setPaidPrice(financialTrxs.getAmount().multiply(kurs));
+                    break;
+                case "transfer":
+                    response.setAccountName(cekDetail[2]);
+                    break;
+            }
+
+        }
+        else
+        {
+            WithdrawalDetail withdrawalTrxs = withdrawalDetailRepository.findById(request.getTrxId()).orElseThrow(() -> new RuntimeException("Trx Id Not found"));
+
+            String[] cekDetail = (withdrawalTrxs.getDetail()).split("/");
+            String firstWord = cekDetail[0].toLowerCase();
+
+            response.setTrxId(withdrawalTrxs.getId());
+            response.setAmount(withdrawalTrxs.getWithdrawal().getAmount());
+            response.setCreatedDate(withdrawalTrxs.getCreatedAt());
+            response.setReservationDate(withdrawalTrxs.getWithdrawal().getReservationDate());
+            response.setDetail(withdrawalTrxs.getDetail());
+            response.setOperationType(withdrawalTrxs.getOperationType().getName());
+            response.setTrxType(withdrawalTrxs.getTrxType().getName());
+            response.setCurrencyCode(withdrawalTrxs.getWallet().getCurrency().getCode());
+
+            switch (firstWord){
+                case "tarik":
+                    response.setReservationCode(withdrawalTrxs.getWithdrawal().getReservationCode());
+                    break;
+                case "refund":
+                    break;
+            }
+
+        }
+
+        return response;
+    }
+
+
 }
