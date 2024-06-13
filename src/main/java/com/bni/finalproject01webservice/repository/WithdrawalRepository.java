@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
 
-    List<Withdrawal> findByBranchCode(String code);
+    List<Withdrawal> findByBranchCode (String code);
 
     Withdrawal findByReservationCode(String reservationCode);
 
@@ -47,6 +47,22 @@ public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
             	w.wallet.currency.code
     """)
     List<RecapWithdrawalResponseDTO> getSumOfAmountGroupedByCurrencyAndMonth(@Param("branchCode") String branchCode);
+
+    @Query("""
+            select
+            	wd.id,
+            	w.amount,
+            	w.createdAt,
+            	w.status,
+            	w.wallet.currency.code,
+            	wd.trxType.name
+            from
+            	WithdrawalDetail wd
+            join wd.withdrawal w
+            where
+            	w.wallet.id = :walletId
+            """)
+    List<Object[]> findBySelectedWalletId (@Param("walletId") UUID walletId);
 
     @Modifying
     @Transactional
