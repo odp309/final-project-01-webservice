@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.controller.private_api;
+package com.bni.finalproject01webservice.controller.v2.private_api;
 
 import com.bni.finalproject01webservice.dto.buy_valas.request.BuyValasRequestDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.request.DetailBuyValasRequestDTO;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/private/buy-valas")
+@RequestMapping("/api/v2/private/buy-valas")
 @SecurityRequirement(name = "access-token")
-@Tag(name = "Private API", description = "Private API secured with JWT token")
-public class BuyValasController {
+@Tag(name = "Private API V2", description = "Private API secured with JWT token")
+public class BuyValasControllerV2 {
 
     @Autowired
     private BuyValasService buyValasService;

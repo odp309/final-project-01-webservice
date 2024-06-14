@@ -1,14 +1,12 @@
-package com.bni.finalproject01webservice.controller.public_api;
+package com.bni.finalproject01webservice.controller.v1.public_api;
 
 import com.bni.finalproject01webservice.configuration.exceptions.RefreshTokenException;
 import com.bni.finalproject01webservice.dto.auth.request.LoginRequestDTO;
 import com.bni.finalproject01webservice.dto.auth.request.RefreshTokenRequestDTO;
-import com.bni.finalproject01webservice.dto.user.request.RegisterUserRequestDTO;
 import com.bni.finalproject01webservice.dto.auth.response.LoginResponseDTO;
-import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
+import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import com.bni.finalproject01webservice.interfaces.JWTInterface;
 import com.bni.finalproject01webservice.interfaces.RefreshTokenInterface;
-import com.bni.finalproject01webservice.interfaces.UserInterface;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,30 +15,22 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/public/user")
+@RequestMapping("/api/v1/public/employee")
 @Tag(name = "Public API", description = "Public API open to the public")
-public class UserPublicController {
+public class EmployeePublicController {
 
-    private final UserInterface userService;
+    private final EmployeeInterface employeeService;
     private final JWTInterface jwtService;
     private final RefreshTokenInterface refreshTokenService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
         try {
-            LoginResponseDTO result = userService.login(request);
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            authentication.getPrincipal();
+            LoginResponseDTO result = employeeService.login(request);
             return ResponseEntity.ok(result);
         } catch (Exception ex) {
             throw new BadCredentialsException("Bad Credentials");
         }
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterUserRequestDTO request) {
-        RegisterResponseDTO result = userService.register(request);
-        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/refresh-token")
@@ -50,8 +40,8 @@ public class UserPublicController {
                 .findByToken(requestRefreshToken)
                 .map(refreshTokenService::verifyExpiration)
                 .map(refreshToken -> {
-                    if (refreshToken.getUser() != null) {
-                        String accessToken = jwtService.generateTokenUser(refreshToken.getUser());
+                    if (refreshToken.getEmployee() != null) {
+                        String accessToken = jwtService.generateTokenEmployee(refreshToken.getEmployee());
                         LoginResponseDTO response = new LoginResponseDTO();
                         response.setAccessToken(accessToken);
                         response.setRefreshToken(requestRefreshToken);

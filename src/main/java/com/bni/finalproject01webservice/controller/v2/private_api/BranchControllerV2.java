@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.controller.private_api;
+package com.bni.finalproject01webservice.controller.v2.private_api;
 
 import com.bni.finalproject01webservice.dto.branch.request.BranchRequestDTO;
 import com.bni.finalproject01webservice.dto.branch.response.BranchResponseDTO;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/private/branch")
+@RequestMapping("/api/v2/private/branch")
 @SecurityRequirement(name = "access-token")
-@Tag(name = "Private API", description = "Private API secured with JWT token")
-public class BranchController {
+@Tag(name = "Private API V2", description = "Private API secured with JWT token")
+public class BranchControllerV2 {
 
     @Autowired
     private BranchInterface branchService;

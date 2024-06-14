@@ -91,9 +91,9 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                 if (handler instanceof HandlerMethod handlerMethod) {
                     String controllerName = handlerMethod.getBeanType().getSimpleName();
                     String methodName = handlerMethod.getMethod().getName();
-                    if ("EmployeePublicController".equals(controllerName) && "login".equals(methodName)) {
+                    if (("EmployeePublicController".equals(controllerName) || "EmployeePublicControllerV2".equals(controllerName)) && "login".equals(methodName)) {
                         customUserDetailsService.setUDSRole("EMPLOYEE");
-                    } else if ("UserPublicController".equals(controllerName) && "login".equals(methodName)) {
+                    } else if (("UserPublicController".equals(controllerName) || "UserPublicControllerV2".equals(controllerName)) && "login".equals(methodName)) {
                         customUserDetailsService.setUDSRole("USER");
                     } else {
                         customUserDetailsService.setUDSRole("");

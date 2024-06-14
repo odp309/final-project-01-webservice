@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.controller.public_api;
+package com.bni.finalproject01webservice.controller.v1.public_api;
 
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.interfaces.*;

@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.controller.private_api;
+package com.bni.finalproject01webservice.controller.v1.private_api;
 
 import com.bni.finalproject01webservice.dto.sell_valas.request.DetailSellValasRequestDTO;
 import com.bni.finalproject01webservice.dto.sell_valas.request.SellValasRequestDTO;

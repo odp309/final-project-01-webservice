@@ -42,7 +42,9 @@ public class OpenAPIConfiguration {
                                 .bearerFormat("JWT")))
                 .tags(List.of(
                         new Tag().name("Private API").description("Private API secured with JWT token"),
-                        new Tag().name("Public API").description("Public API open to the public")
+                        new Tag().name("Public API").description("Public API open to the public"),
+                        new Tag().name("Private API V2").description("Private API secured with JWT token"),
+                        new Tag().name("Public API V2").description("Public API open to the public")
                 ));
     }
 }

@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.controller.private_api;
+package com.bni.finalproject01webservice.controller.v2.private_api;
 
 import com.bni.finalproject01webservice.dto.transfer_valas.request.DetailTransferValasRequestDTO;
 import com.bni.finalproject01webservice.dto.transfer_valas.request.TransferValasRequestDTO;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/private/transfer-valas")
+@RequestMapping("/api/v2/private/transfer-valas")
 @SecurityRequirement(name = "access-token")
-@Tag(name = "Private API", description = "Private API secured with JWT token")
-public class TransferValasController {
+@Tag(name = "Private API V2", description = "Private API secured with JWT token")
+public class TransferValasControllerV2 {
 
     @Autowired
     private TransferValasInterface transferValasService;

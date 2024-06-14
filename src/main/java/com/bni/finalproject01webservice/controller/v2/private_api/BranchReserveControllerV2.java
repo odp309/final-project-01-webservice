@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.controller.private_api;
+package com.bni.finalproject01webservice.controller.v2.private_api;
 
 import com.bni.finalproject01webservice.dto.branch_reserve.request.AddBranchReserveRequestDTO;
 import com.bni.finalproject01webservice.dto.branch_reserve.request.AddStockRequestDTO;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/private/branch-reserve")
+@RequestMapping("/api/v2/private/branch-reserve")
 @SecurityRequirement(name = "access-token")
-@Tag(name = "Private API", description = "Private API secured with JWT token")
-public class BranchReserveController {
+@Tag(name = "Private API V2", description = "Private API secured with JWT token")
+public class BranchReserveControllerV2 {
 
     @Autowired
     private BranchReserveInterface branchReserveService;

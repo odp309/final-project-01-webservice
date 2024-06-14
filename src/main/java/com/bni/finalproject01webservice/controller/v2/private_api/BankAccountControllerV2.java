@@ -1,4 +1,4 @@
-package com.bni.finalproject01webservice.controller.private_api;
+package com.bni.finalproject01webservice.controller.v2.private_api;
 
 import com.bni.finalproject01webservice.dto.bank_account.request.AddBankAccountRequestDTO;
 import com.bni.finalproject01webservice.dto.bank_account.request.GetAllBankAccountRequestDTO;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/private/bank_account")
+@RequestMapping("/api/v2/private/bank_account")
 @SecurityRequirement(name = "access-token")
-@Tag(name = "Private API", description = "Private API secured with JWT token")
-public class BankAccountController {
+@Tag(name = "Private API V2", description = "Private API secured with JWT token")
+public class BankAccountControllerV2 {
 
     @Autowired
     private BankAccountInterface bankAccountInterface;
