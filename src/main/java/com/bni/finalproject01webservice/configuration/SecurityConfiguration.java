@@ -49,6 +49,11 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/v2/private/employee/for-admin-mgr", "/api/v1/private/employee/for-admin-mgr/**").hasRole("ADMIN_MGR")
+                        .requestMatchers("/api/v2/private/employee/for-admin", "/api/v1/private/employee/for-admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v2/private/employee/for-teller", "/api/v1/private/employee/for-teller/**").hasRole("TELLER")
+                        .requestMatchers("/api/v2/private/user/**").hasRole("USER")
+                        .requestMatchers("/api/v2/private/**").authenticated()
                         .requestMatchers("/api/v1/private/employee/for-admin-mgr", "/api/v1/private/employee/for-admin-mgr/**").hasRole("ADMIN_MGR")
                         .requestMatchers("/api/v1/private/employee/for-admin", "/api/v1/private/employee/for-admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/private/employee/for-teller", "/api/v1/private/employee/for-teller/**").hasRole("TELLER")
