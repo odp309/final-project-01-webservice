@@ -65,7 +65,7 @@ public class ReservationListService implements ReservationInterface {
             //tambah juga nanti di responseDTO nya
 
 
-            response.setUpdatedStatus("SUCCESS");
+            response.setUpdatedStatus("Sukses");
             response.setMessage("Withdrawal Transaction Succeed");
         }
         else
