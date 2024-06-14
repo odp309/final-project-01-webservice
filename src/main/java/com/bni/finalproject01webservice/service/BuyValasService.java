@@ -5,16 +5,15 @@ import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.configuration.exceptions.WalletException;
 import com.bni.finalproject01webservice.dto.buy_valas.request.BuyValasRequestDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.request.DetailBuyValasRequestDTO;
+import com.bni.finalproject01webservice.dto.buy_valas.request.LimitCheckRequestDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.response.BuyValasResponseDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.response.DetailBuyValasResponseDTO;
+import com.bni.finalproject01webservice.dto.buy_valas.response.LimitCheckResponseDTO;
 import com.bni.finalproject01webservice.dto.financial_trx.request.FinancialTrxRequestDTO;
 import com.bni.finalproject01webservice.dto.financial_trx.response.FinancialTrxResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BuyValasInterface;
 import com.bni.finalproject01webservice.interfaces.FinancialTrxInterface;
-import com.bni.finalproject01webservice.model.BankAccount;
-import com.bni.finalproject01webservice.model.ExchangeRate;
-import com.bni.finalproject01webservice.model.User;
-import com.bni.finalproject01webservice.model.Wallet;
+import com.bni.finalproject01webservice.model.*;
 import com.bni.finalproject01webservice.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 @Service
@@ -33,12 +33,17 @@ public class BuyValasService implements BuyValasInterface {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final WalletRepository walletRepository;
+    private final UserLimitRepository userLimitRepository;
+
 
     private final FinancialTrxInterface financialTrxService;
 
     @Override
     public DetailBuyValasResponseDTO detailBuyValas(DetailBuyValasRequestDTO request) {
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
+        UserLimit userLimit = userLimitRepository.findByUserId(wallet.getUser().getId());
+
+        BigDecimal currLimit = userLimit.getLimitAccumulation();
 
         if (request.getAmountToBuy().compareTo(wallet.getCurrency().getMinimumBuy()) < 0) {
             throw new TransactionException("Amount is less than the minimum buy!");
@@ -51,6 +56,10 @@ public class BuyValasService implements BuyValasInterface {
 
         if (paidPrice.compareTo(bankAccount.getBalance()) > 0) {
             throw new TransactionException("Balance insufficient!");
+        }
+
+        if (currLimit.compareTo(request.getAmountToBuy()) > 0){
+            throw new TransactionException("Your purchase limit has been exceeded");
         }
 
         DetailBuyValasResponseDTO response = new DetailBuyValasResponseDTO();
@@ -70,6 +79,8 @@ public class BuyValasService implements BuyValasInterface {
         BankAccount bankAccount = bankAccountRepository.findByAccountNumber(wallet.getBankAccount().getAccountNumber());
         User user = userRepository.findById(bankAccount.getUser().getId()).orElseThrow(() -> new UserException("User not found!"));
         ExchangeRate exchangeRate = exchangeRateRepository.findExchangeRate(wallet.getCurrency().getCode());
+        ExchangeRate usdExchangeRate = exchangeRateRepository.findExchangeRate("USD");
+        UserLimit userLimit = userLimitRepository.findByUserId(wallet.getUser().getId());
 
         if (request.getAmountToBuy().compareTo(wallet.getCurrency().getMinimumBuy()) < 0) {
             throw new TransactionException("Amount is less than the minimum buy!");
@@ -83,6 +94,12 @@ public class BuyValasService implements BuyValasInterface {
 
         BigDecimal currBalance = bankAccount.getBalance();
         BigDecimal paidPrice = request.getAmountToBuy().multiply(exchangeRate.getBuyRate());
+        BigDecimal usdConvertion;
+        BigDecimal currLimit = userLimit.getLimitAccumulation();
+
+        if (currLimit.compareTo(request.getAmountToBuy()) < 0) {
+            throw new TransactionException("Your purchase limit has been exceeded");
+        }
 
         if (paidPrice.compareTo(currBalance) > 0) {
             throw new TransactionException("Balance insufficient!");
@@ -97,6 +114,22 @@ public class BuyValasService implements BuyValasInterface {
         bankAccount.setBalance(currBalance.subtract(paidPrice));
         bankAccount.setUpdatedAt(new Date());
         bankAccountRepository.save(bankAccount);
+
+        //converting currency to usd currency
+        if (wallet.getCurrency().getCode().equalsIgnoreCase("USD"))
+        {
+            usdConvertion = request.getAmountToBuy();
+        }
+        else
+        {
+            BigDecimal usdAmount = usdExchangeRate.getBuyRate();
+            int scale = 2;
+            usdConvertion = paidPrice.divide(usdAmount, scale, RoundingMode.HALF_UP);
+        }
+
+        // user limit update (-)
+        userLimit.setLimitAccumulation(userLimit.getLimitAccumulation().subtract(usdConvertion));
+        userLimit.setUpdatedAt(new Date());
 
         // create financial trx
         FinancialTrxRequestDTO financialTrxRequest = new FinancialTrxRequestDTO();
@@ -115,6 +148,17 @@ public class BuyValasService implements BuyValasInterface {
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
         response.setCreatedAt(new Date());
+
+        return response;
+    }
+
+    @Override
+    public LimitCheckResponseDTO getCurrentUserLimt(LimitCheckRequestDTO request) {
+
+        UserLimit currLimit = userLimitRepository.findByUserId(request.getId());
+        LimitCheckResponseDTO response = new LimitCheckResponseDTO();
+
+        response.setCurrLimit(currLimit.getLimitAccumulation());
 
         return response;
     }

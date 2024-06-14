@@ -55,13 +55,15 @@ public class ReservationListService implements ReservationInterface {
 //            return response;
 //        }
 
-        if (reservation.getStatus().equalsIgnoreCase("SCHEDULED"))
+        if (reservation.getStatus().equalsIgnoreCase("Terjadwal"))
         {
-            reservation.setStatus("SUCCESS");
+            reservation.setStatus("Sukses");
             reservation.setUpdatedAt(new Date());
+            //reservation.setDoneBy();
             withdrawalRepository.save(reservation);
             //harus tambah response lastupdatedBy siapa tapi nanti nunggu bagas ubah modelnya dulu
             //tambah juga nanti di responseDTO nya
+
 
             response.setUpdatedStatus("SUCCESS");
             response.setMessage("Withdrawal Transaction Succeed");
