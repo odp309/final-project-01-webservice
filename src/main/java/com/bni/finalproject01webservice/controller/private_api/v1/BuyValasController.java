@@ -2,8 +2,10 @@ package com.bni.finalproject01webservice.controller.private_api.v1;
 
 import com.bni.finalproject01webservice.dto.buy_valas.request.BuyValasRequestDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.request.DetailBuyValasRequestDTO;
+import com.bni.finalproject01webservice.dto.buy_valas.request.LimitCheckRequestDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.response.BuyValasResponseDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.response.DetailBuyValasResponseDTO;
+import com.bni.finalproject01webservice.dto.buy_valas.response.LimitCheckResponseDTO;
 import com.bni.finalproject01webservice.service.BuyValasService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,5 +32,10 @@ public class BuyValasController {
     @PostMapping("/buy")
     public BuyValasResponseDTO buyValas(@RequestBody BuyValasRequestDTO request) {
         return buyValasService.buyValas(request);
+    }
+
+    @PostMapping("/limit-cek")
+    public LimitCheckResponseDTO limitCheck(@RequestBody LimitCheckRequestDTO request) {
+        return buyValasService.getCurrentUserLimt(request);
     }
 }
