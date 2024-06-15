@@ -7,6 +7,7 @@ import com.bni.finalproject01webservice.dto.withdraw_valas.response.WithdrawVala
 import com.bni.finalproject01webservice.interfaces.WithdrawValasInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,12 +24,12 @@ public class WithdrawValasControllerV2 {
     private WithdrawValasInterface withdrawValasService;
 
     @PostMapping("/detail")
-    public DetailWithdrawValasResponseDTO detailWithdrawValas(@RequestBody DetailWithdrawValasRequestDTO request) {
-        return withdrawValasService.detailWithdrawValas(request);
+    public DetailWithdrawValasResponseDTO detailWithdrawValas(@RequestBody DetailWithdrawValasRequestDTO request, HttpServletRequest headerRequest) {
+        return withdrawValasService.detailWithdrawValas(request, headerRequest);
     }
 
     @PostMapping("/withdraw")
-    public WithdrawValasResponseDTO withdrawValas(@RequestBody WithdrawValasRequestDTO request) {
-        return withdrawValasService.withdrawValas(request);
+    public WithdrawValasResponseDTO withdrawValas(@RequestBody WithdrawValasRequestDTO request, HttpServletRequest headerRequest) {
+        return withdrawValasService.withdrawValas(request, headerRequest);
     }
 }

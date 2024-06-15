@@ -13,12 +13,14 @@ import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import com.bni.finalproject01webservice.interfaces.JWTInterface;
 import com.bni.finalproject01webservice.interfaces.RefreshTokenInterface;
+import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
 import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.Employee;
 import com.bni.finalproject01webservice.model.Role;
 import com.bni.finalproject01webservice.repository.BranchRepository;
 import com.bni.finalproject01webservice.repository.EmployeeRepository;
 import com.bni.finalproject01webservice.repository.RoleRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,8 +41,10 @@ public class EmployeeService implements EmployeeInterface {
     private final EmployeeRepository employeeRepository;
     private final BranchRepository branchRepository;
     private final RoleRepository roleRepository;
+
     private final JWTInterface jwtService;
     private final RefreshTokenInterface refreshTokenService;
+    private final ResourceRequestCheckerInterface resourceRequestCheckerService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
@@ -102,6 +107,7 @@ public class EmployeeService implements EmployeeInterface {
             employee.setIsActive(true);
             employee.setBranch(branch);
             employee.setRole(Objects.requireNonNullElse(currAdminMgrRole, adminMgrRole));
+            employee.setCreatedBy("SYSTEM");
             employee.setCreatedAt(new Date());
             employeeRepository.save(employee);
             status += "Admin manager account has been initialized!";
@@ -139,7 +145,11 @@ public class EmployeeService implements EmployeeInterface {
     }
 
     @Override
-    public RegisterResponseDTO registerAdmin(RegisterEmployeeRequestDTO request) {
+    public RegisterResponseDTO registerAdmin(RegisterEmployeeRequestDTO request, HttpServletRequest headerRequest) {
+
+        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        String branchCode = resourceRequestCheckerService.extractBranchCodeFromToken(headerRequest);
+
         Employee currData = employeeRepository.findByEmail(request.getEmail());
 
         if (currData != null) {
@@ -147,7 +157,7 @@ public class EmployeeService implements EmployeeInterface {
         }
 
         Role role = roleRepository.findByName("ADMIN");
-        Branch branch = branchRepository.findById(request.getBranchCode()).orElseThrow(() -> new RuntimeException("Branch not found!"));
+        Branch branch = branchRepository.findById(branchCode).orElseThrow(() -> new RuntimeException("Branch not found!"));
 
         Employee newEmployee = new Employee();
         newEmployee.setEmail(request.getEmail());
@@ -159,7 +169,7 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setRole(role);
         newEmployee.setCreatedAt(new Date());
         newEmployee.setBranch(branch);
-
+        newEmployee.setCreatedBy(String.valueOf(userId));
         employeeRepository.save(newEmployee);
 
         RegisterResponseDTO response = new RegisterResponseDTO();
@@ -170,7 +180,11 @@ public class EmployeeService implements EmployeeInterface {
     }
 
     @Override
-    public RegisterResponseDTO registerTeller(RegisterEmployeeRequestDTO request) {
+    public RegisterResponseDTO registerTeller(RegisterEmployeeRequestDTO request, HttpServletRequest headerRequest) {
+
+        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        String branchCode = resourceRequestCheckerService.extractBranchCodeFromToken(headerRequest);
+
         Employee currData = employeeRepository.findByEmail(request.getEmail());
 
         if (currData != null) {
@@ -178,7 +192,7 @@ public class EmployeeService implements EmployeeInterface {
         }
 
         Role role = roleRepository.findByName("TELLER");
-        Branch branch = branchRepository.findById(request.getBranchCode()).orElseThrow(() -> new RuntimeException("Branch not found!"));
+        Branch branch = branchRepository.findById(branchCode).orElseThrow(() -> new RuntimeException("Branch not found!"));
 
         Employee newEmployee = new Employee();
         newEmployee.setEmail(request.getEmail());
@@ -190,7 +204,7 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setRole(role);
         newEmployee.setCreatedAt(new Date());
         newEmployee.setBranch(branch);
-
+        newEmployee.setCreatedBy(String.valueOf(userId));
         employeeRepository.save(newEmployee);
 
         RegisterResponseDTO response = new RegisterResponseDTO();
@@ -241,5 +255,32 @@ public class EmployeeService implements EmployeeInterface {
         }
 
         return response;
+    }
+
+    //////////////////////////////// VERSION 2.0 BLOCK ////////////////////////////////
+
+    @Override
+    public List<EmployeeResponseDTO> getAllEmployee(GetAllEmployeeRequestDTO request, HttpServletRequest headerRequest) {
+
+        String branchCode = resourceRequestCheckerService.extractBranchCodeFromToken(headerRequest);
+
+        List<Employee> employees = employeeRepository.findByBranchCode(branchCode);
+
+        return employees.stream()
+                .map(employee -> {
+                    EmployeeResponseDTO response = new EmployeeResponseDTO();
+                    response.setId(employee.getId());
+                    response.setBranchCode(employee.getBranch().getCode());
+                    response.setRoleName(employee.getRole().getName());
+                    response.setEmail(employee.getEmail());
+                    response.setFirstName(employee.getFirstName());
+                    response.setLastName(employee.getLastName());
+                    response.setNip(employee.getNip());
+                    response.setIsActive(employee.getIsActive());
+                    response.setCreatedAt(employee.getCreatedAt());
+                    response.setUpdatedAt(employee.getUpdatedAt());
+                    return response;
+                })
+                .collect(Collectors.toList());
     }
 }

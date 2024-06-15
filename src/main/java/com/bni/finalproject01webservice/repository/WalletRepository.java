@@ -17,6 +17,8 @@ public interface WalletRepository extends JpaRepository<Wallet, UUID> {
 
    Wallet findByBankAccountAccountNumberAndCurrencyCode(String accountNumber, String code);
 
+   List<Wallet> findByUserId(UUID userId);
+
    @Modifying
    @Transactional
    @Query("""

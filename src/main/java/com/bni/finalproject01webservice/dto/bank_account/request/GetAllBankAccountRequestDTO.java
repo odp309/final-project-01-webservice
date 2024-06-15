@@ -9,5 +9,5 @@ import java.util.UUID;
 @Setter
 public class GetAllBankAccountRequestDTO {
 
-    private UUID userId;
+    private UUID userId; // unused
 }

@@ -4,7 +4,7 @@ import com.bni.finalproject01webservice.dto.sell_valas.request.DetailSellValasRe
 import com.bni.finalproject01webservice.dto.sell_valas.request.SellValasRequestDTO;
 import com.bni.finalproject01webservice.dto.sell_valas.response.DetailSellValasResponseDTO;
 import com.bni.finalproject01webservice.dto.sell_valas.response.SellValasResponseDTO;
-import com.bni.finalproject01webservice.service.SellValasService;
+import com.bni.finalproject01webservice.interfaces.SellValasInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SellValasController {
 
     @Autowired
-    private SellValasService sellValasService;
+    private SellValasInterface sellValasService;
 
     @PostMapping("/detail")
     public DetailSellValasResponseDTO detailSellValas(@RequestBody DetailSellValasRequestDTO request) {

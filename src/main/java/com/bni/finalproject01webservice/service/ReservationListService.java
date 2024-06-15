@@ -5,8 +5,10 @@ import com.bni.finalproject01webservice.dto.reservation_list.request.UpdateReser
 import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.UpdateReservationStatusResponseDTO;
 import com.bni.finalproject01webservice.interfaces.ReservationInterface;
+import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
 import com.bni.finalproject01webservice.model.Withdrawal;
 import com.bni.finalproject01webservice.repository.WithdrawalRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 public class ReservationListService implements ReservationInterface {
 
     private final WithdrawalRepository withdrawalRepository;
+
+    private final ResourceRequestCheckerInterface resourceRequestCheckerService;
 
     @Override
     public List<ReservationListResponseDTO> getAllReservation(ReservationListRequestDTO request) {
@@ -73,5 +77,31 @@ public class ReservationListService implements ReservationInterface {
         }
 
         return response;
+    }
+
+    //////////////////////////////// VERSION 2.0 BLOCK ////////////////////////////////
+
+    @Override
+    public List<ReservationListResponseDTO> getAllReservation(ReservationListRequestDTO request, HttpServletRequest headerRequest) {
+
+        String branchCode = resourceRequestCheckerService.extractBranchCodeFromToken(headerRequest);
+
+        List<Withdrawal> reserve = withdrawalRepository.findByBranchCode(branchCode);
+
+        return reserve.stream()
+                .map(data -> {
+                    ReservationListResponseDTO response = new ReservationListResponseDTO();
+                    response.setReservationNumber(data.getReservationCode());
+                    response.setReservationDate(data.getReservationDate());
+                    response.setCreatedDate(data.getCreatedAt());
+                    response.setStatus(data.getStatus());
+                    response.setAmount(data.getAmount());
+                    response.setCurrencyCode(data.getWallet().getCurrency().getCode());
+                    response.setCustomerName(data.getUser().getFirstName() + " " + data.getUser().getLastName());
+                    response.setAccountNumber(data.getWallet().getBankAccount().getAccountNumber());
+
+                    return response;
+                })
+                .collect(Collectors.toList());
     }
 }

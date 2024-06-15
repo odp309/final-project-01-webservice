@@ -4,9 +4,10 @@ import com.bni.finalproject01webservice.dto.buy_valas.request.BuyValasRequestDTO
 import com.bni.finalproject01webservice.dto.buy_valas.request.DetailBuyValasRequestDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.response.BuyValasResponseDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.response.DetailBuyValasResponseDTO;
-import com.bni.finalproject01webservice.service.BuyValasService;
+import com.bni.finalproject01webservice.interfaces.BuyValasInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,15 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class BuyValasControllerV2 {
 
     @Autowired
-    private BuyValasService buyValasService;
+    private BuyValasInterface buyValasService;
 
     @PostMapping("/detail")
-    public DetailBuyValasResponseDTO detailBuyValas(@RequestBody DetailBuyValasRequestDTO request) {
-        return buyValasService.detailBuyValas(request);
+    public DetailBuyValasResponseDTO detailBuyValas(@RequestBody DetailBuyValasRequestDTO request, HttpServletRequest headerRequest) {
+        return buyValasService.detailBuyValas(request, headerRequest);
     }
 
     @PostMapping("/buy")
-    public BuyValasResponseDTO buyValas(@RequestBody BuyValasRequestDTO request) {
-        return buyValasService.buyValas(request);
+    public BuyValasResponseDTO buyValas(@RequestBody BuyValasRequestDTO request, HttpServletRequest headerRequest) {
+        return buyValasService.buyValas(request, headerRequest);
     }
 }

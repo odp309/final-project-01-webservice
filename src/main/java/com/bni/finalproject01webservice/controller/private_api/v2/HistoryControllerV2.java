@@ -7,6 +7,7 @@ import com.bni.finalproject01webservice.dto.history.response.HistoryDetailRespon
 import com.bni.finalproject01webservice.interfaces.HistoryInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,16 +23,15 @@ import java.util.List;
 public class HistoryControllerV2 {
 
     @Autowired
-    private  HistoryInterface historyService;
+    private HistoryInterface historyService;
 
     @PostMapping("/get-all")
-    public List<HistoryDataResponseDTO> getAllHistoryData(@RequestBody HistoryDataRequestDTO request) {
-        return historyService.getHistoryData(request);
+    public List<HistoryDataResponseDTO> getAllHistoryData(@RequestBody HistoryDataRequestDTO request, HttpServletRequest headerRequest) {
+        return historyService.getHistoryData(request, headerRequest);
     }
 
     @PostMapping("/get-detail")
-    public HistoryDetailResponseDTO getHistoryDetail(@RequestBody HistoryDetailRequestDTO request) {
-        return historyService.getHistoryDetail(request);
+    public HistoryDetailResponseDTO getHistoryDetail(@RequestBody HistoryDetailRequestDTO request, HttpServletRequest headerRequest) {
+        return historyService.getHistoryDetail(request, headerRequest);
     }
-
 }

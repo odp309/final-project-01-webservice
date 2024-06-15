@@ -26,18 +26,12 @@ public class BranchReserveControllerV2 {
     private BranchReserveInterface branchReserveService;
 
     @PostMapping("/add")
-    public BranchReserveResponseDTO addBranchReserve(@RequestBody AddBranchReserveRequestDTO request) {
-        return branchReserveService.addBranchReserve(request);
-    }
-
-    @PostMapping("/add-stock")
-    @PreAuthorize("hasRole('ADMIN')")
-    public AddStockResponseDTO addStock(@RequestBody AddStockRequestDTO request, HttpServletRequest headerRequest) {
-        return branchReserveService.addStockBranchReserve(request, headerRequest);
+    public BranchReserveResponseDTO addBranchReserve(@RequestBody AddBranchReserveRequestDTO request, HttpServletRequest headerRequest) {
+        return branchReserveService.addBranchReserve(request, headerRequest);
     }
 
     @PostMapping("/get")
-    public List<GetBranchReserveResponseDTO> getBranchReserve(@RequestBody GetBranchReserveRequestDTO request) {
-        return branchReserveService.getBranchReserveList(request);
+    public List<GetBranchReserveResponseDTO> getBranchReserve(@RequestBody GetBranchReserveRequestDTO request, HttpServletRequest headerRequest) {
+        return branchReserveService.getBranchReserveList(request, headerRequest);
     }
 }

@@ -53,6 +53,10 @@ public class CustomExceptionHandler {
             status = HttpStatus.UNAUTHORIZED;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "Pin is invalid");
+        } else if (ex instanceof UserException && ex.getMessage().equals("Un-match request!")) {
+            status = HttpStatus.UNAUTHORIZED;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Requested resource does not match the token");
         } else if (ex instanceof WalletException && ex.getMessage().equals("Wallet already exist!")) {
             status = HttpStatus.CONFLICT;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());

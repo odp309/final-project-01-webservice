@@ -8,5 +8,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class HistoryDataRequestDTO {
+
     private UUID walletId;
 }

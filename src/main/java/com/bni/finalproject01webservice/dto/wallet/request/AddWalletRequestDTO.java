@@ -10,7 +10,7 @@ import java.util.UUID;
 @Setter
 public class AddWalletRequestDTO {
 
-    private UUID userId;
+    private UUID userId; // unused
     private String accountNumber;
     private String currencyCode;
     private BigDecimal amountToBuy;

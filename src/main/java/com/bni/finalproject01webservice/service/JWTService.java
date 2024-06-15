@@ -42,7 +42,6 @@ public class JWTService implements JWTInterface {
     @Override
     public String generateTokenEmployee(Employee employee) {
         Instant now = Instant.now();
-//        Instant expirationTime = now.plusSeconds(24 * 60 * 60); // 1 Day
         Instant expirationTime = now.plusSeconds(600); // 10 Min
 
         return Jwts

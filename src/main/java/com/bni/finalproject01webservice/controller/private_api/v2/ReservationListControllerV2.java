@@ -1,6 +1,5 @@
 package com.bni.finalproject01webservice.controller.private_api.v2;
 
-
 import com.bni.finalproject01webservice.dto.reservation_list.request.ReservationListRequestDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.request.UpdateReservationStatusRequestDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
@@ -8,6 +7,7 @@ import com.bni.finalproject01webservice.dto.reservation_list.response.UpdateRese
 import com.bni.finalproject01webservice.interfaces.ReservationInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,13 +26,12 @@ public class ReservationListControllerV2 {
     private ReservationInterface reservationService;
 
     @PostMapping("/get")
-    public List<ReservationListResponseDTO> getAllReservationList(@RequestBody ReservationListRequestDTO request) {
-        return reservationService.getAllReservation(request);
+    public List<ReservationListResponseDTO> getAllReservationList(@RequestBody ReservationListRequestDTO request, HttpServletRequest headerRequest) {
+        return reservationService.getAllReservation(request, headerRequest);
     }
 
     @PostMapping("/update-status")
     public UpdateReservationStatusResponseDTO updateReservationUpdate(@RequestBody UpdateReservationStatusRequestDTO request) {
         return reservationService.updateReservationStatus(request);
     }
-
 }

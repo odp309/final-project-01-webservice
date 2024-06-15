@@ -21,7 +21,7 @@ public class CurrencyController {
     private CurrencyInterface currencyService;
 
     @GetMapping("/get-all")
-    public List<CurrencyResponseDTO> registerAdmin() {
+    public List<CurrencyResponseDTO> getAllCurrency() {
         return currencyService.getAllCurrency();
     }
 

@@ -5,6 +5,7 @@ import com.bni.finalproject01webservice.dto.withdrawal.response.ReportWithdrawal
 import com.bni.finalproject01webservice.interfaces.WithdrawalInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class WithdrawalControllerV2 {
     WithdrawalInterface withdrawalService;
 
     @PostMapping("/get-report")
-    public ReportWithdrawalResponseDTO getReport(@RequestBody ReportWithdrawalRequestDTO request) {
-        return withdrawalService.reportWithdrawal(request);
+    public ReportWithdrawalResponseDTO getReport(@RequestBody ReportWithdrawalRequestDTO request, HttpServletRequest headerRequest) {
+        return withdrawalService.reportWithdrawal(request, headerRequest);
     }
 }

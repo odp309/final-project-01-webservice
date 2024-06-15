@@ -9,6 +9,7 @@ import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDT
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,22 +28,22 @@ public class EmployeeControllerV2 {
 
     @PostMapping("/for-admin-mgr/register/admin")
     @PreAuthorize("hasRole('ADMIN_MGR')")
-    public ResponseEntity<RegisterResponseDTO> registerAdmin(@RequestBody RegisterEmployeeRequestDTO request) {
-        RegisterResponseDTO result = employeeService.registerAdmin(request);
+    public ResponseEntity<RegisterResponseDTO> registerAdmin(@RequestBody RegisterEmployeeRequestDTO request, HttpServletRequest headerRequest) {
+        RegisterResponseDTO result = employeeService.registerAdmin(request, headerRequest);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping("/for-admin-mgr/register/teller")
     @PreAuthorize("hasRole('ADMIN_MGR')")
-    public ResponseEntity<RegisterResponseDTO> registerTeller(@RequestBody RegisterEmployeeRequestDTO request) {
-        RegisterResponseDTO result = employeeService.registerTeller(request);
+    public ResponseEntity<RegisterResponseDTO> registerTeller(@RequestBody RegisterEmployeeRequestDTO request, HttpServletRequest headerRequest) {
+        RegisterResponseDTO result = employeeService.registerTeller(request, headerRequest);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping("/for-admin-mgr/get-all-employees")
     @PreAuthorize("hasRole('ADMIN_MGR')")
-    public List<EmployeeResponseDTO> getAllEmployee(@RequestBody GetAllEmployeeRequestDTO request) {
-        return employeeService.getAllEmployee(request);
+    public List<EmployeeResponseDTO> getAllEmployee(@RequestBody GetAllEmployeeRequestDTO request, HttpServletRequest headerRequest) {
+        return employeeService.getAllEmployee(request, headerRequest);
     }
 
     @PostMapping("/for-admin-mgr/activate-employee")

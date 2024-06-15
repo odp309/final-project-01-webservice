@@ -7,5 +7,5 @@ import lombok.Setter;
 @Getter
 public class GetBranchReserveRequestDTO {
 
-    private String branchCode;
+    private String branchCode; // unused
 }

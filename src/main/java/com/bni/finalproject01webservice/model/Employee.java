@@ -35,6 +35,9 @@ public class Employee {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
+    @Column(name = "created_by", nullable = false)
+    private String createdBy;
+
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 

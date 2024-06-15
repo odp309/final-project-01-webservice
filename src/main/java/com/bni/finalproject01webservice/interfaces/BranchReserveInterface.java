@@ -20,4 +20,10 @@ public interface BranchReserveInterface {
     AddStockResponseDTO addStockBranchReserve(AddStockRequestDTO request, HttpServletRequest headerRequest);
 
     List<GetBranchReserveResponseDTO> getBranchReserveList(GetBranchReserveRequestDTO request);
+
+    //////////////////////////////// VERSION 2.0 BLOCK ////////////////////////////////
+
+    BranchReserveResponseDTO addBranchReserve(AddBranchReserveRequestDTO request, HttpServletRequest headerRequest);
+
+    List<GetBranchReserveResponseDTO> getBranchReserveList(GetBranchReserveRequestDTO request, HttpServletRequest headerRequest);
 }

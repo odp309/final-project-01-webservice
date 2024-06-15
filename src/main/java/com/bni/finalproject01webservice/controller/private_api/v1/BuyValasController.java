@@ -4,7 +4,7 @@ import com.bni.finalproject01webservice.dto.buy_valas.request.BuyValasRequestDTO
 import com.bni.finalproject01webservice.dto.buy_valas.request.DetailBuyValasRequestDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.response.BuyValasResponseDTO;
 import com.bni.finalproject01webservice.dto.buy_valas.response.DetailBuyValasResponseDTO;
-import com.bni.finalproject01webservice.service.BuyValasService;
+import com.bni.finalproject01webservice.interfaces.BuyValasInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BuyValasController {
 
     @Autowired
-    private BuyValasService buyValasService;
+    private BuyValasInterface buyValasService;
 
     @PostMapping("/detail")
     public DetailBuyValasResponseDTO detailBuyValas(@RequestBody DetailBuyValasRequestDTO request) {

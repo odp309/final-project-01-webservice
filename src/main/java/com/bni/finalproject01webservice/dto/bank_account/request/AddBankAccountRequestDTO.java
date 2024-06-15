@@ -10,7 +10,7 @@ import java.util.UUID;
 @Setter
 public class AddBankAccountRequestDTO {
 
-    private UUID userId;
+    private UUID userId; // unused
     private String accountNumber;
     private String type;
     private BigDecimal balance;

@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public interface FinancialTrxRepository extends JpaRepository<FinancialTrx, UUID> {
 
-
     List<FinancialTrx> findByWalletId(UUID walletId);
+
+    List<FinancialTrx> findByUserId(UUID userId);
 }

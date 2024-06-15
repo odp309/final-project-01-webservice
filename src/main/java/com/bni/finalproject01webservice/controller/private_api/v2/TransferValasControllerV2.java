@@ -7,6 +7,7 @@ import com.bni.finalproject01webservice.dto.transfer_valas.response.TransferVala
 import com.bni.finalproject01webservice.interfaces.TransferValasInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,12 +24,12 @@ public class TransferValasControllerV2 {
     private TransferValasInterface transferValasService;
 
     @PostMapping("/detail")
-    public DetailTransferValasResponseDTO detailTransferValas(@RequestBody DetailTransferValasRequestDTO request) {
-        return transferValasService.detailTransferValas(request);
+    public DetailTransferValasResponseDTO detailTransferValas(@RequestBody DetailTransferValasRequestDTO request, HttpServletRequest headerRequest) {
+        return transferValasService.detailTransferValas(request, headerRequest);
     }
 
     @PostMapping("/transfer")
-    public TransferValasResponseDTO transferValas(@RequestBody TransferValasRequestDTO request) {
-        return transferValasService.transferValas(request);
+    public TransferValasResponseDTO transferValas(@RequestBody TransferValasRequestDTO request, HttpServletRequest headerRequest) {
+        return transferValasService.transferValas(request, headerRequest);
     }
 }

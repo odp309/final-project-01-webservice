@@ -4,9 +4,10 @@ import com.bni.finalproject01webservice.dto.sell_valas.request.DetailSellValasRe
 import com.bni.finalproject01webservice.dto.sell_valas.request.SellValasRequestDTO;
 import com.bni.finalproject01webservice.dto.sell_valas.response.DetailSellValasResponseDTO;
 import com.bni.finalproject01webservice.dto.sell_valas.response.SellValasResponseDTO;
-import com.bni.finalproject01webservice.service.SellValasService;
+import com.bni.finalproject01webservice.interfaces.SellValasInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,15 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class SellValasControllerV2 {
 
     @Autowired
-    private SellValasService sellValasService;
+    private SellValasInterface sellValasService;
 
     @PostMapping("/detail")
-    public DetailSellValasResponseDTO detailSellValas(@RequestBody DetailSellValasRequestDTO request) {
-        return sellValasService.detailSellValas(request);
+    public DetailSellValasResponseDTO detailSellValas(@RequestBody DetailSellValasRequestDTO request, HttpServletRequest headerRequest) {
+        return sellValasService.detailSellValas(request, headerRequest);
     }
 
     @PostMapping("/sell")
-    public SellValasResponseDTO sellValas(@RequestBody SellValasRequestDTO request) {
-        return sellValasService.sellValas(request);
+    public SellValasResponseDTO sellValas(@RequestBody SellValasRequestDTO request, HttpServletRequest headerRequest) {
+        return sellValasService.sellValas(request, headerRequest);
     }
 }

@@ -10,6 +10,7 @@ import java.util.UUID;
 @Setter
 public class DetailTransferValasRequestDTO {
 
-    private UUID walletId;
+    private UUID senderWalletId;
+    private String recipientAccountNumber;
     private BigDecimal amountToTransfer;
 }
