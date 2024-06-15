@@ -30,6 +30,6 @@ public class UserLimit {
     //////////////////////// FOREIGN KEY RELATION BLOCK ///////////////////////
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 }
