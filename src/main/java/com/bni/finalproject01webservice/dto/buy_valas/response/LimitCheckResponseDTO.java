@@ -10,5 +10,4 @@ import java.math.BigDecimal;
 public class LimitCheckResponseDTO {
 
     private BigDecimal currLimit;
-
 }

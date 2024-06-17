@@ -30,6 +30,12 @@ public class BranchReserveControllerV2 {
         return branchReserveService.addBranchReserve(request, headerRequest);
     }
 
+    @PostMapping("/add-stock")
+    @PreAuthorize("hasRole('ADMIN')")
+    public AddStockResponseDTO addStock(@RequestBody AddStockRequestDTO request, HttpServletRequest headerRequest) {
+        return branchReserveService.addStockBranchReserve(request, headerRequest);
+    }
+
     @PostMapping("/get")
     public List<GetBranchReserveResponseDTO> getBranchReserve(@RequestBody GetBranchReserveRequestDTO request, HttpServletRequest headerRequest) {
         return branchReserveService.getBranchReserveList(request, headerRequest);

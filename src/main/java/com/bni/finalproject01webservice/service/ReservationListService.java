@@ -49,8 +49,8 @@ public class ReservationListService implements ReservationInterface {
     @Override
     public UpdateReservationStatusResponseDTO updateReservationStatus(UpdateReservationStatusRequestDTO request) {
 
-       Withdrawal reservation = withdrawalRepository.findByReservationCode(request.getReservationNumber());
-       UpdateReservationStatusResponseDTO response = new UpdateReservationStatusResponseDTO();
+        Withdrawal reservation = withdrawalRepository.findByReservationCode(request.getReservationNumber());
+        UpdateReservationStatusResponseDTO response = new UpdateReservationStatusResponseDTO();
 
 //        if (reservation.getReservationDate().compareTo(new Date()) > 0)
 //        {
@@ -59,8 +59,7 @@ public class ReservationListService implements ReservationInterface {
 //            return response;
 //        }
 
-        if (reservation.getStatus().equalsIgnoreCase("Terjadwal"))
-        {
+        if (reservation.getStatus().equalsIgnoreCase("Terjadwal")) {
             reservation.setStatus("Sukses");
             reservation.setUpdatedAt(new Date());
             //reservation.setDoneBy();
@@ -71,9 +70,7 @@ public class ReservationListService implements ReservationInterface {
 
             response.setUpdatedStatus("Sukses");
             response.setMessage("Withdrawal Transaction Succeed");
-        }
-        else
-        {
+        } else {
             response.setUpdatedStatus("-");
             response.setMessage("Your reservation number is no longer valid");
         }

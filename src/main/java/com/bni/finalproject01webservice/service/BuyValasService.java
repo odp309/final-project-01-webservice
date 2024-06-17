@@ -13,7 +13,6 @@ import com.bni.finalproject01webservice.dto.financial_trx.request.FinancialTrxRe
 import com.bni.finalproject01webservice.dto.financial_trx.response.FinancialTrxResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BuyValasInterface;
 import com.bni.finalproject01webservice.interfaces.FinancialTrxInterface;
-import com.bni.finalproject01webservice.interfaces.JWTInterface;
 import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
 import com.bni.finalproject01webservice.model.*;
 import com.bni.finalproject01webservice.repository.*;
@@ -39,14 +38,13 @@ public class BuyValasService implements BuyValasInterface {
     private final WalletRepository walletRepository;
     private final UserLimitRepository userLimitRepository;
 
-
     private final PasswordEncoder passwordEncoder;
     private final FinancialTrxInterface financialTrxService;
-    private final JWTInterface jwtService;
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
 
     @Override
     public DetailBuyValasResponseDTO detailBuyValas(DetailBuyValasRequestDTO request) {
+
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         UserLimit userLimit = userLimitRepository.findByUserId(wallet.getUser().getId());
 
@@ -65,8 +63,8 @@ public class BuyValasService implements BuyValasInterface {
             throw new TransactionException("Balance insufficient!");
         }
 
-        if (currLimit.compareTo(request.getAmountToBuy()) > 0){
-            throw new TransactionException("Your purchase limit has been exceeded");
+        if (currLimit.compareTo(request.getAmountToBuy()) < 0) {
+            throw new TransactionException("Buy limit has been reached!");
         }
 
         DetailBuyValasResponseDTO response = new DetailBuyValasResponseDTO();
@@ -101,11 +99,11 @@ public class BuyValasService implements BuyValasInterface {
 
         BigDecimal currBalance = bankAccount.getBalance();
         BigDecimal paidPrice = request.getAmountToBuy().multiply(exchangeRate.getBuyRate());
-        BigDecimal usdConvertion;
+        BigDecimal usdConversion;
         BigDecimal currLimit = userLimit.getLimitAccumulation();
 
         if (currLimit.compareTo(request.getAmountToBuy()) < 0) {
-            throw new TransactionException("Your purchase limit has been exceeded");
+            throw new TransactionException("Buy limit has been reached!");
         }
 
         if (paidPrice.compareTo(currBalance) > 0) {
@@ -122,20 +120,17 @@ public class BuyValasService implements BuyValasInterface {
         bankAccount.setUpdatedAt(new Date());
         bankAccountRepository.save(bankAccount);
 
-        //converting currency to usd currency
-        if (wallet.getCurrency().getCode().equalsIgnoreCase("USD"))
-        {
-            usdConvertion = request.getAmountToBuy();
-        }
-        else
-        {
+        // convert currency to usd currency
+        if (wallet.getCurrency().getCode().equalsIgnoreCase("USD")) {
+            usdConversion = request.getAmountToBuy();
+        } else {
             BigDecimal usdAmount = usdExchangeRate.getBuyRate();
             int scale = 2;
-            usdConvertion = paidPrice.divide(usdAmount, scale, RoundingMode.HALF_UP);
+            usdConversion = paidPrice.divide(usdAmount, scale, RoundingMode.HALF_UP);
         }
 
         // user limit update (-)
-        userLimit.setLimitAccumulation(userLimit.getLimitAccumulation().subtract(usdConvertion));
+        userLimit.setLimitAccumulation(userLimit.getLimitAccumulation().subtract(usdConversion));
         userLimit.setUpdatedAt(new Date());
 
         // create financial trx
@@ -160,11 +155,11 @@ public class BuyValasService implements BuyValasInterface {
     }
 
     @Override
-    public LimitCheckResponseDTO getCurrentUserLimt(LimitCheckRequestDTO request) {
+    public LimitCheckResponseDTO getCurrentUserLimit(LimitCheckRequestDTO request) {
 
         UserLimit currLimit = userLimitRepository.findByUserId(request.getId());
-        LimitCheckResponseDTO response = new LimitCheckResponseDTO();
 
+        LimitCheckResponseDTO response = new LimitCheckResponseDTO();
         response.setCurrLimit(currLimit.getLimitAccumulation());
 
         return response;
@@ -181,7 +176,12 @@ public class BuyValasService implements BuyValasInterface {
             throw new UserException("Un-match request!");
         }
 
+        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
+        UserLimit userLimit = userLimitRepository.findByUserId(userId);
+
+        BigDecimal currLimit = userLimit.getLimitAccumulation();
 
         if (request.getAmountToBuy().compareTo(wallet.getCurrency().getMinimumBuy()) < 0) {
             throw new TransactionException("Amount is less than the minimum buy!");
@@ -194,6 +194,10 @@ public class BuyValasService implements BuyValasInterface {
 
         if (paidPrice.compareTo(bankAccount.getBalance()) > 0) {
             throw new TransactionException("Balance insufficient!");
+        }
+
+        if (currLimit.compareTo(request.getAmountToBuy()) < 0) {
+            throw new TransactionException("Buy limit has been reached!");
         }
 
         DetailBuyValasResponseDTO response = new DetailBuyValasResponseDTO();
@@ -221,6 +225,8 @@ public class BuyValasService implements BuyValasInterface {
         BankAccount bankAccount = bankAccountRepository.findByAccountNumber(wallet.getBankAccount().getAccountNumber());
         User user = userRepository.findById(userId).orElseThrow(() -> new UserException("User not found!"));
         ExchangeRate exchangeRate = exchangeRateRepository.findExchangeRate(wallet.getCurrency().getCode());
+        ExchangeRate usdExchangeRate = exchangeRateRepository.findExchangeRate("USD");
+        UserLimit userLimit = userLimitRepository.findByUserId(userId);
 
         if (request.getAmountToBuy().compareTo(wallet.getCurrency().getMinimumBuy()) < 0) {
             throw new TransactionException("Amount is less than the minimum buy!");
@@ -233,6 +239,12 @@ public class BuyValasService implements BuyValasInterface {
 
         BigDecimal currBalance = bankAccount.getBalance();
         BigDecimal paidPrice = request.getAmountToBuy().multiply(exchangeRate.getBuyRate());
+        BigDecimal currLimit = userLimit.getLimitAccumulation();
+        BigDecimal usdConversion;
+
+        if (currLimit.compareTo(request.getAmountToBuy()) < 0) {
+            throw new TransactionException("Buy limit has been reached!");
+        }
 
         if (paidPrice.compareTo(currBalance) > 0) {
             throw new TransactionException("Balance insufficient!");
@@ -247,6 +259,19 @@ public class BuyValasService implements BuyValasInterface {
         bankAccount.setBalance(currBalance.subtract(paidPrice));
         bankAccount.setUpdatedAt(new Date());
         bankAccountRepository.save(bankAccount);
+
+        // convert currency to usd currency
+        if (wallet.getCurrency().getCode().equalsIgnoreCase("USD")) {
+            usdConversion = request.getAmountToBuy();
+        } else {
+            BigDecimal usdAmount = usdExchangeRate.getBuyRate();
+            int scale = 2;
+            usdConversion = paidPrice.divide(usdAmount, scale, RoundingMode.HALF_UP);
+        }
+
+        // user limit update (-)
+        userLimit.setLimitAccumulation(userLimit.getLimitAccumulation().subtract(usdConversion));
+        userLimit.setUpdatedAt(new Date());
 
         // create financial trx
         FinancialTrxRequestDTO financialTrxRequest = new FinancialTrxRequestDTO();
@@ -265,6 +290,18 @@ public class BuyValasService implements BuyValasInterface {
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
         response.setCreatedAt(new Date());
+
+        return response;
+    }
+
+    @Override
+    public LimitCheckResponseDTO getCurrentUserLimit(LimitCheckRequestDTO request, HttpServletRequest headerRequest) {
+
+        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UserLimit currLimit = userLimitRepository.findByUserId(userId);
+
+        LimitCheckResponseDTO response = new LimitCheckResponseDTO();
+        response.setCurrLimit(currLimit.getLimitAccumulation());
 
         return response;
     }

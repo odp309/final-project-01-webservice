@@ -14,11 +14,13 @@ public interface BuyValasInterface {
 
     BuyValasResponseDTO buyValas(BuyValasRequestDTO request);
 
-    LimitCheckResponseDTO getCurrentUserLimt(LimitCheckRequestDTO request);
+    LimitCheckResponseDTO getCurrentUserLimit(LimitCheckRequestDTO request);
 
     //////////////////////////////// VERSION 2.0 BLOCK ////////////////////////////////
 
     DetailBuyValasResponseDTO detailBuyValas(DetailBuyValasRequestDTO request, HttpServletRequest headerRequest);
 
     BuyValasResponseDTO buyValas(BuyValasRequestDTO request, HttpServletRequest headerRequest);
+
+    LimitCheckResponseDTO getCurrentUserLimit(LimitCheckRequestDTO request, HttpServletRequest headerRequest);
 }

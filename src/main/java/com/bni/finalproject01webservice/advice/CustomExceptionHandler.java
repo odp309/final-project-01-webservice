@@ -97,6 +97,10 @@ public class CustomExceptionHandler {
             status = HttpStatus.UNPROCESSABLE_ENTITY;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "Withdrawal amount is less than the minimum withdrawal");
+        } else if (ex instanceof TransactionException && ex.getMessage().equals("Buy limit has been reached!")) {
+            status = HttpStatus.UNPROCESSABLE_ENTITY;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "User buy limit has been reached");
         } else if (ex instanceof WithdrawalException && ex.getMessage().equals("Workdays must be greater than zero!")) {
             status = HttpStatus.UNPROCESSABLE_ENTITY;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());

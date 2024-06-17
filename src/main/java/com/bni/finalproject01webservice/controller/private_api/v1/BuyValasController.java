@@ -7,7 +7,6 @@ import com.bni.finalproject01webservice.dto.buy_valas.response.BuyValasResponseD
 import com.bni.finalproject01webservice.dto.buy_valas.response.DetailBuyValasResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BuyValasInterface;
 import com.bni.finalproject01webservice.dto.buy_valas.response.LimitCheckResponseDTO;
-import com.bni.finalproject01webservice.service.BuyValasService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,8 @@ public class BuyValasController {
         return buyValasService.buyValas(request);
     }
 
-    @PostMapping("/limit-cek")
+    @PostMapping("/limit-check")
     public LimitCheckResponseDTO limitCheck(@RequestBody LimitCheckRequestDTO request) {
-        return buyValasService.getCurrentUserLimt(request);
+        return buyValasService.getCurrentUserLimit(request);
     }
 }

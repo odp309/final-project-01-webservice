@@ -9,6 +9,5 @@ import java.util.UUID;
 @Setter
 public class LimitCheckRequestDTO {
 
-    private UUID id;
-
+    private UUID id; // unused
 }

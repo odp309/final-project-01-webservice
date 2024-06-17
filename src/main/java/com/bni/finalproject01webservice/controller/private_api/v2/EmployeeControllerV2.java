@@ -45,28 +45,4 @@ public class EmployeeControllerV2 {
     public List<EmployeeResponseDTO> getAllEmployee(@RequestBody GetAllEmployeeRequestDTO request, HttpServletRequest headerRequest) {
         return employeeService.getAllEmployee(request, headerRequest);
     }
-
-    @PostMapping("/for-admin-mgr/activate-employee")
-    @PreAuthorize("hasRole('ADMIN_MGR')")
-    public ActivateEmployeeResponseDTO activateEmployee(@RequestBody ActivateEmployeeRequestDTO request) {
-        return employeeService.activateEmployee(request);
-    }
-
-    @GetMapping({"/for-admin-mgr"})
-    @PreAuthorize("hasRole('ADMIN_MGR')")
-    public String forAdminMgr() {
-        return "This URL is only accessible to the admin manager";
-    }
-
-    @GetMapping({"/for-admin"})
-    @PreAuthorize("hasRole('ADMIN')")
-    public String forAdmin() {
-        return "This URL is only accessible to the admin";
-    }
-
-    @GetMapping({"/for-teller"})
-    @PreAuthorize("hasRole('TELLER')")
-    public String forTeller() {
-        return "This URL is only accessible to the teller";
-    }
 }
