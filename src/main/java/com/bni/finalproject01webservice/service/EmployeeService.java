@@ -2,26 +2,26 @@ package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.dto.auth.request.LoginRequestDTO;
-import com.bni.finalproject01webservice.dto.employee.request.ActivateEmployeeRequestDTO;
-import com.bni.finalproject01webservice.dto.employee.request.GetAllEmployeeRequestDTO;
-import com.bni.finalproject01webservice.dto.employee.request.RegisterEmployeeRequestDTO;
+import com.bni.finalproject01webservice.dto.employee.request.*;
 import com.bni.finalproject01webservice.dto.employee.response.ActivateEmployeeResponseDTO;
 import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDTO;
+import com.bni.finalproject01webservice.dto.employee.response.InvokePasswordResetEmployeeResponseDTO;
+import com.bni.finalproject01webservice.dto.employee.response.PasswordResetEmployeeResponseDTO;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.LoginResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
-import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
-import com.bni.finalproject01webservice.interfaces.JWTInterface;
-import com.bni.finalproject01webservice.interfaces.RefreshTokenInterface;
-import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
+import com.bni.finalproject01webservice.interfaces.*;
 import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.Employee;
+import com.bni.finalproject01webservice.model.PasswordResetToken;
 import com.bni.finalproject01webservice.model.Role;
 import com.bni.finalproject01webservice.repository.BranchRepository;
 import com.bni.finalproject01webservice.repository.EmployeeRepository;
+import com.bni.finalproject01webservice.repository.PasswordResetTokenRepository;
 import com.bni.finalproject01webservice.repository.RoleRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,8 +45,11 @@ public class EmployeeService implements EmployeeInterface {
     private final JWTInterface jwtService;
     private final RefreshTokenInterface refreshTokenService;
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
+    private final EmailSenderInterface emailSenderService;
+    private final PasswordResetTokenInterface passwordResetTokenService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -145,6 +148,7 @@ public class EmployeeService implements EmployeeInterface {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public RegisterResponseDTO registerAdmin(RegisterEmployeeRequestDTO request, HttpServletRequest headerRequest) {
 
         UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
@@ -159,9 +163,11 @@ public class EmployeeService implements EmployeeInterface {
         Role role = roleRepository.findByName("ADMIN");
         Branch branch = branchRepository.findById(branchCode).orElseThrow(() -> new RuntimeException("Branch not found!"));
 
+        String randomPassword = RandomStringUtils.randomAlphanumeric(10);
+
         Employee newEmployee = new Employee();
         newEmployee.setEmail(request.getEmail());
-        newEmployee.setPassword(passwordEncoder.encode(request.getPassword()));
+        newEmployee.setPassword(passwordEncoder.encode(randomPassword));
         newEmployee.setFirstName(request.getFirstName());
         newEmployee.setLastName(request.getLastName());
         newEmployee.setIsActive(true);
@@ -172,6 +178,14 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setCreatedBy(String.valueOf(userId));
         employeeRepository.save(newEmployee);
 
+        String passwordResetToken = passwordResetTokenService.createPasswordResetTokenEmployee(newEmployee).getToken();
+
+        String resetLink = "http://yourdomain.com/reset-password?token=" + passwordResetToken;
+        String emailText = "Your account has been created. Your temporary password is: " + randomPassword +
+                "\nPlease change your password using the following link: " + resetLink;
+
+        emailSenderService.sendEmail(request.getEmail(), "Account Registration", emailText);
+
         RegisterResponseDTO response = new RegisterResponseDTO();
         response.setStatus(200);
         response.setMessage("Register success!");
@@ -180,6 +194,7 @@ public class EmployeeService implements EmployeeInterface {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public RegisterResponseDTO registerTeller(RegisterEmployeeRequestDTO request, HttpServletRequest headerRequest) {
 
         UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
@@ -194,9 +209,11 @@ public class EmployeeService implements EmployeeInterface {
         Role role = roleRepository.findByName("TELLER");
         Branch branch = branchRepository.findById(branchCode).orElseThrow(() -> new RuntimeException("Branch not found!"));
 
+        String randomPassword = RandomStringUtils.randomAlphanumeric(10);
+
         Employee newEmployee = new Employee();
         newEmployee.setEmail(request.getEmail());
-        newEmployee.setPassword(passwordEncoder.encode(request.getPassword()));
+        newEmployee.setPassword(passwordEncoder.encode(randomPassword));
         newEmployee.setFirstName(request.getFirstName());
         newEmployee.setLastName(request.getLastName());
         newEmployee.setIsActive(true);
@@ -206,6 +223,14 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setBranch(branch);
         newEmployee.setCreatedBy(String.valueOf(userId));
         employeeRepository.save(newEmployee);
+
+        String passwordResetToken = passwordResetTokenService.createPasswordResetTokenEmployee(newEmployee).getToken();
+
+        String resetLink = "http://yourdomain.com/reset-password?token=" + passwordResetToken;
+        String emailText = "Your account has been created. Your temporary password is: " + randomPassword +
+                "\nPlease change your password using the following link: " + resetLink;
+
+        emailSenderService.sendEmail(request.getEmail(), "Account Registration", emailText);
 
         RegisterResponseDTO response = new RegisterResponseDTO();
         response.setStatus(200);
@@ -282,5 +307,58 @@ public class EmployeeService implements EmployeeInterface {
                     return response;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public PasswordResetEmployeeResponseDTO passwordResetEmployee(PasswordResetEmployeeRequestDTO request) {
+
+        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(request.getToken());
+        Boolean isExpired = passwordResetTokenService.isPasswordResetTokenExpired(passwordResetToken);
+
+        if (passwordResetToken == null || isExpired) {
+            throw new RuntimeException("Invalid or expired token!");
+        }
+
+        Employee employee =  passwordResetToken.getEmployee();
+        employee.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        employee.setUpdatedAt(new Date());
+        employeeRepository.save(employee);
+
+        passwordResetTokenRepository.delete(passwordResetToken);
+        passwordResetTokenRepository.flush();
+
+        PasswordResetEmployeeResponseDTO response = new PasswordResetEmployeeResponseDTO();
+        response.setStatus(200);
+        response.setMessage("Change password success!");
+
+        return response;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public InvokePasswordResetEmployeeResponseDTO invokePasswordResetEmployee(InvokePasswordResetEmployeeRequestDTO request) {
+
+        Employee employee = employeeRepository.findById(request.getEmployeeId()).orElseThrow(() -> new UserException("User not found!"));
+
+        String randomPassword = RandomStringUtils.randomAlphanumeric(10);
+
+        employee.setPassword(passwordEncoder.encode(randomPassword));
+        employee.setUpdatedAt(new Date());
+        employeeRepository.save(employee);
+
+        String passwordResetToken = passwordResetTokenService.createPasswordResetTokenEmployee(employee).getToken();
+
+        String resetLink = "http://yourdomain.com/reset-password?token=" + passwordResetToken;
+        String emailText = "Your password has been reset. Your temporary password is: " + randomPassword +
+                "\nPlease change your password using the following link: " + resetLink;
+
+        emailSenderService.sendEmail(employee.getEmail(), "Password Reset", emailText);
+
+        InvokePasswordResetEmployeeResponseDTO response = new InvokePasswordResetEmployeeResponseDTO();
+        response.setStatus(200);
+        response.setMessage("Invoke reset password success!");
+
+        return response;
     }
 }

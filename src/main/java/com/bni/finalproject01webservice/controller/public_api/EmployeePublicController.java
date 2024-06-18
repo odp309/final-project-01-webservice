@@ -4,6 +4,8 @@ import com.bni.finalproject01webservice.configuration.exceptions.RefreshTokenExc
 import com.bni.finalproject01webservice.dto.auth.request.LoginRequestDTO;
 import com.bni.finalproject01webservice.dto.auth.request.RefreshTokenRequestDTO;
 import com.bni.finalproject01webservice.dto.auth.response.LoginResponseDTO;
+import com.bni.finalproject01webservice.dto.employee.request.PasswordResetEmployeeRequestDTO;
+import com.bni.finalproject01webservice.dto.employee.response.PasswordResetEmployeeResponseDTO;
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import com.bni.finalproject01webservice.interfaces.JWTInterface;
 import com.bni.finalproject01webservice.interfaces.RefreshTokenInterface;
@@ -50,5 +52,10 @@ public class EmployeePublicController {
                     throw new RefreshTokenException(requestRefreshToken + " refresh token is not valid!");
                 })
                 .orElseThrow(() -> new RefreshTokenException(requestRefreshToken + " refresh token is not valid!"));
+    }
+
+    @PostMapping("/password-reset")
+    public PasswordResetEmployeeResponseDTO passwordResetEmployee(@RequestBody PasswordResetEmployeeRequestDTO request) {
+        return employeeService.passwordResetEmployee(request);
     }
 }

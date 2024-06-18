@@ -1,11 +1,11 @@
 package com.bni.finalproject01webservice.controller.private_api.v2;
 
-import com.bni.finalproject01webservice.dto.employee.request.ActivateEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.GetAllEmployeeRequestDTO;
+import com.bni.finalproject01webservice.dto.employee.request.InvokePasswordResetEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.RegisterEmployeeRequestDTO;
 import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
-import com.bni.finalproject01webservice.dto.employee.response.ActivateEmployeeResponseDTO;
 import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDTO;
+import com.bni.finalproject01webservice.dto.employee.response.InvokePasswordResetEmployeeResponseDTO;
 import com.bni.finalproject01webservice.interfaces.EmployeeInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,5 +44,11 @@ public class EmployeeControllerV2 {
     @PreAuthorize("hasRole('ADMIN_MGR')")
     public List<EmployeeResponseDTO> getAllEmployee(@RequestBody GetAllEmployeeRequestDTO request, HttpServletRequest headerRequest) {
         return employeeService.getAllEmployee(request, headerRequest);
+    }
+
+    @PostMapping("/for-admin-mgr/invoke-password-reset")
+    @PreAuthorize("hasRole('ADMIN_MGR')")
+    public InvokePasswordResetEmployeeResponseDTO invokePasswordResetEmployee(@RequestBody InvokePasswordResetEmployeeRequestDTO request) {
+        return employeeService.invokePasswordResetEmployee(request);
     }
 }
