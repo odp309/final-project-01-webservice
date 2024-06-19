@@ -1,17 +1,22 @@
 package com.bni.finalproject01webservice.service;
 
+import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.dto.reservation_list.request.ReservationListRequestDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.request.UpdateReservationStatusRequestDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.UpdateReservationStatusResponseDTO;
+import com.bni.finalproject01webservice.dto.reservation_list.response.UserReservationListResponseDTO;
 import com.bni.finalproject01webservice.interfaces.ReservationInterface;
 import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
+import com.bni.finalproject01webservice.model.Employee;
 import com.bni.finalproject01webservice.model.Withdrawal;
+import com.bni.finalproject01webservice.repository.EmployeeRepository;
 import com.bni.finalproject01webservice.repository.WithdrawalRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -28,20 +33,21 @@ public class ReservationListService implements ReservationInterface {
     @Override
     public List<ReservationListResponseDTO> getAllReservation(ReservationListRequestDTO request) {
 
-        List<Withdrawal> reserve = withdrawalRepository.findByBranchCode(request.getBranchCode());
+        List<Object[]> reserve = withdrawalRepository.findBySelectedBranchCode(request.getBranchCode());
 
         return reserve.stream()
                 .map(data -> {
                     ReservationListResponseDTO response = new ReservationListResponseDTO();
-                    response.setReservationNumber(data.getReservationCode());
-                    response.setReservationDate(data.getReservationDate());
-                    response.setCreatedDate(data.getCreatedAt());
-                    response.setStatus(data.getStatus());
-                    response.setAmount(data.getAmount());
-                    response.setCurrencyCode(data.getWallet().getCurrency().getCode());
-                    response.setCustomerName(data.getUser().getFirstName() + " " + data.getUser().getLastName());
-                    response.setAccountNumber(data.getWallet().getBankAccount().getAccountNumber());
 
+                    response.setReservationNumber((String) data[0]); // assuming reservation number is at index 0
+                    response.setReservationDate((Date) data[1]); // assuming reservation date is at index 1
+                    response.setCreatedDate((Date) data[2]); // assuming created date is at index 2
+                    response.setStatus((String) data[3]); // assuming status is at index 3
+                    response.setAmount((BigDecimal) data[4]); // assuming amount is at index 4
+                    response.setCurrencyCode((String) data[5]); // assuming currency code is at index 5
+                    response.setAccountNumber((String) data[6]);
+                    response.setCustomerName((String) data[9] + " " + (String) data[10]); // assuming first name is at index 6 and last name is at index 7
+                    response.setDoneBy((String) data[7]+ " " + (String) data[8]);
                     return response;
                 })
                 .collect(Collectors.toList());
@@ -53,23 +59,15 @@ public class ReservationListService implements ReservationInterface {
         UUID employeeId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
 
         Withdrawal reservation = withdrawalRepository.findByReservationCode(request.getReservationNumber());
-        UpdateReservationStatusResponseDTO response = new UpdateReservationStatusResponseDTO();
 
-//        if (reservation.getReservationDate().compareTo(new Date()) > 0)
-//        {
-//            response.setUpdatedStatus("-");
-//            response.setMessage("Your reservation number is no longer valid");
-//            return response;
-//        }
+
+        UpdateReservationStatusResponseDTO response = new UpdateReservationStatusResponseDTO();
 
         if (reservation.getStatus().equalsIgnoreCase("Terjadwal")) {
             reservation.setStatus("Sukses");
             reservation.setUpdatedAt(new Date());
-            //reservation.setDoneBy();
+            reservation.setDoneBy(employeeId.toString());
             withdrawalRepository.save(reservation);
-            //harus tambah response lastupdatedBy siapa tapi nanti nunggu bagas ubah modelnya dulu
-            //tambah juga nanti di responseDTO nya
-
 
             response.setUpdatedStatus("Sukses");
             response.setMessage("Withdrawal Transaction Succeed");
@@ -88,19 +86,45 @@ public class ReservationListService implements ReservationInterface {
 
         String branchCode = resourceRequestCheckerService.extractBranchCodeFromToken(headerRequest);
 
-        List<Withdrawal> reserve = withdrawalRepository.findByBranchCode(branchCode);
+        List<Object[]> reserve = withdrawalRepository.findBySelectedBranchCode(branchCode);
 
         return reserve.stream()
                 .map(data -> {
                     ReservationListResponseDTO response = new ReservationListResponseDTO();
+
+                    response.setReservationNumber((String) data[0]);
+                    response.setReservationDate((Date) data[1]);
+                    response.setCreatedDate((Date) data[2]);
+                    response.setStatus((String) data[3]);
+                    response.setAmount((BigDecimal) data[4]);
+                    response.setCurrencyCode((String) data[5]);
+                    response.setAccountNumber((String) data[6]);
+                    response.setCustomerName((String) data[9] + " " + (String) data[10]); // assuming first name is at index 6 and last name is at index 7
+                    response.setDoneBy((String) data[7]+ " " + (String) data[8]);
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserReservationListResponseDTO> getUserReservationList(HttpServletRequest headerRequest) {
+
+        UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
+
+        List<Withdrawal> reservation = withdrawalRepository.findBySelectedId(userId);
+
+        return reservation.stream()
+                .map(data -> {
+                    UserReservationListResponseDTO response = new UserReservationListResponseDTO();
+
                     response.setReservationNumber(data.getReservationCode());
                     response.setReservationDate(data.getReservationDate());
-                    response.setCreatedDate(data.getCreatedAt());
-                    response.setStatus(data.getStatus());
                     response.setAmount(data.getAmount());
                     response.setCurrencyCode(data.getWallet().getCurrency().getCode());
-                    response.setCustomerName(data.getUser().getFirstName() + " " + data.getUser().getLastName());
-                    response.setAccountNumber(data.getWallet().getBankAccount().getAccountNumber());
+                    response.setStatus(data.getStatus());
+                    response.setBranchType(data.getBranch().getType());
+                    response.setBranchName(data.getBranch().getName());
+                    response.setBranchAddress(data.getBranch().getAddress());
 
                     return response;
                 })

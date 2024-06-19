@@ -4,6 +4,7 @@ import com.bni.finalproject01webservice.dto.reservation_list.request.Reservation
 import com.bni.finalproject01webservice.dto.reservation_list.request.UpdateReservationStatusRequestDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.UpdateReservationStatusResponseDTO;
+import com.bni.finalproject01webservice.dto.reservation_list.response.UserReservationListResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface ReservationInterface {
     //////////////////////////////// VERSION 2.0 BLOCK ////////////////////////////////
 
     List<ReservationListResponseDTO> getAllReservation(ReservationListRequestDTO request, HttpServletRequest headerRequest);
+
+    List<UserReservationListResponseDTO> getUserReservationList(HttpServletRequest headerRequest);
 }

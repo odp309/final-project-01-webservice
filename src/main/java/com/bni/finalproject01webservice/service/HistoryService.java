@@ -49,6 +49,7 @@ public class HistoryService implements HistoryInterface {
                 response.setCreatedDate(financialTrx.getCreatedAt());
                 response.setTrxType(financialTrx.getTrxType().getName());
                 response.setCurrencyCode(financialTrx.getWallet().getCurrency().getCode());
+                response.setOperationType(financialTrx.getOperationType().getName());
 
                 historyDataResponse.add(response);
             }
@@ -66,6 +67,7 @@ public class HistoryService implements HistoryInterface {
                 response.setStatus((String) withdrawalTrx[3]);
                 response.setCurrencyCode((String) withdrawalTrx[4]);
                 response.setTrxType((String) withdrawalTrx[5]);
+                response.setOperationType((String) withdrawalTrx[6]);
 
                 historyDataResponse.add(response);
             }
@@ -177,6 +179,7 @@ public class HistoryService implements HistoryInterface {
                 response.setStatus((String) withdrawalTrx[3]);
                 response.setCurrencyCode((String) withdrawalTrx[4]);
                 response.setTrxType((String) withdrawalTrx[5]);
+                response.setOperationType((String) withdrawalTrx[6]);
 
                 historyDataResponse.add(response);
             }

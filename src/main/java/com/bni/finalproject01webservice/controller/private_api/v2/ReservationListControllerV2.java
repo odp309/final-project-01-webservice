@@ -4,15 +4,13 @@ import com.bni.finalproject01webservice.dto.reservation_list.request.Reservation
 import com.bni.finalproject01webservice.dto.reservation_list.request.UpdateReservationStatusRequestDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.UpdateReservationStatusResponseDTO;
+import com.bni.finalproject01webservice.dto.reservation_list.response.UserReservationListResponseDTO;
 import com.bni.finalproject01webservice.interfaces.ReservationInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +31,10 @@ public class ReservationListControllerV2 {
     @PostMapping("/update-status")
     public UpdateReservationStatusResponseDTO updateReservationUpdate(@RequestBody UpdateReservationStatusRequestDTO request, HttpServletRequest headerRequest) {
         return reservationService.updateReservationStatus(request, headerRequest);
+    }
+
+    @GetMapping("/user-get")
+    public List<UserReservationListResponseDTO> getUserReservationList(HttpServletRequest headerRequest) {
+        return reservationService.getUserReservationList(headerRequest);
     }
 }

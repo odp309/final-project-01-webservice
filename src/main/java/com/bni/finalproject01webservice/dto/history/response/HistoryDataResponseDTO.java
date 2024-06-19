@@ -17,6 +17,7 @@ public class HistoryDataResponseDTO {
     private String trxType;
     private String status;
     private String currencyCode;
+    private String operationType;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Asia/Jakarta")
     private Date createdDate;
