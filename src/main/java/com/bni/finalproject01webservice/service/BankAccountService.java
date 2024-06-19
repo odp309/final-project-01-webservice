@@ -142,7 +142,7 @@ public class BankAccountService implements BankAccountInterface {
     @Override
     public BankAccountResponseDTO addBankAccount(AddBankAccountRequestDTO request, HttpServletRequest headerRequest) {
 
-        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
 
         User user = userRepository.findById(userId).orElseThrow(() -> new UserException("User not found!"));
 
@@ -192,7 +192,7 @@ public class BankAccountService implements BankAccountInterface {
     @Override
     public List<BankAccountWithWalletResponseDTO> getAllBankAccountOfUser(GetAllBankAccountRequestDTO request, HttpServletRequest headerRequest) {
 
-        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
 
         List<BankAccount> bankAccounts = bankAccountRepository.findByUserId(userId);
 

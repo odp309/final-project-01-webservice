@@ -167,7 +167,7 @@ public class SellValasService implements SellValasInterface {
             throw new UserException("Un-match request!");
         }
 
-        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
 
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         BankAccount bankAccount = bankAccountRepository.findByAccountNumber(wallet.getBankAccount().getAccountNumber());

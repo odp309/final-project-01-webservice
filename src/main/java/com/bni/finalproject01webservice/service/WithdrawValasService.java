@@ -264,7 +264,7 @@ public class WithdrawValasService implements WithdrawValasInterface {
             throw new UserException("Un-match request!");
         }
 
-        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
 
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
 
@@ -334,7 +334,7 @@ public class WithdrawValasService implements WithdrawValasInterface {
             throw new UserException("Un-match request!");
         }
 
-        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
 
         LocalDateTime startDate = LocalDateTime.now();
         LocalDate endDate = request.getReservationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();

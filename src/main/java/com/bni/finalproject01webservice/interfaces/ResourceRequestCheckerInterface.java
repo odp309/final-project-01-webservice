@@ -13,7 +13,7 @@ public interface ResourceRequestCheckerInterface {
 
     List<String> bankAccountChecker(HttpServletRequest headerRequest);
 
-    UUID extractUserIdFromToken(HttpServletRequest headerRequest);
+    UUID extractIdFromToken(HttpServletRequest headerRequest);
 
     String extractBranchCodeFromToken(HttpServletRequest headerRequest);
 }

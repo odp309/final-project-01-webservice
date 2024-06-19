@@ -10,7 +10,6 @@ import com.bni.finalproject01webservice.dto.branch_reserve_log.request.BranchRes
 import com.bni.finalproject01webservice.dto.branch_reserve_log.response.BranchReserveLogResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BranchReserveInterface;
 import com.bni.finalproject01webservice.interfaces.BranchReserveLogInterface;
-import com.bni.finalproject01webservice.interfaces.JWTInterface;
 import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
 import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.BranchReserve;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +36,6 @@ public class BranchReserveService implements BranchReserveInterface {
     private final BranchRepository branchRepository;
 
     private final BranchReserveLogInterface branchReserveLogService;
-    private final JWTInterface jwtService;
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
 
     @Override
@@ -70,9 +69,10 @@ public class BranchReserveService implements BranchReserveInterface {
     @Override
     public AddStockResponseDTO addStockBranchReserve(AddStockRequestDTO request, HttpServletRequest headerRequest) {
 
-        String token = headerRequest.getHeader("Authorization").substring(7);
+        UUID employeeId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
+        String branchCode = resourceRequestCheckerService.extractBranchCodeFromToken(headerRequest);
 
-        BranchReserve currentBranchReserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(String.valueOf(jwtService.extractAllClaims(token).get("branchCode")), request.getCurrencyCode());
+        BranchReserve currentBranchReserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(String.valueOf(branchCode), request.getCurrencyCode());
 
         if (currentBranchReserve == null) {
             throw new RuntimeException("Branch Reserve not found!");
@@ -84,7 +84,7 @@ public class BranchReserveService implements BranchReserveInterface {
         logRequest.setAmount(request.getAmount());
         logRequest.setCurrentBalance(currentBranchReserve.getBalance());
         logRequest.setUpdatedBalance(updatedBalance);
-        logRequest.setUpdatedBy(String.valueOf(jwtService.extractAllClaims(token).get("id")));
+        logRequest.setUpdatedBy(employeeId.toString());
         logRequest.setOperationTypeName("K");
         logRequest.setBranchReserve(currentBranchReserve);
         BranchReserveLogResponseDTO logResponse = branchReserveLogService.addBranchReserveLog(logRequest);

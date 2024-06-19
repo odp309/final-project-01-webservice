@@ -31,7 +31,7 @@ public class ReservationListControllerV2 {
     }
 
     @PostMapping("/update-status")
-    public UpdateReservationStatusResponseDTO updateReservationUpdate(@RequestBody UpdateReservationStatusRequestDTO request) {
-        return reservationService.updateReservationStatus(request);
+    public UpdateReservationStatusResponseDTO updateReservationUpdate(@RequestBody UpdateReservationStatusRequestDTO request, HttpServletRequest headerRequest) {
+        return reservationService.updateReservationStatus(request, headerRequest);
     }
 }

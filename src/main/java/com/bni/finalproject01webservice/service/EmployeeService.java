@@ -151,7 +151,7 @@ public class EmployeeService implements EmployeeInterface {
     @Transactional(rollbackFor = Exception.class)
     public RegisterResponseDTO registerAdmin(RegisterEmployeeRequestDTO request, HttpServletRequest headerRequest) {
 
-        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UUID employeeId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
         String branchCode = resourceRequestCheckerService.extractBranchCodeFromToken(headerRequest);
 
         Employee currData = employeeRepository.findByEmail(request.getEmail());
@@ -175,7 +175,7 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setRole(role);
         newEmployee.setCreatedAt(new Date());
         newEmployee.setBranch(branch);
-        newEmployee.setCreatedBy(String.valueOf(userId));
+        newEmployee.setCreatedBy(String.valueOf(employeeId));
         employeeRepository.save(newEmployee);
 
         String passwordResetToken = passwordResetTokenService.createPasswordResetTokenEmployee(newEmployee).getToken();
@@ -197,7 +197,7 @@ public class EmployeeService implements EmployeeInterface {
     @Transactional(rollbackFor = Exception.class)
     public RegisterResponseDTO registerTeller(RegisterEmployeeRequestDTO request, HttpServletRequest headerRequest) {
 
-        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UUID employeeId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
         String branchCode = resourceRequestCheckerService.extractBranchCodeFromToken(headerRequest);
 
         Employee currData = employeeRepository.findByEmail(request.getEmail());
@@ -221,7 +221,7 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setRole(role);
         newEmployee.setCreatedAt(new Date());
         newEmployee.setBranch(branch);
-        newEmployee.setCreatedBy(String.valueOf(userId));
+        newEmployee.setCreatedBy(String.valueOf(employeeId));
         employeeRepository.save(newEmployee);
 
         String passwordResetToken = passwordResetTokenService.createPasswordResetTokenEmployee(newEmployee).getToken();

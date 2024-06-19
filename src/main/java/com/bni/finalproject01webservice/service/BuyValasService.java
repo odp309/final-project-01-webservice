@@ -176,7 +176,7 @@ public class BuyValasService implements BuyValasInterface {
             throw new UserException("Un-match request!");
         }
 
-        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
 
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         UserLimit userLimit = userLimitRepository.findByUserId(userId);
@@ -219,7 +219,7 @@ public class BuyValasService implements BuyValasInterface {
             throw new UserException("Un-match request!");
         }
 
-        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
 
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         BankAccount bankAccount = bankAccountRepository.findByAccountNumber(wallet.getBankAccount().getAccountNumber());
@@ -297,7 +297,7 @@ public class BuyValasService implements BuyValasInterface {
     @Override
     public LimitCheckResponseDTO getCurrentUserLimit(LimitCheckRequestDTO request, HttpServletRequest headerRequest) {
 
-        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
         UserLimit currLimit = userLimitRepository.findByUserId(userId);
 
         LimitCheckResponseDTO response = new LimitCheckResponseDTO();

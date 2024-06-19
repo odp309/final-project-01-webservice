@@ -130,7 +130,7 @@ public class WalletService implements WalletInterface {
             throw new UserException("Un-match request!");
         }
 
-        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
         Wallet currentWallet = walletRepository.findByBankAccountAccountNumberAndCurrencyCode(request.getAccountNumber(), request.getCurrencyCode());
 
         if (currentWallet != null) {

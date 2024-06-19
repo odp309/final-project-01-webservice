@@ -195,7 +195,7 @@ public class TransferValasService implements TransferValasInterface {
             throw new UserException("Un-match request!");
         }
 
-        UUID userId = resourceRequestCheckerService.extractUserIdFromToken(headerRequest);
+        UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
 
         Wallet senderWallet = walletRepository.findById(request.getSenderWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         User senderUser = userRepository.findById(userId).orElseThrow(() -> new UserException("User not found!"));

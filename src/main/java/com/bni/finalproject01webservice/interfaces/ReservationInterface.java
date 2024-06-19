@@ -12,7 +12,7 @@ public interface ReservationInterface {
 
     List<ReservationListResponseDTO> getAllReservation(ReservationListRequestDTO request);
 
-    UpdateReservationStatusResponseDTO  updateReservationStatus(UpdateReservationStatusRequestDTO request);
+    UpdateReservationStatusResponseDTO  updateReservationStatus(UpdateReservationStatusRequestDTO request, HttpServletRequest headerRequest);
 
     //////////////////////////////// VERSION 2.0 BLOCK ////////////////////////////////
 

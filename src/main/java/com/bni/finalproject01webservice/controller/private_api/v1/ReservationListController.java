@@ -8,6 +8,7 @@ import com.bni.finalproject01webservice.dto.reservation_list.response.UpdateRese
 import com.bni.finalproject01webservice.interfaces.ReservationInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,8 +32,8 @@ public class ReservationListController {
     }
 
     @PostMapping("/update-status")
-    public UpdateReservationStatusResponseDTO updateReservationUpdate(@RequestBody UpdateReservationStatusRequestDTO request) {
-        return reservationService.updateReservationStatus(request);
+    public UpdateReservationStatusResponseDTO updateReservationUpdate(@RequestBody UpdateReservationStatusRequestDTO request, HttpServletRequest headerRequest) {
+        return reservationService.updateReservationStatus(request, headerRequest);
     }
 
 }

@@ -28,7 +28,7 @@ public class ResourceRequestCheckerService implements ResourceRequestCheckerInte
     @Override
     public List<UUID> financialTrxChecker(HttpServletRequest headerRequest) {
 
-        UUID userId = this.extractUserIdFromToken(headerRequest);
+        UUID userId = this.extractIdFromToken(headerRequest);
         return financialTrxRepository
                 .findByUserId(userId)
                 .stream()
@@ -39,7 +39,7 @@ public class ResourceRequestCheckerService implements ResourceRequestCheckerInte
     @Override
     public List<UUID> walletChecker(HttpServletRequest headerRequest) {
 
-        UUID userId = this.extractUserIdFromToken(headerRequest);
+        UUID userId = this.extractIdFromToken(headerRequest);
         return walletRepository
                 .findByUserId(userId)
                 .stream()
@@ -50,7 +50,7 @@ public class ResourceRequestCheckerService implements ResourceRequestCheckerInte
     @Override
     public List<String> bankAccountChecker(HttpServletRequest headerRequest) {
 
-        UUID userId = this.extractUserIdFromToken(headerRequest);
+        UUID userId = this.extractIdFromToken(headerRequest);
         return bankAccountRepository
                 .findByUserId(userId)
                 .stream()
@@ -59,7 +59,7 @@ public class ResourceRequestCheckerService implements ResourceRequestCheckerInte
     }
 
     @Override
-    public UUID extractUserIdFromToken(HttpServletRequest headerRequest) {
+    public UUID extractIdFromToken(HttpServletRequest headerRequest) {
         return UUID.fromString(String.valueOf(jwtService.extractAllClaims(headerRequest.getHeader("Authorization").substring(7)).get("id")));
     }
 

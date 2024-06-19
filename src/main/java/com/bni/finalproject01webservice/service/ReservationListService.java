@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +48,9 @@ public class ReservationListService implements ReservationInterface {
     }
 
     @Override
-    public UpdateReservationStatusResponseDTO updateReservationStatus(UpdateReservationStatusRequestDTO request) {
+    public UpdateReservationStatusResponseDTO updateReservationStatus(UpdateReservationStatusRequestDTO request, HttpServletRequest headerRequest) {
+
+        UUID employeeId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
 
         Withdrawal reservation = withdrawalRepository.findByReservationCode(request.getReservationNumber());
         UpdateReservationStatusResponseDTO response = new UpdateReservationStatusResponseDTO();
