@@ -123,9 +123,11 @@ public class HistoryService implements HistoryInterface {
             response.setTrxType(withdrawalTrxs.getTrxType().getName());
             response.setCurrencyCode(withdrawalTrxs.getWallet().getCurrency().getCode());
 
+
             switch (firstWord) {
                 case "tarik":
                     response.setReservationCode(withdrawalTrxs.getWithdrawal().getReservationCode());
+                    response.setStatus(withdrawalTrxs.getWithdrawal().getStatus());
                     break;
                 case "refund":
                     break;
