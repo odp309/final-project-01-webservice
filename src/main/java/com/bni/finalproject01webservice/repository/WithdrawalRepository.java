@@ -20,17 +20,19 @@ public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
             value=
             """
             SELECT
-            w.reservation_code ,
-            w.reservation_date ,
-            w.created_at ,
-            w.status ,
-            w.amount ,
-            w2.currency_code,
-            w2.account_number,
-            e.first_name as employeeFirstName, e.last_name as employeeLastName,
-            u.first_name as customerFirstName , u.last_name as customerLastName
+            COALESCE(w.reservation_code, '') as reservation_code,
+            COALESCE(w.reservation_date, '1970-01-01') as reservation_date,
+            COALESCE(w.created_at, '1970-01-01') as created_at,
+            COALESCE(w.status, '') as status,
+            COALESCE(w.amount, 0) as amount,
+            COALESCE(w2.currency_code, '') as currency_code,
+            COALESCE(w2.account_number, '') as account_number,
+            COALESCE(e.first_name, '') as employeeFirstName,
+            COALESCE(e.last_name, '') as employeeLastName,
+            COALESCE(u.first_name, '') as customerFirstName,
+            COALESCE(u.last_name, '') as customerLastName
             FROM withdrawal w
-            INNER JOIN employee e ON CAST(w.done_by AS UUID) = e.id
+            FULL OUTER JOIN employee e ON CAST(w.done_by AS UUID) = e.id
             inner join users u on w.user_id = u.id
             inner join wallet w2 on w.wallet_id = w2.id
             where w.branch_code = :code
