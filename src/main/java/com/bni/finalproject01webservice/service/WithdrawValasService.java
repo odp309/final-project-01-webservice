@@ -114,23 +114,23 @@ public class WithdrawValasService implements WithdrawValasInterface {
     @Transactional(rollbackFor = Exception.class)
     public WithdrawValasResponseDTO withdrawValas(WithdrawValasRequestDTO request) {
 
-        LocalDateTime startDate = LocalDateTime.now();
-        LocalDate endDate = request.getReservationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        if (WEEKEND.contains(endDate.getDayOfWeek())) {
-            throw new WithdrawalException("The selected date is a weekend!");
-        }
-        if (IndonesianHolidays.isHoliday(endDate)) {
-            throw new WithdrawalException("The selected date is a holiday!");
-        }
-
-        long workingDays = workingDaysCalculator.countWorkingDays(startDate, endDate);
-
-        if (workingDays == 0) {
-            throw new WithdrawalException("Workdays must be greater than zero!");
-        } else if (workingDays > 5) {
-            throw new WithdrawalException("Workdays cannot be larger than 5!");
-        }
+//        LocalDateTime startDate = LocalDateTime.now();
+//        LocalDate endDate = request.getReservationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//
+//        if (WEEKEND.contains(endDate.getDayOfWeek())) {
+//            throw new WithdrawalException("The selected date is a weekend!");
+//        }
+//        if (IndonesianHolidays.isHoliday(endDate)) {
+//            throw new WithdrawalException("The selected date is a holiday!");
+//        }
+//
+//        long workingDays = workingDaysCalculator.countWorkingDays(startDate, endDate);
+//
+//        if (workingDays == 0) {
+//            throw new WithdrawalException("Workdays must be greater than zero!");
+//        } else if (workingDays > 5) {
+//            throw new WithdrawalException("Workdays cannot be larger than 5!");
+//        }
 
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         User user = userRepository.findById(wallet.getUser().getId()).orElseThrow(() -> new UserException("User not found!"));
@@ -337,23 +337,23 @@ public class WithdrawValasService implements WithdrawValasInterface {
 
         UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
 
-        LocalDateTime startDate = LocalDateTime.now();
-        LocalDate endDate = request.getReservationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        if (WEEKEND.contains(endDate.getDayOfWeek())) {
-            throw new WithdrawalException("The selected date is a weekend!");
-        }
-        if (IndonesianHolidays.isHoliday(endDate)) {
-            throw new WithdrawalException("The selected date is a holiday!");
-        }
-
-        long workingDays = workingDaysCalculator.countWorkingDays(startDate, endDate);
-
-        if (workingDays == 0) {
-            throw new WithdrawalException("Workdays must be greater than zero!");
-        } else if (workingDays > 5) {
-            throw new WithdrawalException("Workdays cannot be larger than 5!");
-        }
+//        LocalDateTime startDate = LocalDateTime.now();
+//        LocalDate endDate = request.getReservationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//
+//        if (WEEKEND.contains(endDate.getDayOfWeek())) {
+//            throw new WithdrawalException("The selected date is a weekend!");
+//        }
+//        if (IndonesianHolidays.isHoliday(endDate)) {
+//            throw new WithdrawalException("The selected date is a holiday!");
+//        }
+//
+//        long workingDays = workingDaysCalculator.countWorkingDays(startDate, endDate);
+//
+//        if (workingDays == 0) {
+//            throw new WithdrawalException("Workdays must be greater than zero!");
+//        } else if (workingDays > 5) {
+//            throw new WithdrawalException("Workdays cannot be larger than 5!");
+//        }
 
         Wallet wallet = walletRepository.findById(request.getWalletId()).orElseThrow(() -> new WalletException("Wallet not found!"));
         User user = userRepository.findById(userId).orElseThrow(() -> new UserException("User not found!"));
