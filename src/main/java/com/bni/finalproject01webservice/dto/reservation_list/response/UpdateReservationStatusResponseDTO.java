@@ -9,4 +9,5 @@ public class UpdateReservationStatusResponseDTO {
 
     private String message;
     private String updatedStatus;
+
 }

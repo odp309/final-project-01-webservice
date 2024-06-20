@@ -9,18 +9,16 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class ReservationListResponseDTO {
+public class UserReservationListResponseDTO {
+
     private String reservationNumber;
-    private String customerName;
-    private String accountNumber;
     private String currencyCode;
     private BigDecimal amount;
+    private String branchType;
+    private String branchName;
+    private String branchAddress;
     private String status;
-    private String doneBy;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Asia/Jakarta")
     private Date reservationDate;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "Asia/Jakarta")
-    private Date createdDate;
 }

@@ -14,9 +14,28 @@ import java.util.UUID;
 
 public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
 
-    List<Withdrawal> findByBranchCode (String code);
-
     Withdrawal findByReservationCode(String reservationCode);
+
+    @Query(
+            value=
+            """
+            SELECT
+            w.reservation_code ,
+            w.reservation_date ,
+            w.created_at ,
+            w.status ,
+            w.amount ,
+            w2.currency_code,
+            w2.account_number,
+            e.first_name as employeeFirstName, e.last_name as employeeLastName,
+            u.first_name as customerFirstName , u.last_name as customerLastName
+            FROM withdrawal w
+            INNER JOIN employee e ON CAST(w.done_by AS UUID) = e.id
+            inner join users u on w.user_id = u.id
+            inner join wallet w2 on w.wallet_id = w2.id
+            where w.branch_code = :code
+            """,nativeQuery = true)
+    List<Object[]> findBySelectedBranchCode (String code);
 
     Withdrawal findByUserIdAndStatus(UUID userId, String status);
 
@@ -55,7 +74,8 @@ public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
             	w.createdAt,
             	w.status,
             	w.wallet.currency.code,
-            	wd.trxType.name
+            	wd.trxType.name,
+            	wd.operationType.name
             from
             	WithdrawalDetail wd
             join wd.withdrawal w
@@ -76,4 +96,15 @@ public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
             	wt.id = :id
             """)
     void updateWithdrawalStatusToExpired(@Param("id") UUID id);
+
+    @Query(
+            """
+                    Select 
+                    w from
+                    Withdrawal w
+                    where w.status = 'Terjadwal'
+                    and w.user.id = :userId
+                    """
+    )
+    List<Withdrawal> findBySelectedId(UUID userId);
 }
