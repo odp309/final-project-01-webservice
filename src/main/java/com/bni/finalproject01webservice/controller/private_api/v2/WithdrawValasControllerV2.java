@@ -3,6 +3,7 @@ package com.bni.finalproject01webservice.controller.private_api.v2;
 import com.bni.finalproject01webservice.dto.withdraw_valas.request.DetailWithdrawValasRequestDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.request.WithdrawValasRequestDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.response.DetailWithdrawValasResponseDTO;
+import com.bni.finalproject01webservice.dto.withdraw_valas.response.WithdrawValasCheckerResponseDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.response.WithdrawValasResponseDTO;
 import com.bni.finalproject01webservice.interfaces.WithdrawValasInterface;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -31,5 +32,10 @@ public class WithdrawValasControllerV2 {
     @PostMapping("/withdraw")
     public WithdrawValasResponseDTO withdrawValas(@RequestBody WithdrawValasRequestDTO request, HttpServletRequest headerRequest) {
         return withdrawValasService.withdrawValas(request, headerRequest);
+    }
+
+    @PostMapping("/checker")
+    public WithdrawValasCheckerResponseDTO withdrawValasChecker(HttpServletRequest headerRequest) {
+        return withdrawValasService.withdrawValasChecker(headerRequest);
     }
 }

@@ -9,6 +9,7 @@ import com.bni.finalproject01webservice.dto.branch_reserve_log.response.BranchRe
 import com.bni.finalproject01webservice.dto.withdraw_valas.request.DetailWithdrawValasRequestDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.request.WithdrawValasRequestDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.response.DetailWithdrawValasResponseDTO;
+import com.bni.finalproject01webservice.dto.withdraw_valas.response.WithdrawValasCheckerResponseDTO;
 import com.bni.finalproject01webservice.dto.withdraw_valas.response.WithdrawValasResponseDTO;
 import com.bni.finalproject01webservice.dto.withdrawal.request.WithdrawalRequestDTO;
 import com.bni.finalproject01webservice.dto.withdrawal.response.WithdrawalResponseDTO;
@@ -436,6 +437,28 @@ public class WithdrawValasService implements WithdrawValasInterface {
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setReservationCode(withdrawalResponse.getWithdrawal().getReservationCode());
         response.setReservationDate(request.getReservationDate());
+
+        return response;
+    }
+
+    @Override
+    public WithdrawValasCheckerResponseDTO withdrawValasChecker(HttpServletRequest headerRequest) {
+
+        UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserException("User not found!"));
+
+        if (user.getIsCooldown()) {
+            throw new WithdrawalException("User is in cooldown!");
+        }
+
+        Withdrawal withdraw = withdrawalRepository.findByUserIdAndStatus(user.getId(), "Terjadwal");
+        if (withdraw != null) {
+            throw new WithdrawalException("User already had ongoing withdrawal!");
+        }
+
+        WithdrawValasCheckerResponseDTO response = new WithdrawValasCheckerResponseDTO();
+        response.setStatus(200);
+        response.setMessage("OK");
 
         return response;
     }

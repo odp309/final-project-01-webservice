@@ -12,4 +12,7 @@ public interface CurrencyRepository extends JpaRepository<Currency, String> {
 
     @Query("SELECT c.code FROM Currency c")
     List<String> findAllCurrencyCode();
+
+    @Query("SELECT DISTINCT c.code FROM Currency c")
+    List<String> findDistinctCurrencyCodes();
 }

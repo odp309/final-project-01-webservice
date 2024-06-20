@@ -2,11 +2,16 @@ package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.dto.branch.request.BranchRequestDTO;
 import com.bni.finalproject01webservice.dto.branch.response.BranchResponseDTO;
+import com.bni.finalproject01webservice.dto.branch_reserve.request.AddBranchReserveRequestDTO;
+import com.bni.finalproject01webservice.dto.branch_reserve.response.BranchReserveResponseDTO;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BranchInterface;
 import com.bni.finalproject01webservice.model.Branch;
+import com.bni.finalproject01webservice.model.BranchReserve;
 import com.bni.finalproject01webservice.repository.BranchRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bni.finalproject01webservice.repository.BranchReserveRepository;
+import com.bni.finalproject01webservice.repository.CurrencyRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -15,16 +20,22 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class BranchService implements BranchInterface {
 
-    @Autowired
-    private BranchRepository branchRepository;
+    private final BranchRepository branchRepository;
+    private final BranchReserveRepository branchReserveRepository;
+    private final CurrencyRepository currencyRepository;
+
+    private final BranchReserveService branchReserveService;
 
     @Override
     public InitResponseDTO initBranch() {
         Optional<Branch> currGambir = branchRepository.findById("9007");
         Optional<Branch> currGrahaPangeranSurabaya = branchRepository.findById("9121");
         Optional<Branch> currMalang = branchRepository.findById("9070");
+
+        List<String> currencyCodes = currencyRepository.findDistinctCurrencyCodes();
 
         Branch gambir = new Branch();
         Branch grahaPangeranSurabaya = new Branch();
@@ -42,6 +53,16 @@ public class BranchService implements BranchInterface {
             gambir.setLongitude(106.82785241195475);
             gambir.setCreatedAt(new Date());
             branchRepository.save(gambir);
+
+            for (String code : currencyCodes) {
+                BranchReserve reserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(gambir.getCode(), code);
+                if (reserve == null) {
+                    AddBranchReserveRequestDTO request = new AddBranchReserveRequestDTO();
+                    request.setBranchCode(gambir.getCode());
+                    request.setCurrencyCode(code);
+                    branchReserveService.addBranchReserve(request);
+                }
+            }
         }
 
         if (currGrahaPangeranSurabaya.isEmpty()) {
@@ -56,6 +77,16 @@ public class BranchService implements BranchInterface {
             grahaPangeranSurabaya.setLongitude(112.7285092273135);
             grahaPangeranSurabaya.setCreatedAt(new Date());
             branchRepository.save(grahaPangeranSurabaya);
+
+            for (String code : currencyCodes) {
+                BranchReserve reserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(grahaPangeranSurabaya.getCode(), code);
+                if (reserve == null) {
+                    AddBranchReserveRequestDTO request = new AddBranchReserveRequestDTO();
+                    request.setBranchCode(grahaPangeranSurabaya.getCode());
+                    request.setCurrencyCode(code);
+                    branchReserveService.addBranchReserve(request);
+                }
+            }
         }
 
         if (currMalang.isEmpty()) {
@@ -70,6 +101,16 @@ public class BranchService implements BranchInterface {
             malang.setLongitude(112.62908908198607);
             malang.setCreatedAt(new Date());
             branchRepository.save(malang);
+
+            for (String code : currencyCodes) {
+                BranchReserve reserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(malang.getCode(), code);
+                if (reserve == null) {
+                    AddBranchReserveRequestDTO request = new AddBranchReserveRequestDTO();
+                    request.setBranchCode(malang.getCode());
+                    request.setCurrencyCode(code);
+                    branchReserveService.addBranchReserve(request);
+                }
+            }
         }
 
         InitResponseDTO response = new InitResponseDTO();

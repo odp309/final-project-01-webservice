@@ -13,4 +13,5 @@ public class WithdrawalDetailRequestDTO {
     private Withdrawal withdrawal;
     private String trxTypeName;
     private String operationTypeName;
+    private BigDecimal rate;
 }

@@ -78,7 +78,8 @@ public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
             	wd.operationType.name
             from
             	WithdrawalDetail wd
-            join wd.withdrawal w
+            join
+                wd.withdrawal w
             where
             	w.wallet.id = :walletId
             """)
@@ -99,7 +100,7 @@ public interface WithdrawalRepository extends JpaRepository<Withdrawal, UUID> {
 
     @Query(
             """
-                    Select 
+                    Select
                     w from
                     Withdrawal w
                     where w.status = 'Terjadwal'
