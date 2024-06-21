@@ -36,7 +36,7 @@ public class BuyValasControllerV2 {
     }
 
     @PostMapping("/limit-check")
-    public LimitCheckResponseDTO limitCheck(@RequestBody LimitCheckRequestDTO request, HttpServletRequest headerRequest) {
-        return buyValasService.getCurrentUserLimit(request, headerRequest);
+    public LimitCheckResponseDTO limitCheck(HttpServletRequest headerRequest) {
+        return buyValasService.getCurrentUserLimit( headerRequest);
     }
 }
