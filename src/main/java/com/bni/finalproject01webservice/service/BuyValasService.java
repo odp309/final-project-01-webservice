@@ -295,7 +295,7 @@ public class BuyValasService implements BuyValasInterface {
     }
 
     @Override
-    public LimitCheckResponseDTO getCurrentUserLimit(LimitCheckRequestDTO request, HttpServletRequest headerRequest) {
+    public LimitCheckResponseDTO getCurrentUserLimit(HttpServletRequest headerRequest) {
 
         UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
         UserLimit currLimit = userLimitRepository.findByUserId(userId);

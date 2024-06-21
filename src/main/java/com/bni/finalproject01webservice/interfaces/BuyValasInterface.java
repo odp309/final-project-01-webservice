@@ -22,5 +22,5 @@ public interface BuyValasInterface {
 
     BuyValasResponseDTO buyValas(BuyValasRequestDTO request, HttpServletRequest headerRequest);
 
-    LimitCheckResponseDTO getCurrentUserLimit(LimitCheckRequestDTO request, HttpServletRequest headerRequest);
+    LimitCheckResponseDTO getCurrentUserLimit( HttpServletRequest headerRequest);
 }
