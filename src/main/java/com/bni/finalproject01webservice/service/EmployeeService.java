@@ -127,6 +127,7 @@ public class EmployeeService implements EmployeeInterface {
 
     @Override
     public LoginResponseDTO login(LoginRequestDTO request) {
+
         LoginResponseDTO response = new LoginResponseDTO();
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
