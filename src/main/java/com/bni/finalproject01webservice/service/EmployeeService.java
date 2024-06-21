@@ -3,10 +3,7 @@ package com.bni.finalproject01webservice.service;
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.dto.auth.request.LoginRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.*;
-import com.bni.finalproject01webservice.dto.employee.response.ActivateEmployeeResponseDTO;
-import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDTO;
-import com.bni.finalproject01webservice.dto.employee.response.InvokePasswordResetEmployeeResponseDTO;
-import com.bni.finalproject01webservice.dto.employee.response.PasswordResetEmployeeResponseDTO;
+import com.bni.finalproject01webservice.dto.employee.response.*;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.LoginResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
@@ -41,6 +38,7 @@ public class EmployeeService implements EmployeeInterface {
     private final EmployeeRepository employeeRepository;
     private final BranchRepository branchRepository;
     private final RoleRepository roleRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     private final JWTInterface jwtService;
     private final RefreshTokenInterface refreshTokenService;
@@ -49,7 +47,6 @@ public class EmployeeService implements EmployeeInterface {
     private final PasswordResetTokenInterface passwordResetTokenService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -108,6 +105,7 @@ public class EmployeeService implements EmployeeInterface {
             employee.setLastName("manager");
             employee.setNip("A000000");
             employee.setIsActive(true);
+            employee.setIsPasswordChange(true);
             employee.setBranch(branch);
             employee.setRole(Objects.requireNonNullElse(currAdminMgrRole, adminMgrRole));
             employee.setCreatedBy("SYSTEM");
@@ -130,16 +128,19 @@ public class EmployeeService implements EmployeeInterface {
     @Override
     public LoginResponseDTO login(LoginRequestDTO request) {
         LoginResponseDTO response = new LoginResponseDTO();
+
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+
         Employee data = employeeRepository.findByEmail(request.getEmail());
-
         if (data.getIsActive()) {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
             String accessToken = jwtService.generateTokenEmployee(data);
             String refreshToken = refreshTokenService.createRefreshTokenEmployee(data).getToken();
 
             response.setAccessToken(accessToken);
             response.setRefreshToken(refreshToken);
+            if (!data.getIsPasswordChange()) {
+                response.setResetToken(passwordResetTokenRepository.findByEmployeeId(data.getId()).getToken());
+            }
         } else {
             throw new UserException("Employee is not active!");
         }
@@ -171,6 +172,7 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setFirstName(request.getFirstName());
         newEmployee.setLastName(request.getLastName());
         newEmployee.setIsActive(true);
+        newEmployee.setIsPasswordChange(false);
         newEmployee.setNip(request.getNip());
         newEmployee.setRole(role);
         newEmployee.setCreatedAt(new Date());
@@ -217,6 +219,7 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setFirstName(request.getFirstName());
         newEmployee.setLastName(request.getLastName());
         newEmployee.setIsActive(true);
+        newEmployee.setIsPasswordChange(false);
         newEmployee.setNip(request.getNip());
         newEmployee.setRole(role);
         newEmployee.setCreatedAt(new Date());
@@ -320,13 +323,16 @@ public class EmployeeService implements EmployeeInterface {
             throw new RuntimeException("Invalid or expired token!");
         }
 
-        Employee employee =  passwordResetToken.getEmployee();
+        Employee employee = passwordResetToken.getEmployee();
+
         employee.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        if (!employee.getIsPasswordChange()) {
+            employee.setIsPasswordChange(true);
+        }
         employee.setUpdatedAt(new Date());
         employeeRepository.save(employee);
 
-        passwordResetTokenRepository.delete(passwordResetToken);
-        passwordResetTokenRepository.flush();
+        passwordResetTokenRepository.deleteToken(passwordResetToken.getId());
 
         PasswordResetEmployeeResponseDTO response = new PasswordResetEmployeeResponseDTO();
         response.setStatus(200);

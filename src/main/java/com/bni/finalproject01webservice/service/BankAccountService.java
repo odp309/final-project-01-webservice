@@ -23,6 +23,7 @@ import com.bni.finalproject01webservice.repository.UserRepository;
 import com.bni.finalproject01webservice.repository.WalletRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -83,12 +84,12 @@ public class BankAccountService implements BankAccountInterface {
 
     @Override
     public List<BankAccountWithWalletResponseDTO> getAllBankAccountOfUser(GetAllBankAccountRequestDTO request) {
-        List<BankAccount> bankAccounts = bankAccountRepository.findByUserId(request.getUserId());
+        List<BankAccount> bankAccounts = bankAccountRepository.findByUserId(request.getUserId(), Sort.by(Sort.Direction.ASC, "type"));
 
         return bankAccounts.stream()
                 .map(bankAccount -> {
                     int idBankAccountCount = bankAccounts.indexOf(bankAccount) + 1;
-                    List<Wallet> wallets = walletRepository.findByBankAccountAccountNumber(bankAccount.getAccountNumber());
+                    List<Wallet> wallets = walletRepository.findByBankAccountAccountNumber(bankAccount.getAccountNumber(), Sort.by(Sort.Direction.ASC, "currency.name"));
                     BankAccountWithWalletResponseDTO response = new BankAccountWithWalletResponseDTO();
                     response.setId(idBankAccountCount);
                     response.setAccountNumber(bankAccount.getAccountNumber());
@@ -194,12 +195,12 @@ public class BankAccountService implements BankAccountInterface {
 
         UUID userId = resourceRequestCheckerService.extractIdFromToken(headerRequest);
 
-        List<BankAccount> bankAccounts = bankAccountRepository.findByUserId(userId);
+        List<BankAccount> bankAccounts = bankAccountRepository.findByUserId(userId, Sort.by(Sort.Direction.ASC, "type"));
 
         return bankAccounts.stream()
                 .map(bankAccount -> {
                     int idBankAccountCount = bankAccounts.indexOf(bankAccount) + 1;
-                    List<Wallet> wallets = walletRepository.findByBankAccountAccountNumber(bankAccount.getAccountNumber());
+                    List<Wallet> wallets = walletRepository.findByBankAccountAccountNumber(bankAccount.getAccountNumber(), Sort.by(Sort.Direction.ASC, "currency.name"));
                     BankAccountWithWalletResponseDTO response = new BankAccountWithWalletResponseDTO();
                     response.setId(idBankAccountCount);
                     response.setAccountNumber(bankAccount.getAccountNumber());

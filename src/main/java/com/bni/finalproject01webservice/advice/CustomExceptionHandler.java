@@ -57,6 +57,10 @@ public class CustomExceptionHandler {
             status = HttpStatus.UNAUTHORIZED;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
             errorDetail.setProperty("access_denied_reason", "Requested resource does not match the token");
+        } else if (ex instanceof UserException && ex.getMessage().equals("The initial random generated password has not been changed!")) {
+            status = HttpStatus.FORBIDDEN;
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());
+            errorDetail.setProperty("access_denied_reason", "Employee must change the initial password");
         } else if (ex instanceof WalletException && ex.getMessage().equals("Wallet already exist!")) {
             status = HttpStatus.CONFLICT;
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(status.value()), ex.getMessage());

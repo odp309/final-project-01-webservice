@@ -21,6 +21,7 @@ import com.bni.finalproject01webservice.repository.UserRepository;
 import com.bni.finalproject01webservice.repository.WalletRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +47,7 @@ public class WalletService implements WalletInterface {
 
     @Override
     public GetAllWalletResponseDTO getWallet(String accountNumber) {
-        List<Wallet> wallets = walletRepository.findByBankAccountAccountNumber(accountNumber);
+        List<Wallet> wallets = walletRepository.findByBankAccountAccountNumber(accountNumber, Sort.by(Sort.Direction.ASC, "currency.name"));
         if (wallets == null || wallets.isEmpty()) {
             throw new RuntimeException("wallet not found");
         }

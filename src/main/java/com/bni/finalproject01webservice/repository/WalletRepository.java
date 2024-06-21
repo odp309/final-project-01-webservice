@@ -1,6 +1,7 @@
 package com.bni.finalproject01webservice.repository;
 
 import com.bni.finalproject01webservice.model.Wallet;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 public interface WalletRepository extends JpaRepository<Wallet, UUID> {
 
-   List<Wallet> findByBankAccountAccountNumber(String accountNumber);
+   List<Wallet> findByBankAccountAccountNumber(String accountNumber, Sort sort);
 
    Wallet findByBankAccountAccountNumberAndCurrencyCode(String accountNumber, String code);
 

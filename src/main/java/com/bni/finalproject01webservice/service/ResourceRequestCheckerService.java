@@ -10,6 +10,7 @@ import com.bni.finalproject01webservice.repository.FinancialTrxRepository;
 import com.bni.finalproject01webservice.repository.WalletRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class ResourceRequestCheckerService implements ResourceRequestCheckerInte
 
         UUID userId = this.extractIdFromToken(headerRequest);
         return bankAccountRepository
-                .findByUserId(userId)
+                .findByUserId(userId, Sort.by(Sort.Direction.ASC, "type"))
                 .stream()
                 .map(BankAccount::getAccountNumber)
                 .toList();

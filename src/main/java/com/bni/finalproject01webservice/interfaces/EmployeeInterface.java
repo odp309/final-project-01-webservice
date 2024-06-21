@@ -2,10 +2,7 @@ package com.bni.finalproject01webservice.interfaces;
 
 import com.bni.finalproject01webservice.dto.auth.request.LoginRequestDTO;
 import com.bni.finalproject01webservice.dto.employee.request.*;
-import com.bni.finalproject01webservice.dto.employee.response.ActivateEmployeeResponseDTO;
-import com.bni.finalproject01webservice.dto.employee.response.EmployeeResponseDTO;
-import com.bni.finalproject01webservice.dto.employee.response.InvokePasswordResetEmployeeResponseDTO;
-import com.bni.finalproject01webservice.dto.employee.response.PasswordResetEmployeeResponseDTO;
+import com.bni.finalproject01webservice.dto.employee.response.*;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.LoginResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
