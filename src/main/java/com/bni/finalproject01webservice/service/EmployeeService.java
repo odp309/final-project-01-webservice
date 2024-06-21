@@ -183,7 +183,7 @@ public class EmployeeService implements EmployeeInterface {
 
         String passwordResetToken = passwordResetTokenService.createPasswordResetTokenEmployee(newEmployee).getToken();
 
-        String resetLink = "http://yourdomain.com/reset-password?token=" + passwordResetToken;
+        String resetLink = "http://localhost:4200/reset-password?token=" + passwordResetToken;
         String emailText = "Your account has been created. Your temporary password is: " + randomPassword +
                 "\nPlease change your password using the following link: " + resetLink;
 
@@ -230,7 +230,7 @@ public class EmployeeService implements EmployeeInterface {
 
         String passwordResetToken = passwordResetTokenService.createPasswordResetTokenEmployee(newEmployee).getToken();
 
-        String resetLink = "http://yourdomain.com/reset-password?token=" + passwordResetToken;
+        String resetLink = "http://localhost:4200/reset-password?token=" + passwordResetToken;
         String emailText = "Your account has been created. Your temporary password is: " + randomPassword +
                 "\nPlease change your password using the following link: " + resetLink;
 
@@ -356,7 +356,7 @@ public class EmployeeService implements EmployeeInterface {
 
         String passwordResetToken = passwordResetTokenService.createPasswordResetTokenEmployee(employee).getToken();
 
-        String resetLink = "http://yourdomain.com/reset-password?token=" + passwordResetToken;
+        String resetLink = "http://localhost:4200/reset-password?token=" + passwordResetToken;
         String emailText = "Your password has been reset. Your temporary password is: " + randomPassword +
                 "\nPlease change your password using the following link: " + resetLink;
 
