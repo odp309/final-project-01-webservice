@@ -45,7 +45,7 @@ public class ExchangeRateService implements ExchangeRateInterface {
             FrankfurterRequestDTO request = restTemplate.getForObject(url, FrankfurterRequestDTO.class);
 
             if (request != null && request.getRates() != null && request.getRates().containsKey("IDR")) {
-                buyRate.put(currency, request.getRates().get("IDR").multiply(BigDecimal.valueOf(1.05)));
+                buyRate.put(currency, request.getRates().get("IDR").multiply(BigDecimal.valueOf(1.02)));
                 sellRate.put(currency, (request.getRates().get("IDR")));
 
                 Currency dbCurrency = currencyRepository.findByCode(currency);
@@ -54,7 +54,7 @@ public class ExchangeRateService implements ExchangeRateInterface {
                 ExchangeRate exchangeRate = new ExchangeRate();
                 exchangeRate.setCurrency(dbCurrency);
                 exchangeRate.setCreatedAt(new Date());
-                exchangeRate.setBuyRate(request.getRates().get("IDR").multiply(BigDecimal.valueOf(1.05)));
+                exchangeRate.setBuyRate(request.getRates().get("IDR").multiply(BigDecimal.valueOf(1.02)));
                 exchangeRate.setSellRate(request.getRates().get("IDR"));
 
                 exchangeRateRepository.save(exchangeRate);
