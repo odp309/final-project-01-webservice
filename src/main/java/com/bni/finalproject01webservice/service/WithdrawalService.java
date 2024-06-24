@@ -6,6 +6,7 @@ import com.bni.finalproject01webservice.dto.withdrawal.response.MonthDetailRespo
 import com.bni.finalproject01webservice.dto.withdrawal.response.ReportWithdrawalResponseDTO;
 import com.bni.finalproject01webservice.dto.withdrawal.response.RecapWithdrawalResponseDTO;
 import com.bni.finalproject01webservice.dto.withdrawal.response.WithdrawalResponseDTO;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
 import com.bni.finalproject01webservice.interfaces.WithdrawalInterface;
 import com.bni.finalproject01webservice.model.Withdrawal;
@@ -27,6 +28,7 @@ public class WithdrawalService implements WithdrawalInterface {
     private final WithdrawalRepository withdrawalRepository;
 
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
+    private final DateTimeInterface dateTimeService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -42,7 +44,7 @@ public class WithdrawalService implements WithdrawalInterface {
         withdrawal.setStatus(request.getStatus());
         withdrawal.setReservationCode(reservationCode);
         withdrawal.setReservationDate(request.getReservationDate());
-        withdrawal.setCreatedAt(new Date());
+        withdrawal.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         withdrawal.setUser(request.getUser());
         withdrawal.setWallet(request.getWallet());
         withdrawal.setBranch(request.getBranch());

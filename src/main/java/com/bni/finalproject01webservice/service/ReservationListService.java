@@ -5,6 +5,7 @@ import com.bni.finalproject01webservice.dto.reservation_list.request.UpdateReser
 import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.UpdateReservationStatusResponseDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.UserReservationListResponseDTO;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.ReservationInterface;
 import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
 import com.bni.finalproject01webservice.model.Withdrawal;
@@ -26,6 +27,7 @@ public class ReservationListService implements ReservationInterface {
     private final WithdrawalRepository withdrawalRepository;
 
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
+    private final DateTimeInterface dateTimeService;
 
     @Override
     public List<ReservationListResponseDTO> getAllReservation(ReservationListRequestDTO request) {
@@ -62,7 +64,7 @@ public class ReservationListService implements ReservationInterface {
 
         if (reservation.getStatus().equalsIgnoreCase("Terjadwal")) {
             reservation.setStatus("Sukses");
-            reservation.setUpdatedAt(new Date());
+            reservation.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             reservation.setDoneBy(employeeId.toString());
             withdrawalRepository.save(reservation);
 

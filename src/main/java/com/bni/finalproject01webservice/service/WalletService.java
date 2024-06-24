@@ -9,6 +9,7 @@ import com.bni.finalproject01webservice.dto.wallet.request.AddWalletRequestDTO;
 import com.bni.finalproject01webservice.dto.wallet.response.GetAllWalletResponseDTO;
 import com.bni.finalproject01webservice.dto.wallet.response.WalletResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BuyValasInterface;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
 import com.bni.finalproject01webservice.interfaces.WalletInterface;
 import com.bni.finalproject01webservice.model.BankAccount;
@@ -44,6 +45,7 @@ public class WalletService implements WalletInterface {
     private final PasswordEncoder passwordEncoder;
     private final BuyValasInterface buyValasService;
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
+    private final DateTimeInterface dateTimeService;
 
     @Override
     public GetAllWalletResponseDTO getWallet(String accountNumber) {
@@ -97,7 +99,7 @@ public class WalletService implements WalletInterface {
         // create wallet with 0 balance
         Wallet newWallet = new Wallet();
         newWallet.setBalance(BigDecimal.valueOf(0));
-        newWallet.setCreatedAt(new Date());
+        newWallet.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         newWallet.setBankAccount(bankAccount);
         newWallet.setUser(user);
         newWallet.setCurrency(currency);
@@ -155,7 +157,7 @@ public class WalletService implements WalletInterface {
         // create wallet with 0 balance
         Wallet newWallet = new Wallet();
         newWallet.setBalance(BigDecimal.valueOf(0));
-        newWallet.setCreatedAt(new Date());
+        newWallet.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         newWallet.setBankAccount(bankAccount);
         newWallet.setUser(user);
         newWallet.setCurrency(currency);

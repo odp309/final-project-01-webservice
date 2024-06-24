@@ -12,6 +12,7 @@ import com.bni.finalproject01webservice.dto.bank_account.response.BankAccountWit
 import com.bni.finalproject01webservice.dto.bank_account.response.GetBankAccountWalletResponseDTO;
 import com.bni.finalproject01webservice.dto.wallet.response.SecureWalletResponseDTO;
 import com.bni.finalproject01webservice.dto.wallet.response.WalletWithCurrencyIconResponseDTO;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.JWTInterface;
 import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
 import com.bni.finalproject01webservice.model.BankAccount;
@@ -39,8 +40,8 @@ public class BankAccountService implements BankAccountInterface {
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
 
-    private final JWTInterface jwtService;
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
+    private final DateTimeInterface dateTimeService;
 
     @Override
     public BankAccountResponseDTO addBankAccount(AddBankAccountRequestDTO request) {
@@ -51,7 +52,7 @@ public class BankAccountService implements BankAccountInterface {
         newBankAccount.setAccountNumber(request.getAccountNumber());
         newBankAccount.setType(request.getType());
         newBankAccount.setBalance(request.getBalance());
-        newBankAccount.setCreatedAt(new Date());
+        newBankAccount.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         bankAccountRepository.save(newBankAccount);
 
         BankAccountResponseDTO response = new BankAccountResponseDTO();
@@ -152,7 +153,7 @@ public class BankAccountService implements BankAccountInterface {
         newBankAccount.setAccountNumber(request.getAccountNumber());
         newBankAccount.setType(request.getType());
         newBankAccount.setBalance(request.getBalance());
-        newBankAccount.setCreatedAt(new Date());
+        newBankAccount.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         bankAccountRepository.save(newBankAccount);
 
         BankAccountResponseDTO response = new BankAccountResponseDTO();

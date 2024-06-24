@@ -45,6 +45,7 @@ public class EmployeeService implements EmployeeInterface {
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
     private final EmailSenderInterface emailSenderService;
     private final PasswordResetTokenInterface passwordResetTokenService;
+    private final DateTimeInterface dateTimeService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
@@ -67,7 +68,7 @@ public class EmployeeService implements EmployeeInterface {
         if (currAdminMgrRole == null) {
             adminMgrRole.setName("ADMIN_MGR");
             adminMgrRole.setDescription("Admin manager role, handle admin CRUD operations.");
-            adminMgrRole.setCreatedAt(new Date());
+            adminMgrRole.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             roleRepository.save(adminMgrRole);
             status += "Admin manager role has been initialized!";
         }
@@ -75,7 +76,7 @@ public class EmployeeService implements EmployeeInterface {
         if (currAdminRole == null) {
             adminRole.setName("ADMIN");
             adminRole.setDescription("Admin role, has control over a branch.");
-            adminRole.setCreatedAt(new Date());
+            adminRole.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             roleRepository.save(adminRole);
             status += "Admin role has been initialized!";
         }
@@ -83,7 +84,7 @@ public class EmployeeService implements EmployeeInterface {
         if (currTellerRole == null) {
             tellerRole.setName("TELLER");
             tellerRole.setDescription("Teller role, handle front-liner matters.");
-            tellerRole.setCreatedAt(new Date());
+            tellerRole.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             roleRepository.save(tellerRole);
             status += "Teller role has been initialized!";
         }
@@ -91,7 +92,7 @@ public class EmployeeService implements EmployeeInterface {
         if (currUserRole == null) {
             userRole.setName("USER");
             userRole.setDescription("User role, ya user bos.");
-            userRole.setCreatedAt(new Date());
+            userRole.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             roleRepository.save(userRole);
             status += "User role has been initialized!";
         }
@@ -109,7 +110,7 @@ public class EmployeeService implements EmployeeInterface {
             employee.setBranch(branch);
             employee.setRole(Objects.requireNonNullElse(currAdminMgrRole, adminMgrRole));
             employee.setCreatedBy("SYSTEM");
-            employee.setCreatedAt(new Date());
+            employee.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             employeeRepository.save(employee);
             status += "Admin manager account has been initialized!";
         }
@@ -176,7 +177,7 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setIsPasswordChange(false);
         newEmployee.setNip(request.getNip());
         newEmployee.setRole(role);
-        newEmployee.setCreatedAt(new Date());
+        newEmployee.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         newEmployee.setBranch(branch);
         newEmployee.setCreatedBy(String.valueOf(employeeId));
         employeeRepository.save(newEmployee);
@@ -223,7 +224,7 @@ public class EmployeeService implements EmployeeInterface {
         newEmployee.setIsPasswordChange(false);
         newEmployee.setNip(request.getNip());
         newEmployee.setRole(role);
-        newEmployee.setCreatedAt(new Date());
+        newEmployee.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         newEmployee.setBranch(branch);
         newEmployee.setCreatedBy(String.valueOf(employeeId));
         employeeRepository.save(newEmployee);
@@ -330,7 +331,7 @@ public class EmployeeService implements EmployeeInterface {
         if (!employee.getIsPasswordChange()) {
             employee.setIsPasswordChange(true);
         }
-        employee.setUpdatedAt(new Date());
+        employee.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         employeeRepository.save(employee);
 
         passwordResetTokenRepository.deleteToken(passwordResetToken.getId());
@@ -351,7 +352,7 @@ public class EmployeeService implements EmployeeInterface {
         String randomPassword = RandomStringUtils.randomAlphanumeric(10);
 
         employee.setPassword(passwordEncoder.encode(randomPassword));
-        employee.setUpdatedAt(new Date());
+        employee.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         employeeRepository.save(employee);
 
         String passwordResetToken = passwordResetTokenService.createPasswordResetTokenEmployee(employee).getToken();

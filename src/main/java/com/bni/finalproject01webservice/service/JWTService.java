@@ -1,5 +1,6 @@
 package com.bni.finalproject01webservice.service;
 
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.JWTInterface;
 import com.bni.finalproject01webservice.model.Employee;
 import com.bni.finalproject01webservice.model.User;
@@ -7,6 +8,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class JWTService implements JWTInterface {
 
     @Value("${jwt.secret-key}")
     private String secretKey;
+
+    @Autowired
+    private DateTimeInterface dateTimeService;
 
     @Override
     public String generateTokenUser(User user) {
@@ -84,6 +89,6 @@ public class JWTService implements JWTInterface {
     }
 
     private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        return extractExpiration(token).before(dateTimeService.getCurrentDateTimeInJakarta());
     }
 }

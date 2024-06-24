@@ -7,10 +7,7 @@ import com.bni.finalproject01webservice.dto.auth.response.LoginResponseDTO;
 import com.bni.finalproject01webservice.dto.auth.response.RegisterResponseDTO;
 import com.bni.finalproject01webservice.dto.user_limit.request.UserLimitRequestDTO;
 import com.bni.finalproject01webservice.dto.user_limit.response.UserLimitResponseDTO;
-import com.bni.finalproject01webservice.interfaces.JWTInterface;
-import com.bni.finalproject01webservice.interfaces.RefreshTokenInterface;
-import com.bni.finalproject01webservice.interfaces.UserInterface;
-import com.bni.finalproject01webservice.interfaces.UserLimitInterface;
+import com.bni.finalproject01webservice.interfaces.*;
 import com.bni.finalproject01webservice.model.Role;
 import com.bni.finalproject01webservice.model.User;
 import com.bni.finalproject01webservice.repository.RoleRepository;
@@ -34,6 +31,7 @@ public class UserService implements UserInterface {
     private final JWTInterface jwtService;
     private final RefreshTokenInterface refreshTokenService;
     private final UserLimitInterface userLimitService;
+    private final DateTimeInterface dateTimeService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
@@ -75,7 +73,7 @@ public class UserService implements UserInterface {
         newUser.setLastName(request.getLastName());
         newUser.setIsCooldown(false);
         newUser.setRole(role);
-        newUser.setCreatedAt(new Date());
+        newUser.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         userRepository.save(newUser);
 
         UserLimitRequestDTO userLimitRequest = new UserLimitRequestDTO();

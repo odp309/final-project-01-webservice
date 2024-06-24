@@ -3,6 +3,7 @@ package com.bni.finalproject01webservice.service;
 import com.bni.finalproject01webservice.dto.branch_reserve_log.request.BranchReserveLogRequestDTO;
 import com.bni.finalproject01webservice.dto.branch_reserve_log.response.BranchReserveLogResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BranchReserveLogInterface;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.model.BranchReserveLog;
 import com.bni.finalproject01webservice.model.OperationType;
 import com.bni.finalproject01webservice.repository.BranchReserveLogRepository;
@@ -19,6 +20,8 @@ public class BranchReserveLogService implements BranchReserveLogInterface {
     private final BranchReserveLogRepository branchReserveLogRepository;
     private final OperationTypeRepository operationTypeRepository;
 
+    private final DateTimeInterface dateTimeService;
+
     @Override
     public BranchReserveLogResponseDTO addBranchReserveLog(BranchReserveLogRequestDTO request) {
 
@@ -31,7 +34,7 @@ public class BranchReserveLogService implements BranchReserveLogInterface {
         branchReserveLog.setUpdatedBy(request.getUpdatedBy());
         branchReserveLog.setOperationType(operationType);
         branchReserveLog.setBranchReserve(request.getBranchReserve());
-        branchReserveLog.setCreatedAt(new Date());
+        branchReserveLog.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         branchReserveLogRepository.save(branchReserveLog);
 
         BranchReserveLogResponseDTO response = new BranchReserveLogResponseDTO();

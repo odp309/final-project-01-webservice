@@ -6,6 +6,7 @@ import com.bni.finalproject01webservice.dto.branch_reserve.request.AddBranchRese
 import com.bni.finalproject01webservice.dto.branch_reserve.response.BranchReserveResponseDTO;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BranchInterface;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.BranchReserve;
 import com.bni.finalproject01webservice.repository.BranchRepository;
@@ -28,6 +29,7 @@ public class BranchService implements BranchInterface {
     private final CurrencyRepository currencyRepository;
 
     private final BranchReserveService branchReserveService;
+    private final DateTimeInterface dateTimeService;
 
     @Override
     public InitResponseDTO initBranch() {
@@ -51,7 +53,7 @@ public class BranchService implements BranchInterface {
             gambir.setType("KANTOR CABANG UTAMA/KCU");
             gambir.setLatitude(-6.182840832410299);
             gambir.setLongitude(106.82785241195475);
-            gambir.setCreatedAt(new Date());
+            gambir.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             branchRepository.save(gambir);
 
             for (String code : currencyCodes) {
@@ -75,7 +77,7 @@ public class BranchService implements BranchInterface {
             grahaPangeranSurabaya.setType("KANTOR CABANG UTAMA/KCU");
             grahaPangeranSurabaya.setLatitude(-7.344216376359213);
             grahaPangeranSurabaya.setLongitude(112.7285092273135);
-            grahaPangeranSurabaya.setCreatedAt(new Date());
+            grahaPangeranSurabaya.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             branchRepository.save(grahaPangeranSurabaya);
 
             for (String code : currencyCodes) {
@@ -99,7 +101,7 @@ public class BranchService implements BranchInterface {
             malang.setType("KANTOR CABANG UTAMA/KCU");
             malang.setLatitude(-7.975701057723503);
             malang.setLongitude(112.62908908198607);
-            malang.setCreatedAt(new Date());
+            malang.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             branchRepository.save(malang);
 
             for (String code : currencyCodes) {
