@@ -2,6 +2,7 @@ package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.dto.withdrawal_detail.request.WithdrawalDetailRequestDTO;
 import com.bni.finalproject01webservice.dto.withdrawal_detail.response.WithdrawalDetailResponseDTO;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.WithdrawalDetailInterface;
 import com.bni.finalproject01webservice.model.OperationType;
 import com.bni.finalproject01webservice.model.TrxType;
@@ -23,6 +24,8 @@ public class WithdrawalDetailService implements WithdrawalDetailInterface {
     private final TrxTypeRepository trxTypeRepository;
     private final OperationTypeRepository operationTypeRepository;
 
+    private final DateTimeInterface dateTimeService;
+
     @Override
     public WithdrawalDetailResponseDTO addWithdrawalDetail(WithdrawalDetailRequestDTO request) {
 
@@ -41,7 +44,7 @@ public class WithdrawalDetailService implements WithdrawalDetailInterface {
                 withdrawal.getReservationCode());
         withdrawalDetail.setTrxType(trxType);
         withdrawalDetail.setOperationType(operationType);
-        withdrawalDetail.setCreatedAt(new Date());
+        withdrawalDetail.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         withdrawalDetailRepository.save(withdrawalDetail);
 
         WithdrawalDetailResponseDTO response = new WithdrawalDetailResponseDTO();

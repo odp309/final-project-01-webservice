@@ -2,6 +2,7 @@ package com.bni.finalproject01webservice.service;
 
 import com.bni.finalproject01webservice.dto.financial_trx.request.FinancialTrxRequestDTO;
 import com.bni.finalproject01webservice.dto.financial_trx.response.FinancialTrxResponseDTO;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.FinancialTrxInterface;
 import com.bni.finalproject01webservice.model.*;
 import com.bni.finalproject01webservice.repository.*;
@@ -19,6 +20,8 @@ public class FinancialTrxService implements FinancialTrxInterface {
     private final BankAccountRepository bankAccountRepository;
     private final TrxTypeRepository trxTypeRepository;
     private final OperationTypeRepository operationTypeRepository;
+
+    private final DateTimeInterface dateTimeService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -42,7 +45,7 @@ public class FinancialTrxService implements FinancialTrxInterface {
                             request.getRate() + "/" +
                             "PT Bank Negara Indonesia (Persero), Tbk");
         }
-        financialTrx.setCreatedAt(new Date());
+        financialTrx.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         financialTrx.setUser(request.getUser());
         financialTrx.setWallet(request.getWallet());
         financialTrx.setTrxType(trxType);

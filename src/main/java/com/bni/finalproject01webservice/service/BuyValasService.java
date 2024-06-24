@@ -12,6 +12,7 @@ import com.bni.finalproject01webservice.dto.buy_valas.response.LimitCheckRespons
 import com.bni.finalproject01webservice.dto.financial_trx.request.FinancialTrxRequestDTO;
 import com.bni.finalproject01webservice.dto.financial_trx.response.FinancialTrxResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BuyValasInterface;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.FinancialTrxInterface;
 import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
 import com.bni.finalproject01webservice.model.*;
@@ -41,6 +42,7 @@ public class BuyValasService implements BuyValasInterface {
     private final PasswordEncoder passwordEncoder;
     private final FinancialTrxInterface financialTrxService;
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
+    private final DateTimeInterface dateTimeService;
 
     @Override
     public DetailBuyValasResponseDTO detailBuyValas(DetailBuyValasRequestDTO request) {
@@ -112,12 +114,12 @@ public class BuyValasService implements BuyValasInterface {
 
         // wallet update balance (+)
         wallet.setBalance(wallet.getBalance().add(request.getAmountToBuy()));
-        wallet.setUpdatedAt(new Date());
+        wallet.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         walletRepository.save(wallet);
 
         // bank account update balance (-)
         bankAccount.setBalance(currBalance.subtract(paidPrice));
-        bankAccount.setUpdatedAt(new Date());
+        bankAccount.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         bankAccountRepository.save(bankAccount);
 
         // convert currency to usd currency
@@ -131,7 +133,7 @@ public class BuyValasService implements BuyValasInterface {
 
         // user limit update (-)
         userLimit.setLimitAccumulation(userLimit.getLimitAccumulation().subtract(usdConversion));
-        userLimit.setUpdatedAt(new Date());
+        userLimit.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
 
         // create financial trx
         FinancialTrxRequestDTO financialTrxRequest = new FinancialTrxRequestDTO();
@@ -149,7 +151,7 @@ public class BuyValasService implements BuyValasInterface {
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
-        response.setCreatedAt(String.valueOf(new Date()));
+        response.setCreatedAt(String.valueOf(dateTimeService.getCurrentDateTimeInJakarta()));
 
         return response;
     }
@@ -252,12 +254,12 @@ public class BuyValasService implements BuyValasInterface {
 
         // wallet update balance (+)
         wallet.setBalance(wallet.getBalance().add(request.getAmountToBuy()));
-        wallet.setUpdatedAt(new Date());
+        wallet.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         walletRepository.save(wallet);
 
         // bank account update balance (-)
         bankAccount.setBalance(currBalance.subtract(paidPrice));
-        bankAccount.setUpdatedAt(new Date());
+        bankAccount.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         bankAccountRepository.save(bankAccount);
 
         // convert currency to usd currency
@@ -271,7 +273,7 @@ public class BuyValasService implements BuyValasInterface {
 
         // user limit update (-)
         userLimit.setLimitAccumulation(userLimit.getLimitAccumulation().subtract(usdConversion));
-        userLimit.setUpdatedAt(new Date());
+        userLimit.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
 
         // create financial trx
         FinancialTrxRequestDTO financialTrxRequest = new FinancialTrxRequestDTO();
@@ -289,7 +291,7 @@ public class BuyValasService implements BuyValasInterface {
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
-        response.setCreatedAt(String.valueOf(new Date()));
+        response.setCreatedAt(String.valueOf(dateTimeService.getCurrentDateTimeInJakarta()));
 
         return response;
     }

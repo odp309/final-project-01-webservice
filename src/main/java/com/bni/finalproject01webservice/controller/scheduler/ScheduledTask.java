@@ -21,7 +21,7 @@ public class ScheduledTask {
     // Cron expression: Seconds, Minutes, Hours, Day of Month, Month, Day of Week
 
     //    @Scheduled(cron = "0 30 21 * * ?")
-    @Scheduled(cron = "0 33 15 * * ?")
+    @Scheduled(cron = "0 05 16 * * ?")
     public FrankfurterResponseDTO addExchangeRateFrankfurter() {
         return exchangeRateService.addExchangeRateFrankfurter();
     }

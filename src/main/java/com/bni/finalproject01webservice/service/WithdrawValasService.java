@@ -44,6 +44,7 @@ public class WithdrawValasService implements WithdrawValasInterface {
     private final WithdrawalInterface withdrawalService;
     private final WithdrawalDetailInterface withdrawalDetailService;
     private final BranchReserveLogInterface branchReserveLogService;
+    private final DateTimeInterface dateTimeService;
     private final WorkingDaysCalculator workingDaysCalculator;
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
 
@@ -169,12 +170,12 @@ public class WithdrawValasService implements WithdrawValasInterface {
 
         // wallet update balance (-)
         wallet.setBalance(wallet.getBalance().subtract(request.getAmountToWithdraw()));
-        wallet.setUpdatedAt(new Date());
+        wallet.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         walletRepository.save(wallet);
 
         // branch reserve update balance (-)
         branchReserve.setBalance(updatedBranchReserveBalance);
-        branchReserve.setUpdatedAt(new Date());
+        branchReserve.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         branchReserveRepository.save(branchReserve);
 
         // create withdrawal
@@ -223,8 +224,7 @@ public class WithdrawValasService implements WithdrawValasInterface {
         LocalDate today = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
 
-        if (currentTime.isAfter(LocalTime.of(22, 0))) {
-//            if (currentTime.isAfter(LocalTime.of(15, 0))) {
+        if (currentTime.isAfter(LocalTime.of(18, 0))) {
             List<Withdrawal> scheduledWithdrawals = withdrawalRepository.findScheduledWithdrawalForToday(today);
             for (Withdrawal withdrawal : scheduledWithdrawals) {
                 BranchReserve branchReserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(withdrawal.getBranch().getCode(), withdrawal.getWallet().getCurrency().getCode());
@@ -392,12 +392,12 @@ public class WithdrawValasService implements WithdrawValasInterface {
 
         // wallet update balance (-)
         wallet.setBalance(wallet.getBalance().subtract(request.getAmountToWithdraw()));
-        wallet.setUpdatedAt(new Date());
+        wallet.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         walletRepository.save(wallet);
 
         // branch reserve update balance (-)
         branchReserve.setBalance(updatedBranchReserveBalance);
-        branchReserve.setUpdatedAt(new Date());
+        branchReserve.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         branchReserveRepository.save(branchReserve);
 
         // create withdrawal

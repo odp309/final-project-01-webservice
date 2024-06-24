@@ -4,6 +4,7 @@ import com.bni.finalproject01webservice.dto.exchange_rate.request.ExchangeRateRe
 import com.bni.finalproject01webservice.dto.exchange_rate.request.FrankfurterRequestDTO;
 import com.bni.finalproject01webservice.dto.exchange_rate.response.ExchangeRateResponseDTO;
 import com.bni.finalproject01webservice.dto.exchange_rate.response.FrankfurterResponseDTO;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.ExchangeRateInterface;
 import com.bni.finalproject01webservice.model.Currency;
 import com.bni.finalproject01webservice.model.ExchangeRate;
@@ -31,6 +32,8 @@ public class ExchangeRateService implements ExchangeRateInterface {
 
     private final ExchangeRateRepository exchangeRateRepository;
     private final CurrencyRepository currencyRepository;
+
+    private final DateTimeInterface dateTimeService;
     private final RestTemplate restTemplate;
 
     @Override
@@ -53,7 +56,7 @@ public class ExchangeRateService implements ExchangeRateInterface {
                 // Save data to database
                 ExchangeRate exchangeRate = new ExchangeRate();
                 exchangeRate.setCurrency(dbCurrency);
-                exchangeRate.setCreatedAt(new Date());
+                exchangeRate.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
                 exchangeRate.setBuyRate(request.getRates().get("IDR").multiply(BigDecimal.valueOf(1.02)));
                 exchangeRate.setSellRate(request.getRates().get("IDR"));
 

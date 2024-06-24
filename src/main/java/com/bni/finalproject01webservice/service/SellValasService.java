@@ -9,6 +9,7 @@ import com.bni.finalproject01webservice.dto.sell_valas.request.DetailSellValasRe
 import com.bni.finalproject01webservice.dto.sell_valas.request.SellValasRequestDTO;
 import com.bni.finalproject01webservice.dto.sell_valas.response.DetailSellValasResponseDTO;
 import com.bni.finalproject01webservice.dto.sell_valas.response.SellValasResponseDTO;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.FinancialTrxInterface;
 import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
 import com.bni.finalproject01webservice.interfaces.SellValasInterface;
@@ -43,6 +44,7 @@ public class SellValasService implements SellValasInterface {
     private final PasswordEncoder passwordEncoder;
     private final FinancialTrxInterface financialTrxService;
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
+    private final DateTimeInterface dateTimeService;
 
     @Override
     public DetailSellValasResponseDTO detailSellValas(DetailSellValasRequestDTO request) {
@@ -96,12 +98,12 @@ public class SellValasService implements SellValasInterface {
 
         // wallet update balance (-)
         wallet.setBalance(wallet.getBalance().subtract(request.getAmountToSell()));
-        wallet.setUpdatedAt(new Date());
+        wallet.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         walletRepository.save(wallet);
 
         // bank account update balance (+)
         bankAccount.setBalance(currBalance.add(sellPrice));
-        bankAccount.setUpdatedAt(new Date());
+        bankAccount.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         bankAccountRepository.save(bankAccount);
 
         // create financial trx
@@ -120,7 +122,7 @@ public class SellValasService implements SellValasInterface {
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
-        response.setCreatedAt(String.valueOf(new Date()));
+        response.setCreatedAt(String.valueOf(dateTimeService.getCurrentDateTimeInJakarta()));
 
         return response;
     }
@@ -193,12 +195,12 @@ public class SellValasService implements SellValasInterface {
 
         // wallet update balance (-)
         wallet.setBalance(wallet.getBalance().subtract(request.getAmountToSell()));
-        wallet.setUpdatedAt(new Date());
+        wallet.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         walletRepository.save(wallet);
 
         // bank account update balance (+)
         bankAccount.setBalance(currBalance.add(sellPrice));
-        bankAccount.setUpdatedAt(new Date());
+        bankAccount.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         bankAccountRepository.save(bankAccount);
 
         // create financial trx
@@ -217,7 +219,7 @@ public class SellValasService implements SellValasInterface {
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
-        response.setCreatedAt(String.valueOf(new Date()));
+        response.setCreatedAt(String.valueOf(dateTimeService.getCurrentDateTimeInJakarta()));
 
         return response;
     }

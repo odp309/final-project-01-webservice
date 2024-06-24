@@ -9,6 +9,7 @@ import com.bni.finalproject01webservice.dto.transfer_valas.request.DetailTransfe
 import com.bni.finalproject01webservice.dto.transfer_valas.request.TransferValasRequestDTO;
 import com.bni.finalproject01webservice.dto.transfer_valas.response.DetailTransferValasResponseDTO;
 import com.bni.finalproject01webservice.dto.transfer_valas.response.TransferValasResponseDTO;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.FinancialTrxInterface;
 import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
 import com.bni.finalproject01webservice.interfaces.TransferValasInterface;
@@ -38,6 +39,7 @@ public class TransferValasService implements TransferValasInterface {
     private final PasswordEncoder passwordEncoder;
     private final FinancialTrxInterface financialTrxService;
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
+    private final DateTimeInterface dateTimeService;
 
     @Override
     public DetailTransferValasResponseDTO detailTransferValas(DetailTransferValasRequestDTO request) {
@@ -110,12 +112,12 @@ public class TransferValasService implements TransferValasInterface {
 
         // sender wallet update balance (-)
         senderWallet.setBalance(senderWallet.getBalance().subtract(request.getAmountToTransfer()));
-        senderWallet.setUpdatedAt(new Date());
+        senderWallet.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         walletRepository.save(senderWallet);
 
         // recipient wallet update balance (+)
         recipientWallet.setBalance(recipientWallet.getBalance().add(request.getAmountToTransfer()));
-        recipientWallet.setUpdatedAt(new Date());
+        recipientWallet.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         walletRepository.save(recipientWallet);
 
         // create financial trx for sender
@@ -144,7 +146,7 @@ public class TransferValasService implements TransferValasInterface {
         response.setRecipientFirstName(recipientUser.getFirstName());
         response.setRecipientLastName(recipientUser.getLastName());
         response.setRecipientAccountNumber(request.getRecipientAccountNumber());
-        response.setCreatedAt(String.valueOf(new Date()));
+        response.setCreatedAt(String.valueOf(dateTimeService.getCurrentDateTimeInJakarta()));
 
         return response;
     }
@@ -227,12 +229,12 @@ public class TransferValasService implements TransferValasInterface {
 
         // sender wallet update balance (-)
         senderWallet.setBalance(senderWallet.getBalance().subtract(request.getAmountToTransfer()));
-        senderWallet.setUpdatedAt(new Date());
+        senderWallet.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         walletRepository.save(senderWallet);
 
         // recipient wallet update balance (+)
         recipientWallet.setBalance(recipientWallet.getBalance().add(request.getAmountToTransfer()));
-        recipientWallet.setUpdatedAt(new Date());
+        recipientWallet.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         walletRepository.save(recipientWallet);
 
         // create financial trx for sender
@@ -261,7 +263,7 @@ public class TransferValasService implements TransferValasInterface {
         response.setRecipientFirstName(recipientUser.getFirstName());
         response.setRecipientLastName(recipientUser.getLastName());
         response.setRecipientAccountNumber(request.getRecipientAccountNumber());
-        response.setCreatedAt(String.valueOf(new Date()));
+        response.setCreatedAt(String.valueOf(dateTimeService.getCurrentDateTimeInJakarta()));
 
         return response;
     }

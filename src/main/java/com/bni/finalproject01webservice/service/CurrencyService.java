@@ -5,8 +5,10 @@ import com.bni.finalproject01webservice.dto.currency.response.CurrencyResponseDT
 import com.bni.finalproject01webservice.dto.currency.response.GetMinimumCurrencyResponseDTO;
 import com.bni.finalproject01webservice.dto.init.response.InitResponseDTO;
 import com.bni.finalproject01webservice.interfaces.CurrencyInterface;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.model.Currency;
 import com.bni.finalproject01webservice.repository.CurrencyRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +19,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class CurrencyService implements CurrencyInterface {
 
-    @Autowired
-    private CurrencyRepository currencyRepository;
+    private final CurrencyRepository currencyRepository;
+
+    private final DateTimeInterface dateTimeService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -63,7 +67,7 @@ public class CurrencyService implements CurrencyInterface {
             USD.setMinimumWithdrawal(BigDecimal.valueOf(100));
             USD.setFlagIcon("https://i.imgur.com/KR2l4rP.png");
             USD.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            USD.setCreatedAt(new Date());
+            USD.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(USD);
         }
 
@@ -77,7 +81,7 @@ public class CurrencyService implements CurrencyInterface {
             SGD.setMinimumWithdrawal(BigDecimal.valueOf(100));
             SGD.setFlagIcon("https://i.imgur.com/c8QU4XJ.png");
             SGD.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            SGD.setCreatedAt(new Date());
+            SGD.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(SGD);
         }
 
@@ -91,7 +95,7 @@ public class CurrencyService implements CurrencyInterface {
             JPY.setMinimumWithdrawal(BigDecimal.valueOf(10000));
             JPY.setFlagIcon("https://i.imgur.com/cEeytUt.png");
             JPY.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            JPY.setCreatedAt(new Date());
+            JPY.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(JPY);
         }
 
@@ -105,7 +109,7 @@ public class CurrencyService implements CurrencyInterface {
             EUR.setMinimumWithdrawal(BigDecimal.valueOf(100));
             EUR.setFlagIcon("https://i.imgur.com/lBFrzJl.png");
             EUR.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            EUR.setCreatedAt(new Date());
+            EUR.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(EUR);
         }
 
@@ -119,7 +123,7 @@ public class CurrencyService implements CurrencyInterface {
             GBP.setMinimumWithdrawal(BigDecimal.valueOf(50));
             GBP.setFlagIcon("https://i.imgur.com/9YF70SA.png");
             GBP.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            GBP.setCreatedAt(new Date());
+            GBP.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(GBP);
         }
 
@@ -133,7 +137,7 @@ public class CurrencyService implements CurrencyInterface {
             AUD.setMinimumWithdrawal(BigDecimal.valueOf(100));
             AUD.setFlagIcon("https://i.imgur.com/ouYv3jA.png");
             AUD.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            AUD.setCreatedAt(new Date());
+            AUD.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(AUD);
         }
 
@@ -147,7 +151,7 @@ public class CurrencyService implements CurrencyInterface {
             MYR.setMinimumWithdrawal(BigDecimal.valueOf(100));
             MYR.setFlagIcon("https://i.imgur.com/Ccfnua7.png");
             MYR.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            MYR.setCreatedAt(new Date());
+            MYR.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(MYR);
         }
 
@@ -161,7 +165,7 @@ public class CurrencyService implements CurrencyInterface {
             NZD.setMinimumWithdrawal(BigDecimal.valueOf(100));
             NZD.setFlagIcon("https://i.imgur.com/Rcymbsa.png");
             NZD.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            NZD.setCreatedAt(new Date());
+            NZD.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(NZD);
         }
 
@@ -175,7 +179,7 @@ public class CurrencyService implements CurrencyInterface {
             THB.setMinimumWithdrawal(BigDecimal.valueOf(1000));
             THB.setFlagIcon("https://i.imgur.com/dvcrF0R.png");
             THB.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            THB.setCreatedAt(new Date());
+            THB.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(THB);
         }
 
@@ -189,7 +193,7 @@ public class CurrencyService implements CurrencyInterface {
             CNY.setMinimumWithdrawal(BigDecimal.valueOf(100));
             CNY.setFlagIcon("https://i.imgur.com/NuyGX6o.png");
             CNY.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            CNY.setCreatedAt(new Date());
+            CNY.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(CNY);
         }
 
@@ -203,7 +207,7 @@ public class CurrencyService implements CurrencyInterface {
             CAD.setMinimumWithdrawal(BigDecimal.valueOf(100));
             CAD.setFlagIcon("https://i.imgur.com/vMs98rY.png");
             CAD.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            CAD.setCreatedAt(new Date());
+            CAD.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(CAD);
         }
 
@@ -217,7 +221,7 @@ public class CurrencyService implements CurrencyInterface {
             CHF.setMinimumWithdrawal(BigDecimal.valueOf(100));
             CHF.setFlagIcon("https://i.imgur.com/b1B5OyE.png");
             CHF.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            CHF.setCreatedAt(new Date());
+            CHF.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(CHF);
         }
 
@@ -231,7 +235,7 @@ public class CurrencyService implements CurrencyInterface {
             HKD.setMinimumWithdrawal(BigDecimal.valueOf(500));
             HKD.setFlagIcon("https://i.imgur.com/NhwC9kk.png");
             HKD.setLandmarkIcon("https://i.imgur.com/rNo8qiE.png");
-            HKD.setCreatedAt(new Date());
+            HKD.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
             currencyRepository.save(HKD);
         }
 

@@ -10,6 +10,7 @@ import com.bni.finalproject01webservice.dto.branch_reserve_log.request.BranchRes
 import com.bni.finalproject01webservice.dto.branch_reserve_log.response.BranchReserveLogResponseDTO;
 import com.bni.finalproject01webservice.interfaces.BranchReserveInterface;
 import com.bni.finalproject01webservice.interfaces.BranchReserveLogInterface;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
 import com.bni.finalproject01webservice.model.Branch;
 import com.bni.finalproject01webservice.model.BranchReserve;
@@ -37,6 +38,7 @@ public class BranchReserveService implements BranchReserveInterface {
 
     private final BranchReserveLogInterface branchReserveLogService;
     private final ResourceRequestCheckerInterface resourceRequestCheckerService;
+    private final DateTimeInterface dateTimeService;
 
     @Override
     public BranchReserveResponseDTO addBranchReserve(AddBranchReserveRequestDTO request) {
@@ -54,7 +56,7 @@ public class BranchReserveService implements BranchReserveInterface {
         reserve.setBranch(branch);
         reserve.setBalance(BigDecimal.ZERO);
         reserve.setCurrency(currency);
-        reserve.setCreatedAt(new Date());
+        reserve.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         branchReserveRepository.save(reserve);
 
         BranchReserveResponseDTO response = new BranchReserveResponseDTO();
@@ -90,7 +92,7 @@ public class BranchReserveService implements BranchReserveInterface {
         BranchReserveLogResponseDTO logResponse = branchReserveLogService.addBranchReserveLog(logRequest);
 
         currentBranchReserve.setBalance(updatedBalance);
-        currentBranchReserve.setUpdatedAt(new Date());
+        currentBranchReserve.setUpdatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         branchReserveRepository.save(currentBranchReserve);
 
         AddStockResponseDTO response = new AddStockResponseDTO();
@@ -136,7 +138,7 @@ public class BranchReserveService implements BranchReserveInterface {
         reserve.setBranch(branch);
         reserve.setBalance(BigDecimal.ZERO);
         reserve.setCurrency(currency);
-        reserve.setCreatedAt(new Date());
+        reserve.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         branchReserveRepository.save(reserve);
 
         BranchReserveResponseDTO response = new BranchReserveResponseDTO();

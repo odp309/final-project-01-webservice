@@ -3,6 +3,7 @@ package com.bni.finalproject01webservice.service;
 import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.dto.user_limit.request.UserLimitRequestDTO;
 import com.bni.finalproject01webservice.dto.user_limit.response.UserLimitResponseDTO;
+import com.bni.finalproject01webservice.interfaces.DateTimeInterface;
 import com.bni.finalproject01webservice.interfaces.UserLimitInterface;
 import com.bni.finalproject01webservice.model.User;
 import com.bni.finalproject01webservice.model.UserLimit;
@@ -22,6 +23,8 @@ public class UserLimitService implements UserLimitInterface {
     private final UserLimitRepository userLimitRepository;
     private final UserRepository userRepository;
 
+    private final DateTimeInterface dateTimeService;
+
     @Override
     public UserLimitResponseDTO addUserLimit(UserLimitRequestDTO request) {
 
@@ -30,7 +33,7 @@ public class UserLimitService implements UserLimitInterface {
         UserLimit userLimit = new UserLimit();
         userLimit.setLimitAccumulation(BigDecimal.valueOf(100000));
         userLimit.setUser(user);
-        userLimit.setCreatedAt(new Date());
+        userLimit.setCreatedAt(dateTimeService.getCurrentDateTimeInJakarta());
         userLimitRepository.save(userLimit);
 
         UserLimitResponseDTO response = new UserLimitResponseDTO();
