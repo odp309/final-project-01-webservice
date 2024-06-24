@@ -36,6 +36,9 @@ public class ExchangeRateService implements ExchangeRateInterface {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public FrankfurterResponseDTO addExchangeRateFrankfurter() {
+
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< JALAN COY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
         List<String> currencies = currencyRepository.findAllCurrencyCode();
         Map<String, BigDecimal> buyRate = new HashMap<>();
         Map<String, BigDecimal> sellRate = new HashMap<>();

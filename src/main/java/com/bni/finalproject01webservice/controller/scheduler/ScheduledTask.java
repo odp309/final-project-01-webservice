@@ -21,22 +21,22 @@ public class ScheduledTask {
     // Cron expression: Seconds, Minutes, Hours, Day of Month, Month, Day of Week
 
     //    @Scheduled(cron = "0 30 21 * * ?")
-    @Scheduled(cron = "0 33 15 * * ?")
+    @Scheduled(cron = "0 30 16 * * ?", zone = "Asia/Jakarta")
     public FrankfurterResponseDTO addExchangeRateFrankfurter() {
         return exchangeRateService.addExchangeRateFrankfurter();
     }
 
-    @Scheduled(cron = "0 0 18 * * ?")
+    @Scheduled(cron = "0 0 18 * * ?", zone = "Asia/Jakarta")
     public void withdrawValasScheduledChecker() {
         withdrawValasService.withdrawValasScheduledChecker();
     }
 
-    @Scheduled(cron = "0 0 18 * * ?")
+    @Scheduled(cron = "0 0 18 * * ?", zone = "Asia/Jakarta")
     public void userIsCooldownChecker() {
         userService.userIsCooldownChecker();
     }
 
-    @Scheduled(cron = "0 1 0 1 * ?")
+    @Scheduled(cron = "0 1 0 1 * ?", zone = "Asia/Jakarta")
     public void resetUserLimit() {
         userLimitService.resetUserLimit();
     }
