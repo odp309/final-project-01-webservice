@@ -120,7 +120,7 @@ public class SellValasService implements SellValasInterface {
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
-        response.setCreatedAt(new Date());
+        response.setCreatedAt(String.valueOf(new Date()));
 
         return response;
     }
@@ -217,7 +217,7 @@ public class SellValasService implements SellValasInterface {
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setCurrencyName(wallet.getCurrency().getName());
         response.setAccountNumber(wallet.getBankAccount().getAccountNumber());
-        response.setCreatedAt(new Date());
+        response.setCreatedAt(String.valueOf(new Date()));
 
         return response;
     }

@@ -32,7 +32,8 @@ public class WebConfiguration {
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,
                 HttpHeaders.CONTENT_TYPE,
-                HttpHeaders.ACCEPT));
+                HttpHeaders.ACCEPT
+        ));
 
         // custom headers backend must accept
         config.addAllowedHeader("No-Auth");
@@ -42,7 +43,9 @@ public class WebConfiguration {
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),
                 HttpMethod.PUT.name(),
-                HttpMethod.DELETE.name()));
+                HttpMethod.DELETE.name(),
+                HttpMethod.OPTIONS.name()
+        ));
 
         // time the cors config is accepted => 30 minutes
         config.setMaxAge(MAX_AGE);

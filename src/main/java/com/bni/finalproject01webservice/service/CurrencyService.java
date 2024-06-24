@@ -250,8 +250,8 @@ public class CurrencyService implements CurrencyInterface {
                     CurrencyResponseDTO currencyResponseDTO = new CurrencyResponseDTO();
                     currencyResponseDTO.setCode(currency.getCode());
                     currencyResponseDTO.setName(currency.getName());
-                    currencyResponseDTO.setCreatedAt(currency.getCreatedAt());
-                    currencyResponseDTO.setUpdatedAt(currency.getUpdatedAt());
+                    currencyResponseDTO.setCreatedAt(String.valueOf(currency.getCreatedAt()));
+                    currencyResponseDTO.setUpdatedAt(String.valueOf(currency.getUpdatedAt()));
                     return currencyResponseDTO;
                 })
                 .collect(Collectors.toList());

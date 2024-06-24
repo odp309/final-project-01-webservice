@@ -258,8 +258,8 @@ public class EmployeeService implements EmployeeInterface {
                     response.setLastName(employee.getLastName());
                     response.setNip(employee.getNip());
                     response.setIsActive(employee.getIsActive());
-                    response.setCreatedAt(employee.getCreatedAt());
-                    response.setUpdatedAt(employee.getUpdatedAt());
+                    response.setCreatedAt(String.valueOf(employee.getCreatedAt()));
+                    response.setUpdatedAt(String.valueOf(employee.getUpdatedAt()));
                     return response;
                 })
                 .collect(Collectors.toList());
@@ -306,8 +306,8 @@ public class EmployeeService implements EmployeeInterface {
                     response.setLastName(employee.getLastName());
                     response.setNip(employee.getNip());
                     response.setIsActive(employee.getIsActive());
-                    response.setCreatedAt(employee.getCreatedAt());
-                    response.setUpdatedAt(employee.getUpdatedAt());
+                    response.setCreatedAt(String.valueOf(employee.getCreatedAt()));
+                    response.setUpdatedAt(String.valueOf(employee.getUpdatedAt()));
                     return response;
                 })
                 .collect(Collectors.toList());

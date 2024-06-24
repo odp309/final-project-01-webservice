@@ -144,7 +144,7 @@ public class TransferValasService implements TransferValasInterface {
         response.setRecipientFirstName(recipientUser.getFirstName());
         response.setRecipientLastName(recipientUser.getLastName());
         response.setRecipientAccountNumber(request.getRecipientAccountNumber());
-        response.setCreatedAt(new Date());
+        response.setCreatedAt(String.valueOf(new Date()));
 
         return response;
     }
@@ -261,7 +261,7 @@ public class TransferValasService implements TransferValasInterface {
         response.setRecipientFirstName(recipientUser.getFirstName());
         response.setRecipientLastName(recipientUser.getLastName());
         response.setRecipientAccountNumber(request.getRecipientAccountNumber());
-        response.setCreatedAt(new Date());
+        response.setCreatedAt(String.valueOf(new Date()));
 
         return response;
     }

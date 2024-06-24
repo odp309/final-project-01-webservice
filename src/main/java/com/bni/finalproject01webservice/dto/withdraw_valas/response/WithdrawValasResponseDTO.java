@@ -1,11 +1,9 @@
 package com.bni.finalproject01webservice.dto.withdraw_valas.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -19,7 +17,5 @@ public class WithdrawValasResponseDTO {
     private String branchProvince;
     private String currencyCode;
     private String reservationCode;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd MMMM yyyy", timezone = "Asia/Jakarta")
-    private Date reservationDate;
+    private String reservationDate;
 }

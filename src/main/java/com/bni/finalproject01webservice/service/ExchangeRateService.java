@@ -75,7 +75,7 @@ public class ExchangeRateService implements ExchangeRateInterface {
         ExchangeRateResponseDTO response = new ExchangeRateResponseDTO();
         response.setCurrencyCode(exchangeRate.getCurrency().getCode());
         response.setCurrencyName(exchangeRate.getCurrency().getName());
-        response.setCreatedAt(exchangeRate.getCreatedAt());
+        response.setCreatedAt(String.valueOf(exchangeRate.getCreatedAt()));
         response.setBuyRate(exchangeRate.getBuyRate());
         response.setSellRate(exchangeRate.getSellRate());
 
@@ -94,7 +94,7 @@ public class ExchangeRateService implements ExchangeRateInterface {
                     response.setFlagIcon(exchangeRate.getCurrency().getFlagIcon());
                     response.setBuyRate(exchangeRate.getBuyRate());
                     response.setSellRate(exchangeRate.getSellRate());
-                    response.setCreatedAt(exchangeRate.getCreatedAt());
+                    response.setCreatedAt(String.valueOf(exchangeRate.getCreatedAt()));
                     return response;
                 })
                 .collect(Collectors.toList());

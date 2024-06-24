@@ -1,6 +1,5 @@
 package com.bni.finalproject01webservice.service;
 
-import com.bni.finalproject01webservice.configuration.exceptions.UserException;
 import com.bni.finalproject01webservice.dto.reservation_list.request.ReservationListRequestDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.request.UpdateReservationStatusRequestDTO;
 import com.bni.finalproject01webservice.dto.reservation_list.response.ReservationListResponseDTO;
@@ -8,9 +7,7 @@ import com.bni.finalproject01webservice.dto.reservation_list.response.UpdateRese
 import com.bni.finalproject01webservice.dto.reservation_list.response.UserReservationListResponseDTO;
 import com.bni.finalproject01webservice.interfaces.ReservationInterface;
 import com.bni.finalproject01webservice.interfaces.ResourceRequestCheckerInterface;
-import com.bni.finalproject01webservice.model.Employee;
 import com.bni.finalproject01webservice.model.Withdrawal;
-import com.bni.finalproject01webservice.repository.EmployeeRepository;
 import com.bni.finalproject01webservice.repository.WithdrawalRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +37,8 @@ public class ReservationListService implements ReservationInterface {
                     ReservationListResponseDTO response = new ReservationListResponseDTO();
 
                     response.setReservationNumber((String) data[0]); // assuming reservation number is at index 0
-                    response.setReservationDate((Date) data[1]); // assuming reservation date is at index 1
-                    response.setCreatedDate((Date) data[2]); // assuming created date is at index 2
+                    response.setReservationDate(String.valueOf(data[1])); // assuming reservation date is at index 1
+                    response.setCreatedDate(String.valueOf(data[2])); // assuming created date is at index 2
                     response.setStatus((String) data[3]); // assuming status is at index 3
                     response.setAmount((BigDecimal) data[4]); // assuming amount is at index 4
                     response.setCurrencyCode((String) data[5]); // assuming currency code is at index 5
@@ -93,8 +90,8 @@ public class ReservationListService implements ReservationInterface {
                     ReservationListResponseDTO response = new ReservationListResponseDTO();
 
                     response.setReservationNumber((String) data[0]);
-                    response.setReservationDate((Date) data[1]);
-                    response.setCreatedDate((Date) data[2]);
+                    response.setReservationDate(String.valueOf(data[1]));
+                    response.setCreatedDate(String.valueOf(data[2]));
                     response.setStatus((String) data[3]);
                     response.setAmount((BigDecimal) data[4]);
                     response.setCurrencyCode((String) data[5]);
@@ -118,7 +115,7 @@ public class ReservationListService implements ReservationInterface {
                     UserReservationListResponseDTO response = new UserReservationListResponseDTO();
 
                     response.setReservationNumber(data.getReservationCode());
-                    response.setReservationDate(data.getReservationDate());
+                    response.setReservationDate(String.valueOf(data.getReservationDate()));
                     response.setAmount(data.getAmount());
                     response.setCurrencyCode(data.getWallet().getCurrency().getCode());
                     response.setStatus(data.getStatus());

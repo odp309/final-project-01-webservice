@@ -110,7 +110,7 @@ public class BranchReserveService implements BranchReserveInterface {
                     response.setCurrencyCode(branchReserve.getCurrency().getCode());
                     response.setCurrencyName(branchReserve.getCurrency().getName());
                     response.setBalance(branchReserve.getBalance());
-                    response.setUpdatedAt(branchReserve.getUpdatedAt());
+                    response.setUpdatedAt(String.valueOf(branchReserve.getUpdatedAt()));
                     return response;
                 })
                 .collect(Collectors.toList());
@@ -161,7 +161,7 @@ public class BranchReserveService implements BranchReserveInterface {
                     response.setCurrencyCode(branchReserve.getCurrency().getCode());
                     response.setCurrencyName(branchReserve.getCurrency().getName());
                     response.setBalance(branchReserve.getBalance());
-                    response.setUpdatedAt(branchReserve.getUpdatedAt());
+                    response.setUpdatedAt(String.valueOf(branchReserve.getUpdatedAt()));
                     return response;
                 })
                 .collect(Collectors.toList());

@@ -16,7 +16,5 @@ public class TransferValasResponseDTO {
     private String recipientFirstName;
     private String recipientLastName;
     private String recipientAccountNumber;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd MMMM yyyy HH:mm", timezone = "Asia/Jakarta")
-    private Date createdAt;
+    private String createdAt;
 }

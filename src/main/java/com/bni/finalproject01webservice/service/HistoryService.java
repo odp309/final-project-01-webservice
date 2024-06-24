@@ -46,7 +46,7 @@ public class HistoryService implements HistoryInterface {
 
                 response.setTrxId(financialTrx.getId());
                 response.setAmount(financialTrx.getAmount());
-                response.setCreatedDate(financialTrx.getCreatedAt());
+                response.setCreatedDate(String.valueOf(financialTrx.getCreatedAt()));
                 response.setTrxType(financialTrx.getTrxType().getName());
                 response.setCurrencyCode(financialTrx.getWallet().getCurrency().getCode());
                 response.setOperationType(financialTrx.getOperationType().getName());
@@ -63,7 +63,7 @@ public class HistoryService implements HistoryInterface {
 
                 response.setTrxId((UUID) withdrawalTrx[0]);
                 response.setAmount((BigDecimal) withdrawalTrx[1]);
-                response.setCreatedDate((Date) withdrawalTrx[2]);
+                response.setCreatedDate(String.valueOf(withdrawalTrx[2]));
                 response.setStatus((String) withdrawalTrx[3]);
                 response.setCurrencyCode((String) withdrawalTrx[4]);
                 response.setTrxType((String) withdrawalTrx[5]);
@@ -90,7 +90,7 @@ public class HistoryService implements HistoryInterface {
 
             response.setTrxId(financialTrxs.getId());
             response.setAmount(financialTrxs.getAmount());
-            response.setCreatedDate(financialTrxs.getCreatedAt());
+            response.setCreatedDate(String.valueOf(financialTrxs.getCreatedAt()));
             response.setDetail(financialTrxs.getDetail());
             response.setOperationType(financialTrxs.getOperationType().getName());
             response.setTrxType(financialTrxs.getTrxType().getName());
@@ -116,8 +116,8 @@ public class HistoryService implements HistoryInterface {
 
             response.setTrxId(withdrawalTrxs.getId());
             response.setAmount(withdrawalTrxs.getWithdrawal().getAmount());
-            response.setCreatedDate(withdrawalTrxs.getCreatedAt());
-            response.setReservationDate(withdrawalTrxs.getWithdrawal().getReservationDate());
+            response.setCreatedDate(String.valueOf(withdrawalTrxs.getCreatedAt()));
+            response.setReservationDate(String.valueOf(withdrawalTrxs.getWithdrawal().getReservationDate()));
             response.setDetail(withdrawalTrxs.getDetail());
             response.setOperationType(withdrawalTrxs.getOperationType().getName());
             response.setTrxType(withdrawalTrxs.getTrxType().getName());
@@ -161,7 +161,7 @@ public class HistoryService implements HistoryInterface {
 
                 response.setTrxId(financialTrx.getId());
                 response.setAmount(financialTrx.getAmount());
-                response.setCreatedDate(financialTrx.getCreatedAt());
+                response.setCreatedDate(String.valueOf(financialTrx.getCreatedAt()));
                 response.setTrxType(financialTrx.getTrxType().getName());
                 response.setCurrencyCode(financialTrx.getWallet().getCurrency().getCode());
 
@@ -177,7 +177,7 @@ public class HistoryService implements HistoryInterface {
 
                 response.setTrxId((UUID) withdrawalTrx[0]);
                 response.setAmount((BigDecimal) withdrawalTrx[1]);
-                response.setCreatedDate((Date) withdrawalTrx[2]);
+                response.setCreatedDate(String.valueOf(withdrawalTrx[2]));
                 response.setStatus((String) withdrawalTrx[3]);
                 response.setCurrencyCode((String) withdrawalTrx[4]);
                 response.setTrxType((String) withdrawalTrx[5]);
@@ -210,7 +210,7 @@ public class HistoryService implements HistoryInterface {
 
             response.setTrxId(financialTrxs.getId());
             response.setAmount(financialTrxs.getAmount());
-            response.setCreatedDate(financialTrxs.getCreatedAt());
+            response.setCreatedDate(String.valueOf(financialTrxs.getCreatedAt()));
             response.setDetail(financialTrxs.getDetail());
             response.setOperationType(financialTrxs.getOperationType().getName());
             response.setTrxType(financialTrxs.getTrxType().getName());
@@ -236,8 +236,8 @@ public class HistoryService implements HistoryInterface {
 
             response.setTrxId(withdrawalTrxs.getId());
             response.setAmount(withdrawalTrxs.getWithdrawal().getAmount());
-            response.setCreatedDate(withdrawalTrxs.getCreatedAt());
-            response.setReservationDate(withdrawalTrxs.getWithdrawal().getReservationDate());
+            response.setCreatedDate(String.valueOf(withdrawalTrxs.getCreatedAt()));
+            response.setReservationDate(String.valueOf(withdrawalTrxs.getWithdrawal().getReservationDate()));
             response.setDetail(withdrawalTrxs.getDetail());
             response.setOperationType(withdrawalTrxs.getOperationType().getName());
             response.setTrxType(withdrawalTrxs.getTrxType().getName());

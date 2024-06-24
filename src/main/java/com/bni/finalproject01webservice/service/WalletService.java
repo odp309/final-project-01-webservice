@@ -113,7 +113,7 @@ public class WalletService implements WalletInterface {
         WalletResponseDTO response = new WalletResponseDTO();
         response.setUserId(user.getId());
         response.setCurrentBalance(newWallet.getBalance());
-        response.setCreatedAt(newWallet.getCreatedAt());
+        response.setCreatedAt(String.valueOf(newWallet.getCreatedAt()));
         response.setBuyValasResponse(buyValasResponse);
 
         return response;
@@ -171,7 +171,7 @@ public class WalletService implements WalletInterface {
         WalletResponseDTO response = new WalletResponseDTO();
         response.setUserId(user.getId());
         response.setCurrentBalance(newWallet.getBalance());
-        response.setCreatedAt(newWallet.getCreatedAt());
+        response.setCreatedAt(String.valueOf(newWallet.getCreatedAt()));
         response.setBuyValasResponse(buyValasResponse);
 
         return response;

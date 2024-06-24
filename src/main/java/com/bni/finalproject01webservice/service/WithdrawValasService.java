@@ -105,7 +105,7 @@ public class WithdrawValasService implements WithdrawValasInterface {
         response.setBranchType(branchType[1]);
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setAmountToWithdraw(request.getAmountToWithdraw());
-        response.setReservationDate(request.getReservationDate());
+        response.setReservationDate(String.valueOf(request.getReservationDate()));
 
         return response;
     }
@@ -213,7 +213,7 @@ public class WithdrawValasService implements WithdrawValasInterface {
         response.setBranchProvince(branch.getProvince());
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setReservationCode(withdrawalResponse.getWithdrawal().getReservationCode());
-        response.setReservationDate(request.getReservationDate());
+        response.setReservationDate(String.valueOf(request.getReservationDate()));
 
         return response;
     }
@@ -320,7 +320,7 @@ public class WithdrawValasService implements WithdrawValasInterface {
         response.setBranchType(branchType[1]);
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setAmountToWithdraw(request.getAmountToWithdraw());
-        response.setReservationDate(request.getReservationDate());
+        response.setReservationDate(String.valueOf(request.getReservationDate()));
 
         return response;
     }
@@ -436,7 +436,7 @@ public class WithdrawValasService implements WithdrawValasInterface {
         response.setBranchProvince(branch.getProvince());
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setReservationCode(withdrawalResponse.getWithdrawal().getReservationCode());
-        response.setReservationDate(request.getReservationDate());
+        response.setReservationDate(String.valueOf(request.getReservationDate()));
 
         return response;
     }
