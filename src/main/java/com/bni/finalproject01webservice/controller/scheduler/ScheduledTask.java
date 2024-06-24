@@ -20,8 +20,7 @@ public class ScheduledTask {
 
     // Cron expression: Seconds, Minutes, Hours, Day of Month, Month, Day of Week
 
-    //    @Scheduled(cron = "0 30 21 * * ?")
-    @Scheduled(cron = "0 12 17 * * ?", zone = "Asia/Jakarta")
+    @Scheduled(cron = "0 30 21 * * ?", zone = "Asia/Jakarta")
     public FrankfurterResponseDTO addExchangeRateFrankfurter() {
         return exchangeRateService.addExchangeRateFrankfurter();
     }
