@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.*;
 
@@ -427,6 +428,10 @@ public class WithdrawValasService implements WithdrawValasInterface {
         logRequest.setBranchReserve(branchReserve);
         BranchReserveLogResponseDTO logResponse = branchReserveLogService.addBranchReserveLog(logRequest);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        Date reservationDate = withdrawalResponse.getWithdrawal().getReservationDate();
+        String formattedDate = sdf.format(reservationDate);
+
         WithdrawValasResponseDTO response = new WithdrawValasResponseDTO();
         response.setAmountToWithdraw(request.getAmountToWithdraw());
         response.setBranchType(branch.getType().split("/")[1]);
@@ -436,7 +441,7 @@ public class WithdrawValasService implements WithdrawValasInterface {
         response.setBranchProvince(branch.getProvince());
         response.setCurrencyCode(wallet.getCurrency().getCode());
         response.setReservationCode(withdrawalResponse.getWithdrawal().getReservationCode());
-        response.setReservationDate(String.valueOf(request.getReservationDate()));
+        response.setReservationDate(formattedDate);
 
         return response;
     }
