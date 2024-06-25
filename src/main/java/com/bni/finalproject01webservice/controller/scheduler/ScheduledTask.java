@@ -25,8 +25,7 @@ public class ScheduledTask {
         return exchangeRateService.addExchangeRateFrankfurter();
     }
 
-//    @Scheduled(cron = "0 0 18 * * ?", zone = "Asia/Jakarta")
-    @Scheduled(cron = "0 30 10 * * ?", zone = "Asia/Jakarta")
+    @Scheduled(cron = "0 0 18 * * ?", zone = "Asia/Jakarta")
     public void withdrawValasScheduledChecker() {
         withdrawValasService.withdrawValasScheduledChecker();
     }
