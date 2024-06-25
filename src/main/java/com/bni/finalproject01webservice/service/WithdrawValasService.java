@@ -224,7 +224,8 @@ public class WithdrawValasService implements WithdrawValasInterface {
         LocalDate today = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
 
-        if (currentTime.isAfter(LocalTime.of(17, 59))) {
+        if (currentTime.isAfter(LocalTime.of(9, 41))) {
+//            if (currentTime.isAfter(LocalTime.of(17, 59))) {
             List<Withdrawal> scheduledWithdrawals = withdrawalRepository.findScheduledWithdrawalForToday(today);
             for (Withdrawal withdrawal : scheduledWithdrawals) {
                 BranchReserve branchReserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(withdrawal.getBranch().getCode(), withdrawal.getWallet().getCurrency().getCode());
