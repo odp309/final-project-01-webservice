@@ -224,8 +224,13 @@ public class WithdrawValasService implements WithdrawValasInterface {
         LocalDate today = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
 
-        if (currentTime.isAfter(LocalTime.of(9, 41))) {
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< JALAN COY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+        if (currentTime.isAfter(LocalTime.of(10, 30))) {
 //            if (currentTime.isAfter(LocalTime.of(17, 59))) {
+
+            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< TRIGGER COY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
             List<Withdrawal> scheduledWithdrawals = withdrawalRepository.findScheduledWithdrawalForToday(today);
             for (Withdrawal withdrawal : scheduledWithdrawals) {
                 BranchReserve branchReserve = branchReserveRepository.findByBranchCodeAndCurrencyCode(withdrawal.getBranch().getCode(), withdrawal.getWallet().getCurrency().getCode());
